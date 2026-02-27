@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Priority Transmission &#x2014; Jedi High Council</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/aurebesh" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: #050510;
+      color: #d4e0ec;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 18px;
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.85;
+    }
+
+    /* ── Starfield ── */
+    .stars, .stars2 {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 0;
+    }
+    .stars {
+      background:
+        radial-gradient(1.2px 1.2px at 10% 20%, #fff, transparent),
+        radial-gradient(1px 1px at 30% 70%, #fff, transparent),
+        radial-gradient(1.4px 1.4px at 50% 10%, #ffd, transparent),
+        radial-gradient(1px 1px at 70% 60%, #fff, transparent),
+        radial-gradient(1px 1px at 90% 30%, #fff, transparent),
+        radial-gradient(1.3px 1.3px at 15% 85%, #ffd, transparent),
+        radial-gradient(1px 1px at 45% 45%, #fff, transparent),
+        radial-gradient(1px 1px at 80% 90%, #fff, transparent),
+        radial-gradient(1.5px 1.5px at 25% 55%, #ffc, transparent),
+        radial-gradient(1px 1px at 65% 15%, #fff, transparent),
+        radial-gradient(1.2px 1.2px at 5% 50%, #fff, transparent),
+        radial-gradient(1.5px 1.5px at 55% 80%, #ffd, transparent);
+      animation: twinkle 8s ease-in-out infinite alternate;
+    }
+    .stars2 {
+      background:
+        radial-gradient(1px 1px at 12% 32%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 42% 62%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1px 1px at 72% 22%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 22% 92%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 88% 52%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 62% 42%, rgba(255,255,255,0.4), transparent);
+      animation: twinkle 12s ease-in-out infinite alternate-reverse;
+    }
+    @keyframes twinkle { 0% { opacity: 0.6; } 100% { opacity: 1; } }
+
+    /* ── Scanlines ── */
+    .scanlines {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 1;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 3px,
+        rgba(0, 180, 255, 0.012) 3px, rgba(0, 180, 255, 0.012) 6px
+      );
+    }
+
+    /* ── Scroll Snap Sections ── */
+    .panel {
+      position: relative; z-index: 2;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      scroll-snap-align: center;
+      padding: 60px 28px;
+    }
+    .panel-inner {
+      max-width: 640px;
+      width: 100%;
+    }
+
+    /* ── Fade in on visibility ── */
+    .panel {
+      opacity: 0;
+      transition: opacity 0.9s ease-out;
+    }
+    .panel.visible { opacity: 1; }
+
+    /* ── Aurebesh / Decode ── */
+    .decodable {
+      font-family: 'Aurebesh', 'Share Tech Mono', monospace;
+      transition: none;
+    }
+    .decodable.decoding {
+      animation: glitch-decode 0.9s steps(6) forwards;
+    }
+    .decodable.decoded {
+      font-family: 'Share Tech Mono', monospace;
+    }
+    @keyframes glitch-decode {
+      0%   { font-family: 'Aurebesh', monospace; opacity: 1; filter: blur(0); text-shadow: 0 0 6px rgba(0,200,255,0.4); }
+      15%  { opacity: 0.25; filter: blur(2px); transform: translateX(3px); }
+      30%  { font-family: 'Aurebesh', monospace; opacity: 0.75; filter: blur(0); transform: translateX(-2px); }
+      50%  { opacity: 0.15; filter: blur(3px); transform: translateX(0); }
+      65%  { font-family: 'Share Tech Mono', monospace; opacity: 0.6; filter: blur(1px); text-shadow: 0 0 10px rgba(0,200,255,0.6); }
+      85%  { opacity: 0.9; filter: blur(0.3px); }
+      100% { font-family: 'Share Tech Mono', monospace; opacity: 1; filter: blur(0); text-shadow: none; transform: translateX(0); }
+    }
+
+    /* ── Decode Button ── */
+    .decode-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 28px;
+      padding: 14px 32px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #00ccff;
+      background: rgba(0, 180, 255, 0.08);
+      border: 1px solid rgba(0, 180, 255, 0.4);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .decode-btn:hover {
+      background: rgba(0, 180, 255, 0.15);
+      border-color: rgba(0, 200, 255, 0.7);
+      text-shadow: 0 0 12px rgba(0, 200, 255, 0.5);
+      transform: scale(1.03);
+    }
+    .decode-btn:active { transform: scale(0.97); }
+    .decode-btn.decoded-btn {
+      color: #44dd66;
+      border-color: rgba(68, 221, 102, 0.3);
+      background: rgba(68, 221, 102, 0.06);
+      cursor: default;
+      pointer-events: none;
+    }
+    .decode-btn .btn-icon { font-size: 18px; }
+
+    /* ── Decode Status (above text) ── */
+    .decode-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      color: #ff6b35;
+    }
+    .decode-label.done { color: #44dd66; }
+
+    /* ── Header ── */
+    .header-badge { text-align: center; }
+    .header-badge .emblem {
+      font-size: 60px; margin-bottom: 12px;
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+    @keyframes pulse-glow {
+      0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.4)); }
+      50% { filter: drop-shadow(0 0 28px rgba(255, 215, 0, 0.8)); }
+    }
+    .priority-banner {
+      display: inline-block;
+      background: linear-gradient(135deg, #ff4500, #ff6b35);
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900; font-size: 13px;
+      letter-spacing: 5px; padding: 8px 28px;
+      border-radius: 4px;
+      animation: flash 2s ease-in-out 3;
+    }
+    @keyframes flash { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .council-title {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: clamp(24px, 5.5vw, 34px);
+      color: #ffd700; letter-spacing: 4px; margin-top: 20px;
+      text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    }
+    .lang-notice {
+      text-align: center;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px; letter-spacing: 2px;
+      color: #556677; margin-top: 20px; line-height: 2;
+    }
+    .lang-notice span { color: #00aadd; }
+
+    /* ── Divider ── */
+    .divider {
+      width: 100%; max-width: 640px;
+      border: none; height: 1px;
+      background: linear-gradient(90deg, transparent, #ffd700, transparent);
+      margin: 0; opacity: 0.5;
+    }
+
+    /* ── Meta Info ── */
+    .meta-block {
+      font-size: 16px; color: #778899;
+      letter-spacing: 2px; text-align: center; line-height: 2.4;
+    }
+    .meta-block .label { color: #99aabb; font-size: 14px; }
+    .meta-block .value { color: #c8d8e8; }
+
+    /* ── Gold Heading ── */
+    .gold-heading {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: clamp(18px, 4vw, 24px);
+      color: #ffd700; letter-spacing: 3px;
+      text-transform: uppercase;
+      text-shadow: 0 0 12px rgba(255, 215, 0, 0.2);
+      margin-bottom: 20px;
+    }
+
+    /* ── Narrative Text ── */
+    .narrative {
+      font-size: clamp(18px, 4vw, 22px);
+      line-height: 2;
+      color: #c0d4e4;
+    }
+    .narrative strong { color: #ffd700; font-weight: 700; }
+    .narrative em { color: #66ccff; font-style: normal; }
+
+    /* ── Alert Box ── */
+    .alert-box {
+      border: 1px solid rgba(255, 69, 0, 0.35);
+      background: rgba(255, 69, 0, 0.06);
+      padding: 32px; border-radius: 6px;
+      text-align: center;
+    }
+    .alert-box .alert-text {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: clamp(22px, 5vw, 30px);
+      color: #ff6b35; letter-spacing: 4px;
+      text-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
+    }
+
+    /* ── Mission Brief ── */
+    .mission-brief {
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      background: rgba(255, 215, 0, 0.03);
+      padding: 32px 28px; border-radius: 6px; margin-top: 20px;
+    }
+    .mission-item {
+      display: flex; align-items: flex-start;
+      gap: 14px; margin-bottom: 18px;
+      font-size: clamp(16px, 3.5vw, 20px);
+    }
+    .mission-item .icon { flex-shrink: 0; font-size: 22px; }
+    .mission-item .detail { color: #c8d8e8; }
+    .mission-item .detail .key { color: #99aabb; }
+    .mission-item .detail .val { color: #ffd700; font-weight: 700; }
+
+    /* ── Parameters ── */
+    .param-list { list-style: none; padding: 0; }
+    .param-list li {
+      padding: 10px 0 10px 24px; position: relative;
+      font-size: clamp(17px, 3.5vw, 21px); color: #b0c8dc;
+    }
+    .param-list li::before {
+      content: '\25B9'; position: absolute; left: 0; color: #ffd700;
+    }
+
+    /* ── Heart Text ── */
+    .heart-text {
+      font-size: clamp(19px, 4.2vw, 24px);
+      line-height: 2.1; color: #d8e4ee;
+    }
+    .heart-text strong { color: #ffd700; font-weight: 700; }
+
+    /* ── Sign Off ── */
+    .sign-off { text-align: center; }
+    .sign-off .force-line {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(16px, 3.8vw, 22px);
+      color: #ffd700; letter-spacing: 3px;
+      text-shadow: 0 0 24px rgba(255, 215, 0, 0.35);
+      margin-bottom: 28px;
+    }
+    .sign-off .signers {
+      font-size: clamp(17px, 3.5vw, 20px);
+      color: #99aabb; line-height: 2.4;
+    }
+    .sign-off .signers .name { color: #d8e4ee; }
+
+    .footer-emblem {
+      text-align: center; margin-top: 40px;
+      font-size: 42px; opacity: 0.25;
+    }
+
+    .sound-hint {
+      text-align: center; font-size: 14px;
+      color: #556677; letter-spacing: 1px;
+      margin-bottom: 30px;
+    }
+    .sound-hint a {
+      color: #667788; text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .encrypted-label {
+      color: #889aaa; margin-bottom: 24px;
+      font-size: 14px; letter-spacing: 2px;
+      text-align: center;
+    }
+
+    /* ── Audio Controls ── */
+    .audio-gate {
+      position: fixed; inset: 0; z-index: 100;
+      background: radial-gradient(ellipse at center, #0a0a1a 0%, #000 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      transition: opacity 0.8s ease;
+    }
+    .audio-gate.hidden { opacity: 0; pointer-events: none; }
+    .audio-gate .gate-emblem { font-size: 64px; margin-bottom: 24px; animation: pulse-glow 3s ease-in-out infinite; }
+    .audio-gate .gate-title {
+      font-family: 'Orbitron', sans-serif; font-weight: 700;
+      font-size: clamp(18px, 4.5vw, 26px); color: #ffd700;
+      letter-spacing: 4px; margin-bottom: 12px;
+      text-shadow: 0 0 20px rgba(255,215,0,0.3);
+    }
+    .audio-gate .gate-sub {
+      font-size: 14px; color: #667788; letter-spacing: 2px; margin-bottom: 40px;
+    }
+    .play-btn {
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 18px 44px;
+      font-family: 'Orbitron', sans-serif; font-weight: 700;
+      font-size: 15px; letter-spacing: 4px;
+      color: #ffd700;
+      background: rgba(255, 215, 0, 0.06);
+      border: 2px solid rgba(255, 215, 0, 0.4);
+      border-radius: 6px; cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .play-btn:hover {
+      background: rgba(255, 215, 0, 0.12);
+      border-color: rgba(255, 215, 0, 0.8);
+      text-shadow: 0 0 16px rgba(255, 215, 0, 0.5);
+      transform: scale(1.05);
+    }
+    .play-btn:active { transform: scale(0.96); }
+    .play-btn .play-icon { font-size: 24px; }
+    .skip-link {
+      margin-top: 24px; font-size: 12px;
+      color: #445566; letter-spacing: 2px;
+      cursor: pointer; text-decoration: underline;
+      text-underline-offset: 3px;
+      border: none; background: none;
+      font-family: 'Orbitron', sans-serif;
+    }
+    .skip-link:hover { color: #667788; }
+
+    /* Floating audio toggle */
+    .audio-toggle {
+      position: fixed; bottom: 20px; right: 20px; z-index: 50;
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: rgba(255, 215, 0, 0.08);
+      border: 1px solid rgba(255, 215, 0, 0.25);
+      color: #ffd700; font-size: 22px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      opacity: 0; pointer-events: none;
+    }
+    .audio-toggle.show { opacity: 1; pointer-events: auto; }
+    .audio-toggle:hover {
+      background: rgba(255, 215, 0, 0.15);
+      border-color: rgba(255, 215, 0, 0.5);
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- ── Audio Gate (landing screen) ── -->
+<div class="audio-gate" id="audioGate">
+  <div class="gate-emblem">&#x2694;&#xFE0F;</div>
+  <div class="gate-title">INCOMING TRANSMISSION</div>
+  <div class="gate-sub">JEDI HIGH COUNCIL &#x2014; CLASSIFIED</div>
+  <button class="play-btn" onclick="beginTransmission(true)">
+    <span class="play-icon">&#x25B6;</span> BEGIN TRANSMISSION
+  </button>
+  <button class="skip-link" onclick="beginTransmission(false)">CONTINUE WITHOUT AUDIO</button>
+</div>
+
+<!-- Floating audio toggle -->
+<button class="audio-toggle" id="audioToggle" onclick="toggleAudio()" title="Toggle audio">
+  &#x1F50A;
+</button>
+
+<!-- Local audio -->
+<audio id="bgAudio" loop preload="auto">
+  <source src="01%20Star%20Wars%20(Main%20Theme).m4a" type="audio/mp4">
+</audio>
+
+<div class="stars"></div>
+<div class="stars2"></div>
+<div class="scanlines"></div>
+
+<!-- ═══════ PANEL 1: HEADER ═══════ -->
+<div class="panel" id="p0">
+  <div class="panel-inner header-badge">
+    <div class="emblem">&#x2694;&#xFE0F;</div>
+    <div class="priority-banner">&#x26A1; PRIORITY TRANSMISSION &#x26A1;</div>
+    <div class="council-title">JEDI HIGH COUNCIL</div>
+    <div style="font-size:13px; color:#667788; letter-spacing:4px; margin-top:12px;">
+      CLASSIFIED &#x2014; LEVEL ONE
+    </div>
+    <div class="lang-notice">
+      TRANSMISSION ENCODED IN <span>AUREBESH</span><br>
+      TAP DECODE TO TRANSLATE TO GALACTIC BASIC
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ PANEL 2: META ═══════ -->
+<div class="panel" id="p1" data-decode>
+  <div class="panel-inner" style="text-align:center;">
+    <div class="decode-label">&#x25CF; AUREBESH DETECTED</div>
+    <div class="decodable meta-block">
+      <div><span class="label">RECIPIENT: </span><span class="value" style="color:#ffd700;">MASTER MATTHANE SOL</span></div>
+      <div><span class="label">CLEARANCE: </span><span class="value">EYES ONLY</span></div>
+      <div><span class="label">DATE: </span><span class="value">26th Rotation, 2nd Moon, Year 2026</span></div>
+      <div><span class="label">STATUS: </span><span class="value" style="color:#ff6b35;">URGENT</span></div>
+    </div>
+    <button class="decode-btn" onclick="decode(this)">
+      <span class="btn-icon">&#x27F3;</span> DECODE
+    </button>
+  </div>
+</div>
+
+<!-- ═══════ PANEL 3: BIRTHDAY HONOR ═══════ -->
+<div class="panel" id="p2" data-decode>
+  <div class="panel-inner">
+    <div class="decode-label">&#x25CF; AUREBESH DETECTED</div>
+    <div class="decodable">
+      <p class="narrative">Master Matthane Sol,</p>
+      <br>
+      <p class="narrative"><strong>Fifty-one rotations around the sun.</strong></p>
+      <br>
+      <p class="narrative">
+        The Council has watched your journey with great admiration &#x2014;
+        from Padawan to Knight, from Knight to Master. Your strength, your wisdom,
+        your unwavering dedication to those you protect...
+        <em>the Force chose well when it chose you.</em>
+      </p>
+      <br>
+      <p class="narrative">But this transmission is not merely to honor another year of your light.</p>
+    </div>
+    <button class="decode-btn" onclick="decode(this)">
+      <span class="btn-icon">&#x27F3;</span> DECODE
+    </button>
+  </div>
+</div>
+
+<!-- ═══════ PANEL 4: DISTURBANCE ═══════ -->
+<div class="panel" id="p3" data-decode>
+  <div class="panel-inner" style="text-align:center;">
+    <div class="decode-label">&#x25CF; AUREBESH DETECTED</div>
+    <div class="decodable">
+      <div class="alert-box">
+        <div class="alert-text">A DISTURBANCE HAS<br>BEEN DETECTED</div>
+      </div>
+    </div>
+    <button class="decode-btn" onclick="decode(this)">
+      <span class="btn-icon">&#x27F3;</span> DECODE
+    </button>
+  </div>
+</div>
+
+<!-- ═══════ PANEL 5: YOUNGLING ═══════ -->
+<div class="panel" id="p4" data-decode>
+  <div class="panel-inner">
+    <div class="decode-label">&#x25CF; AUREBESH DETECTED</div>
+    <div class="decodable">
+      <p class="narrative">
+        On the remote desert world of the Outer Rim &#x2014; at the outpost
+        known only as <strong>OUTPOST X</strong> &#x2014; a youngling of
+        extraordinary Force sensitivity has been identified.
+      </p>
+      <br>
+      <p class="narrative">His name: <strong>SYBA TAAN</strong>.</p>
+      <br>
+      <p class="narrative">
+        He is strong. He is eager. He is five standard years old.
+        And he needs a Master.
+      </p>
+      <br>
+      <p class="narrative">
+        The Council has searched the entire Order. There is only one Jedi
+        with the experience, the patience, and the heart for this mission.
+      </p>
+      <br>
+      <p class="narrative" style="text-align:center; font-size:clamp(24px, 5vw, 30px);">
+        <strong>YOU.</strong>
+      </p>
+    </div>
+    <button class="decode-btn" onclick="decode(this)">
+      <span class="btn-icon">&#x27F3;</span> DECODE
+    </button>
+  </div>
+</div>
+
+<!-- ═══════ PANEL 6: MISSION BRIEF ═══════ -->
+<div class="panel" id="p5" data-decode>
+  <div class="panel-inner">
+    <div class="decode-label">&#x25CF; AUREBESH DETECTED</div>
+    <div class="decodable">
+      <div class="gold-heading" style="text-align:center;">YOUR MISSION</div>
+      <div class="mission-brief">
+        <div class="mission-item">
+          <span class="icon">&#x1F4CD;</span>
+          <span class="detail"><span class="key">LOCATION: </span><span class="val">OUTPOST X &#x2014; Outer Rim Desert World</span></span>
+        </div>
+        <div class="mission-item">
+          <span class="icon">&#x1F4C5;</span>
+          <span class="detail"><span class="key">REPORT DATE: </span><span class="val">APRIL 8, 2026</span></span>
+        </div>
+        <div class="mission-item">
+          <span class="icon">&#x23F1;&#xFE0F;</span>
+          <span class="detail"><span class="key">DURATION: </span><span class="val">4 STANDARD DAYS</span></span>
+        </div>
+        <div class="mission-item">
+          <span class="icon">&#x1F5E1;&#xFE0F;</span>
+          <span class="detail"><span class="key">OBJECTIVE: </span><span class="val">TRAIN YOUNGLING SYBA TAAN IN THE WAYS OF THE FORCE</span></span>
+        </div>
+        <div class="mission-item">
+          <span class="icon">&#x2694;&#xFE0F;</span>
+          <span class="detail"><span class="key">ESCORT: </span><span class="val">COMMANDER MEG'ARA KYN &#x2014; Warrior &amp; Galactic Chronicler</span></span>
+        </div>
+      </div>
+    </div>
+    <button class="decode-btn" onclick="decode(this)">
+      <span class="btn-icon">&#x27F3;</span> DECODE
+    </button>
+  </div>
+</div>
+
+<!-- ═══════ PANEL 7: MISSION PARAMETERS ═══════ -->
+<div class="panel" id="p6" data-decode>
+  <div class="panel-inner">
+    <div class="decode-label">&#x25CF; AUREBESH DETECTED</div>
+    <div class="decodable">
+      <div class="gold-heading">Mission Parameters</div>
+      <ul class="param-list">
+        <li>Awaken the youngling's connection to the Force</li>
+        <li>Train in the way of the lightsaber</li>
+        <li>Complete desert survival missions across the Outer Rim</li>
+        <li>Guide the youngling through the <strong style="color:#ffd700;">Final Trials</strong></li>
+        <li>If worthy... perform the <strong style="color:#ffd700;">Knighting Ceremony</strong> under the stars</li>
+      </ul>
+    </div>
+    <button class="decode-btn" onclick="decode(this)">
+      <span class="btn-icon">&#x27F3;</span> DECODE
+    </button>
+  </div>
+</div>
+
+<!-- ═══════ PANEL 8: TRANSPORT ═══════ -->
+<div class="panel" id="p7" data-decode>
+  <div class="panel-inner">
+    <div class="decode-label">&#x25CF; AUREBESH DETECTED</div>
+    <div class="decodable">
+      <div class="gold-heading">Transport Coordinates</div>
+      <p class="narrative">
+        Your transport departs from the Core World of <strong>Seattle</strong>
+        to the relay station at <strong>Las Vegas</strong>. From there, you will
+        cross the desert to <strong>OUTPOST X</strong>.
+      </p>
+      <br>
+      <p class="narrative">
+        Pack your robes. Bring your wisdom.
+        <em>The galaxy's newest Jedi awaits.</em>
+      </p>
+    </div>
+    <button class="decode-btn" onclick="decode(this)">
+      <span class="btn-icon">&#x27F3;</span> DECODE
+    </button>
+  </div>
+</div>
+
+<!-- ═══════ PANEL 9: PERSONAL MESSAGE ═══════ -->
+<div class="panel" id="p8" data-decode>
+  <div class="panel-inner">
+    <div class="decode-label">&#x25CF; ENCRYPTED CHANNEL &#x2014; AUREBESH</div>
+    <div class="encrypted-label">&#x2014; ENCRYPTED PERSONAL CHANNEL &#x2014;</div>
+    <div class="decodable">
+      <p class="heart-text">And Matthew...</p>
+      <br>
+      <p class="heart-text">
+        Behind every great Jedi Master is a story. Your story isn't just about
+        the Force &#x2014; it's about the father who builds lightsaber battles
+        out of living room furniture, the husband who makes every ordinary day
+        feel like an adventure, the man who turned fifty-one and
+        <strong>still has the heart of a hero</strong>.
+      </p>
+      <br>
+      <p class="heart-text">
+        This trip is our gift to you. Because you deserve a world that matches
+        how extraordinary you are.
+      </p>
+      <br>
+      <p class="heart-text"><strong>Happy Birthday, my love.</strong> &#x1F49B;</p>
+    </div>
+    <button class="decode-btn" onclick="decode(this)">
+      <span class="btn-icon">&#x1F512;</span> DECRYPT
+    </button>
+  </div>
+</div>
+
+<!-- ═══════ PANEL 10: SIGN OFF ═══════ -->
+<div class="panel" id="p9" data-decode>
+  <div class="panel-inner sign-off">
+    <div class="decode-label">&#x25CF; AUREBESH DETECTED</div>
+    <div class="decodable">
+      <div class="force-line">MAY THE FORCE BE WITH YOU. ALWAYS.</div>
+      <div class="signers">
+        <div>Your Commander &#x2014; <span class="name">Megan</span> &#x2694;&#xFE0F;</div>
+        <div>Your Youngling &#x2014; <span class="name">Sybastian</span> &#x1F31F;</div>
+      </div>
+    </div>
+    <button class="decode-btn" onclick="decode(this)">
+      <span class="btn-icon">&#x27F3;</span> DECODE
+    </button>
+    <div class="footer-emblem" style="margin-top:50px;">&#x2726;</div>
+  </div>
+</div>
+
+<script>
+  // ── Audio: local .m4a file ──
+  const audio = document.getElementById('bgAudio');
+  let audioPlaying = false;
+  audio.volume = 0.45;
+
+  function beginTransmission(withAudio) {
+    const gate = document.getElementById('audioGate');
+    const toggle = document.getElementById('audioToggle');
+
+    gate.classList.add('hidden');
+    setTimeout(() => { gate.style.display = 'none'; }, 900);
+    toggle.classList.add('show');
+
+    if (withAudio) {
+      audio.play();
+      audioPlaying = true;
+      toggle.innerHTML = '\uD83D\uDD0A';
+    } else {
+      audioPlaying = false;
+      toggle.innerHTML = '\uD83D\uDD07';
+    }
+  }
+
+  function toggleAudio() {
+    const toggle = document.getElementById('audioToggle');
+    if (audioPlaying) {
+      audio.pause();
+      audioPlaying = false;
+      toggle.innerHTML = '\uD83D\uDD07';
+    } else {
+      audio.play();
+      audioPlaying = true;
+      toggle.innerHTML = '\uD83D\uDD0A';
+    }
+  }
+
+  // ── Fade panels in when visible ──
+  const visObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.panel').forEach(p => visObs.observe(p));
+
+  // ── Decode button handler ──
+  function decode(btn) {
+    const panel = btn.closest('.panel');
+    const decodable = panel.querySelector('.decodable');
+    const label = panel.querySelector('.decode-label');
+    if (!decodable || decodable.classList.contains('decoded')) return;
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="btn-icon">&#x27F3;</span> DECODING...';
+    btn.style.color = '#00ccff';
+    if (label) { label.textContent = '\u27F3 DECODING TO GALACTIC BASIC...'; label.style.color = '#00ccff'; }
+
+    setTimeout(() => { decodable.classList.add('decoding'); }, 300);
+
+    setTimeout(() => {
+      decodable.classList.remove('decoding');
+      decodable.classList.add('decoded');
+      btn.innerHTML = '<span class="btn-icon">\u2713</span> GALACTIC BASIC';
+      btn.classList.add('decoded-btn');
+      if (label) {
+        label.textContent = '\u2713 DECODED \u2014 GALACTIC BASIC';
+        label.classList.add('done');
+      }
+    }, 1200);
+  }
+</script>
+
+</body>
+</html>
