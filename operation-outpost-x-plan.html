@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operation OutpostX — Full Mission Briefing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0a0a14;
+      color: #c8d4e0;
+      font-family: 'Inter', -apple-system, sans-serif;
+      font-size: 16px;
+      line-height: 1.75;
+    }
+
+    /* ── Layout ── */
+    .container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── Cover ── */
+    .cover {
+      text-align: center;
+      padding: 80px 24px 60px;
+      background: radial-gradient(ellipse at 50% 80%, #1a1000 0%, #0a0a14 70%);
+    }
+    .cover .emblem { font-size: 56px; margin-bottom: 16px; }
+    .cover h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(28px, 5vw, 42px);
+      color: #ffd700;
+      letter-spacing: 4px;
+      text-shadow: 0 0 30px rgba(255,215,0,0.2);
+      margin-bottom: 8px;
+    }
+    .cover .subtitle {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      color: #667788;
+      letter-spacing: 4px;
+      margin-bottom: 24px;
+    }
+    .cover .meta {
+      font-size: 15px;
+      color: #8899aa;
+      line-height: 2;
+    }
+    .cover .meta strong { color: #c8d8e8; }
+
+    /* ── Section Headings ── */
+    .section-header {
+      text-align: center;
+      padding: 60px 24px 32px;
+    }
+    .section-header h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(20px, 4vw, 28px);
+      color: #ffd700;
+      letter-spacing: 3px;
+      margin-bottom: 6px;
+    }
+    .section-header .section-sub {
+      font-size: 12px;
+      color: #556677;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+    .section-divider {
+      border: none; height: 1px; max-width: 200px; margin: 0 auto;
+      background: linear-gradient(90deg, transparent, #ffd700, transparent);
+      opacity: 0.3;
+    }
+
+    /* ── Day Cards ── */
+    .day-card {
+      background: #0f0f1e;
+      border: 1px solid #1a1a2e;
+      border-radius: 8px;
+      margin: 24px auto;
+      overflow: hidden;
+    }
+    .day-header {
+      background: linear-gradient(135deg, #1a1000, #0f0f1e);
+      padding: 24px 28px;
+      border-bottom: 1px solid #1a1a2e;
+    }
+    .day-header .day-num {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      color: #ff6b35;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .day-header h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(16px, 3vw, 20px);
+      color: #ffd700;
+      letter-spacing: 2px;
+    }
+    .day-header .day-date {
+      font-size: 13px;
+      color: #667788;
+      margin-top: 4px;
+    }
+    .day-body { padding: 24px 28px; }
+
+    /* ── Timeline ── */
+    .timeline { list-style: none; padding: 0; }
+    .timeline li {
+      display: flex;
+      gap: 16px;
+      padding: 10px 0;
+      border-bottom: 1px solid #111122;
+      font-size: 15px;
+    }
+    .timeline li:last-child { border-bottom: none; }
+    .timeline .time {
+      flex-shrink: 0;
+      width: 65px;
+      color: #667788;
+      font-size: 13px;
+      font-weight: 600;
+      padding-top: 2px;
+    }
+    .timeline .event { flex: 1; }
+    .timeline .event strong { color: #e0e8f0; }
+    .timeline .event em { color: #ffd700; font-style: normal; font-weight: 600; }
+    .timeline .tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 2px 8px;
+      border-radius: 3px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .tag-mission { background: rgba(255,107,53,0.15); color: #ff6b35; }
+    .tag-meal { background: rgba(102,204,255,0.12); color: #66ccff; }
+    .tag-photo { background: rgba(255,215,0,0.12); color: #ffd700; }
+
+    /* ── Photo Ops ── */
+    .photo-ops {
+      background: rgba(255,215,0,0.04);
+      border: 1px solid rgba(255,215,0,0.1);
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin-top: 16px;
+    }
+    .photo-ops .po-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #ffd700;
+      margin-bottom: 8px;
+    }
+    .photo-ops ul {
+      list-style: none; padding: 0;
+      display: flex; flex-wrap: wrap; gap: 6px;
+    }
+    .photo-ops li {
+      font-size: 12px;
+      color: #99aabb;
+      background: rgba(255,215,0,0.06);
+      padding: 4px 10px;
+      border-radius: 3px;
+      border: 1px solid rgba(255,215,0,0.08);
+    }
+
+    /* ── Mission Cards ── */
+    .mission-card {
+      background: #0f0f1e;
+      border: 1px solid #1a1a2e;
+      border-radius: 8px;
+      margin: 20px auto;
+      overflow: hidden;
+    }
+    .mission-header {
+      background: linear-gradient(135deg, #1a0500, #0f0f1e);
+      padding: 20px 24px;
+      border-bottom: 1px solid #1a1a2e;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .mission-header .m-num {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      color: #ff6b35;
+      letter-spacing: 3px;
+    }
+    .mission-header h4 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(13px, 2.5vw, 16px);
+      color: #ffd700;
+      letter-spacing: 1px;
+      width: 100%;
+    }
+    .mission-header .m-meta {
+      font-size: 12px;
+      color: #667788;
+    }
+    .mission-body { padding: 20px 24px; }
+    .mission-body p { margin-bottom: 12px; font-size: 15px; }
+    .mission-body .m-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #889aaa;
+      margin-top: 16px;
+      margin-bottom: 6px;
+    }
+    .mission-body .m-narrative {
+      color: #8899aa;
+      font-style: italic;
+      border-left: 2px solid #2a2a3e;
+      padding-left: 14px;
+      margin-bottom: 14px;
+    }
+    .mission-body .m-reward {
+      display: inline-block;
+      background: rgba(68,221,102,0.08);
+      border: 1px solid rgba(68,221,102,0.2);
+      color: #44dd66;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 4px;
+    }
+    .mission-body .m-props {
+      list-style: none; padding: 0;
+    }
+    .mission-body .m-props li {
+      font-size: 14px;
+      padding: 2px 0;
+      color: #99aabb;
+    }
+    .mission-body .m-props li::before {
+      content: '\25B9 ';
+      color: #ff6b35;
+    }
+
+    /* ── Recipe Cards ── */
+    .recipe-card {
+      background: #0f0f1e;
+      border: 1px solid #1a1a2e;
+      border-radius: 8px;
+      margin: 20px auto;
+      padding: 24px 28px;
+    }
+    .recipe-card h4 {
+      font-size: 18px;
+      color: #ffd700;
+      margin-bottom: 4px;
+    }
+    .recipe-card .r-when {
+      font-size: 12px;
+      color: #667788;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+    .recipe-card .r-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #889aaa;
+      margin-top: 16px;
+      margin-bottom: 8px;
+    }
+    .recipe-card ul {
+      list-style: none;
+      padding: 0;
+    }
+    .recipe-card ul li {
+      font-size: 14px;
+      padding: 3px 0;
+      color: #aabbcc;
+    }
+    .recipe-card ul li::before {
+      content: '• ';
+      color: #ffd700;
+    }
+    .recipe-card ol {
+      padding-left: 20px;
+    }
+    .recipe-card ol li {
+      font-size: 14px;
+      padding: 4px 0;
+      color: #aabbcc;
+    }
+
+    /* ── Grocery List ── */
+    .grocery-section {
+      background: #0f0f1e;
+      border: 1px solid #1a1a2e;
+      border-radius: 8px;
+      margin: 20px auto;
+      padding: 28px;
+    }
+    .grocery-section h4 {
+      font-size: 16px;
+      color: #ffd700;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #1a1a2e;
+      padding-bottom: 8px;
+    }
+    .grocery-section ul {
+      list-style: none; padding: 0;
+      columns: 2;
+      column-gap: 24px;
+    }
+    .grocery-section ul li {
+      font-size: 14px;
+      padding: 4px 0;
+      color: #aabbcc;
+      break-inside: avoid;
+    }
+    .grocery-section ul li::before {
+      content: '\2610 ';
+      color: #667788;
+    }
+
+    /* ── Clothing Table ── */
+    .clothing-card {
+      background: #0f0f1e;
+      border: 1px solid #1a1a2e;
+      border-radius: 8px;
+      margin: 20px auto;
+      padding: 24px 28px;
+    }
+    .clothing-card h4 {
+      font-size: 16px;
+      color: #ffd700;
+      margin-bottom: 4px;
+    }
+    .clothing-card .c-weather {
+      font-size: 12px;
+      color: #667788;
+      margin-bottom: 16px;
+    }
+    .clothing-card .person {
+      margin-bottom: 14px;
+    }
+    .clothing-card .person-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #ff6b35;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .clothing-card .person p {
+      font-size: 14px;
+      color: #aabbcc;
+      margin-bottom: 4px;
+    }
+
+    /* ── Prep Kit ── */
+    .prep-kit {
+      background: rgba(255,107,53,0.04);
+      border: 1px solid rgba(255,107,53,0.15);
+      border-radius: 8px;
+      padding: 28px;
+      margin: 24px auto;
+    }
+    .prep-kit h4 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 14px;
+      color: #ff6b35;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+    .prep-kit ul { list-style: none; padding: 0; }
+    .prep-kit ul li {
+      font-size: 14px;
+      padding: 6px 0;
+      color: #bbccdd;
+      border-bottom: 1px solid rgba(255,107,53,0.06);
+    }
+    .prep-kit ul li::before {
+      content: '\2610 ';
+      color: #ff6b35;
+    }
+    .prep-kit ul li:last-child { border-bottom: none; }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; color: #222; }
+      .day-card, .mission-card, .recipe-card, .grocery-section, .clothing-card, .prep-kit {
+        background: #fff;
+        border-color: #ddd;
+        break-inside: avoid;
+      }
+      .cover { background: #fff; }
+      .cover h1, .gold, .day-header h3, .recipe-card h4, .grocery-section h4, .clothing-card h4 { color: #333; }
+      .section-header h2 { color: #333; }
+    }
+
+    @media (max-width: 600px) {
+      .grocery-section ul { columns: 1; }
+      .timeline .time { width: 55px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════ -->
+<!-- COVER                                    -->
+<!-- ════════════════════════════════════════ -->
+<div class="cover">
+  <div class="emblem">&#x2694;&#xFE0F;</div>
+  <h1>OPERATION OUTPOST X</h1>
+  <div class="subtitle">FULL MISSION BRIEFING</div>
+  <div class="meta">
+    <strong>Master Matthane Sol</strong> &#x2022; <strong>Youngling Syba Taan</strong> &#x2022; <strong>Commander Meg'ara Kyn</strong><br>
+    April 8&#x2013;11, 2026 &#x2022; OutpostX, Beryl, Utah &#x2022; Glass Cave Villa
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════ -->
+<!--  SECTION 1: ITINERARY                   -->
+<!-- ════════════════════════════════════════ -->
+<div class="container">
+  <div class="section-header">
+    <h2>THE ITINERARY</h2>
+    <div class="section-sub">Four Days on the Outer Rim</div>
+  </div>
+  <hr class="section-divider">
+
+  <!-- ── DAY 1 ── -->
+  <div class="day-card">
+    <div class="day-header">
+      <div class="day-num">Day 1</div>
+      <h3>ARRIVAL ON THE OUTER RIM</h3>
+      <div class="day-date">Wednesday, April 8</div>
+    </div>
+    <div class="day-body">
+      <ul class="timeline">
+        <li><span class="time">AM</span><span class="event"><strong>Fly Seattle &#x2192; Las Vegas</strong> &#x2014; book an early morning flight</span></li>
+        <li><span class="time">11:00</span><span class="event"><strong>Pick up rental car</strong> + grocery stop in Las Vegas or St. George on the way</span></li>
+        <li><span class="time">12:00</span><span class="event"><strong>Drive to OutpostX</strong> (~2.5 hours through the desert)</span></li>
+        <li><span class="time">2:30</span><span class="event"><strong>Arrive at OutpostX</strong> &#x2014; check into the Glass Cave Villa, explore your quarters</span></li>
+        <li><span class="time">3:30</span><span class="event">Costume up! Everyone changes into their Star Wars gear</span></li>
+        <li><span class="time">4:00</span><span class="event"><strong>Sand Cruiser orientation ride</strong> &#x2014; explore the outpost in the landspeeder-style vehicles <span class="tag tag-photo">PHOTO OP</span></span></li>
+        <li><span class="time">5:30</span><span class="event"><em>Dinner: "Mos Eisley Cantina Wraps"</em> <span class="tag tag-meal">MEAL</span></span></li>
+        <li><span class="time">6:30</span><span class="event"><em>Mission 1: "Awakening the Force"</em> at the fire pit <span class="tag tag-mission">MISSION</span></span></li>
+        <li><span class="time">7:30</span><span class="event"><strong>Stargazing</strong> from the deck &#x2014; "Blue Milk" drinks, family wind-down <span class="tag tag-photo">PHOTO OP</span></span></li>
+      </ul>
+      <div class="photo-ops">
+        <div class="po-title">&#x1F4F8; COMMANDER'S PHOTO OPS</div>
+        <ul>
+          <li>Arrival silhouette at OutpostX entrance</li>
+          <li>Glass Cave Villa interior reveal</li>
+          <li>First Sand Cruiser "landspeeder" shot</li>
+          <li>Fire pit family portrait</li>
+          <li>Stargazing on the deck</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DAY 2 ── -->
+  <div class="day-card">
+    <div class="day-header">
+      <div class="day-num">Day 2</div>
+      <h3>THE TRAINING BEGINS</h3>
+      <div class="day-date">Thursday, April 9 &#x2014; Full day at OutpostX</div>
+    </div>
+    <div class="day-body">
+      <ul class="timeline">
+        <li><span class="time">7:30</span><span class="event">Sunrise + coffee. <em>Breakfast: "Jedi Fuel"</em> <span class="tag tag-meal">MEAL</span></span></li>
+        <li><span class="time">9:00</span><span class="event"><em>Mission 2: "The Way of the Lightsaber"</em> &#x2014; lightsaber forms training <span class="tag tag-mission">MISSION</span></span></li>
+        <li><span class="time">10:00</span><span class="event"><em>Mission 3: "The Sand Cruiser Patrol"</em> &#x2014; scouting mission in the cruisers <span class="tag tag-mission">MISSION</span></span></li>
+        <li><span class="time">11:00</span><span class="event"><em>Mission 4: "The Force Balance"</em> &#x2014; trampoline + balance drills <span class="tag tag-mission">MISSION</span></span></li>
+        <li><span class="time">12:00</span><span class="event"><em>Lunch: "Tatooine Trader's Pitas"</em> <span class="tag tag-meal">MEAL</span></span></li>
+        <li><span class="time">1:00</span><span class="event">Rest, free play, explore the outpost</span></li>
+        <li><span class="time">2:00</span><span class="event"><em>Mission 5: "Crafting a Jedi Artifact"</em> &#x2014; pottery class <span class="tag tag-mission">MISSION</span></span></li>
+        <li><span class="time">3:30</span><span class="event"><strong>Cantina mocktails</strong> (family) &#x2014; explore the themed cantina <span class="tag tag-photo">PHOTO OP</span></span></li>
+        <li><span class="time">4:00</span><span class="event"><strong>Spa: "Healing Springs of the Outer Rim"</strong> &#x2014; hot tub, sauna, clay bath</span></li>
+        <li><span class="time">5:30</span><span class="event"><em>Dinner: "Campfire Feast"</em> &#x2014; fire pit kebabs + s'mores <span class="tag tag-meal">MEAL</span></span></li>
+        <li><span class="time">7:30</span><span class="event"><strong>Movie night</strong> at Kaan Lounge &#x2014; Star Wars: A New Hope <span class="tag tag-photo">PHOTO OP</span></span></li>
+      </ul>
+      <div class="photo-ops">
+        <div class="po-title">&#x1F4F8; COMMANDER'S PHOTO OPS</div>
+        <ul>
+          <li>Father-son lightsaber training</li>
+          <li>Sand Cruiser action shot</li>
+          <li>Pottery making candid</li>
+          <li>Cantina mocktail family toast</li>
+          <li>Campfire family shot (golden light)</li>
+          <li>Movie night cozy candid</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DAY 3 ── -->
+  <div class="day-card">
+    <div class="day-header">
+      <div class="day-num">Day 3</div>
+      <h3>THE QUEST BEYOND THE OUTPOST</h3>
+      <div class="day-date">Friday, April 10 &#x2014; Off-site adventure + Knighting Ceremony</div>
+    </div>
+    <div class="day-body">
+      <ul class="timeline">
+        <li><span class="time">7:30</span><span class="event"><em>Breakfast: "Rebel Morning Rations"</em> (overnight oats, prep night before) <span class="tag tag-meal">MEAL</span></span></li>
+        <li><span class="time">8:30</span><span class="event"><strong>Pack picnic lunch</strong>, load the car, drive to Snow Canyon State Park (~45 min)</span></li>
+        <li><span class="time">9:30</span><span class="event"><em>Mission 6: "Tracking the Kyber Crystal"</em> &#x2014; hike Jenny's Canyon + Petrified Dunes <span class="tag tag-mission">MISSION</span></span></li>
+        <li><span class="time">11:30</span><span class="event"><em>Picnic lunch: "Rebel Rations Pack"</em> at the park <span class="tag tag-meal">MEAL</span></span></li>
+        <li><span class="time">12:30</span><span class="event"><strong>Drive back to OutpostX</strong></span></li>
+        <li><span class="time">1:30</span><span class="event">Rest / nap time for Syba Taan &#x2014; he'll need energy for tonight</span></li>
+        <li><span class="time">3:00</span><span class="event"><em>Mission 7: "The Final Trials"</em> &#x2014; three-part challenge <span class="tag tag-mission">MISSION</span></span></li>
+        <li><span class="time">4:30</span><span class="event"><strong>Spa / free time</strong> &#x2014; rest and refresh before the ceremony</span></li>
+        <li><span class="time">5:30</span><span class="event">Costume up for the ceremony &#x2014; full robes, everyone</span></li>
+        <li><span class="time">6:00</span><span class="event"><em>Dinner: "Jedi Council Feast"</em> &#x2014; the big steak dinner + sparkling cider <span class="tag tag-meal">MEAL</span></span></li>
+        <li><span class="time">7:30</span><span class="event"><em>Mission 8: "The Knighting Ceremony"</em> &#x2014; under the stars <span class="tag tag-mission">MISSION</span> <span class="tag tag-photo">PHOTO OP</span></span></li>
+        <li><span class="time">8:30</span><span class="event"><strong>Celebration toast</strong>, stargazing, family reflection</span></li>
+      </ul>
+      <div class="photo-ops">
+        <div class="po-title">&#x1F4F8; COMMANDER'S PHOTO OPS &#x2014; THE BIG DAY</div>
+        <ul>
+          <li>Canyon hike panorama</li>
+          <li>Kyber crystal discovery moment</li>
+          <li>Final Trials action shots</li>
+          <li>Pre-ceremony family portrait (full robes)</li>
+          <li>THE KNIGHTING (the shot of the trip)</li>
+          <li>Family under the stars</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DAY 4 ── -->
+  <div class="day-card">
+    <div class="day-header">
+      <div class="day-num">Day 4</div>
+      <h3>RETURN TO THE CORE WORLDS</h3>
+      <div class="day-date">Saturday, April 11</div>
+    </div>
+    <div class="day-body">
+      <ul class="timeline">
+        <li><span class="time">7:00</span><span class="event"><strong>Sunrise moment</strong> &#x2014; optional morning meditation at the stargazing deck</span></li>
+        <li><span class="time">7:30</span><span class="event"><em>Brunch: "Galactic Send-off"</em> &#x2014; pancakes + bacon <span class="tag tag-meal">MEAL</span></span></li>
+        <li><span class="time">9:00</span><span class="event"><strong>Final Sand Cruiser ride</strong>, last costume photos <span class="tag tag-photo">PHOTO OP</span></span></li>
+        <li><span class="time">10:00</span><span class="event">Pack up, clean the villa, check out</span></li>
+        <li><span class="time">10:30</span><span class="event"><strong>Drive to Las Vegas</strong> (~2.5 hrs)</span></li>
+        <li><span class="time">1:00</span><span class="event">Arrive Las Vegas, return rental car</span></li>
+        <li><span class="time">PM</span><span class="event"><strong>Fly home to Seattle</strong> &#x2014; mission complete</span></li>
+      </ul>
+      <div class="photo-ops">
+        <div class="po-title">&#x1F4F8; COMMANDER'S PHOTO OPS</div>
+        <ul>
+          <li>Sunrise silhouette</li>
+          <li>Final costume family portrait</li>
+          <li>Departure "walking away" shot</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════ -->
+<!--  SECTION 2: TRAINING MISSIONS           -->
+<!-- ════════════════════════════════════════ -->
+<div class="container">
+  <div class="section-header">
+    <h2>JEDI TRAINING MISSIONS</h2>
+    <div class="section-sub">8 Missions &#x2022; Led by Master Matthane Sol &#x2022; For Youngling Syba Taan</div>
+  </div>
+  <hr class="section-divider">
+
+  <!-- Mission 1 -->
+  <div class="mission-card">
+    <div class="mission-header">
+      <div class="m-num">MISSION 1</div>
+      <h4>AWAKENING THE FORCE</h4>
+      <div class="m-meta">Day 1 &#x2022; Evening &#x2022; 15 min &#x2022; Fire Pit</div>
+    </div>
+    <div class="mission-body">
+      <div class="m-label">MASTER MATTHANE SAYS:</div>
+      <p class="m-narrative">"The Force is all around us, Syba Taan. It flows through every rock, every flame, every gust of wind. A Jedi does not see the Force &#x2014; a Jedi <em>feels</em> it. Close your eyes. Tell me what the Force is showing you."</p>
+      <div class="m-label">THE ACTIVITY</div>
+      <p>Blindfold Sybastian with a bandana near the fire pit. He must sit still, breathe, and identify 5 sounds around him: the wind, fire crackling, footsteps (Matthew walks around him), Megan clapping, a rock tapping. Each correct answer is a point. Master explains how Jedi use the Force to sense what they cannot see.</p>
+      <div class="m-label">PROPS NEEDED</div>
+      <ul class="m-props">
+        <li>Bandana (blindfold)</li>
+        <li>Small rocks to tap together</li>
+      </ul>
+      <div class="m-label">REWARD</div>
+      <span class="m-reward">&#x2B50; Padawan Bead #1 &#x2014; "Force Awareness"</span>
+    </div>
+  </div>
+
+  <!-- Mission 2 -->
+  <div class="mission-card">
+    <div class="mission-header">
+      <div class="m-num">MISSION 2</div>
+      <h4>THE WAY OF THE LIGHTSABER</h4>
+      <div class="m-meta">Day 2 &#x2022; 9:00 AM &#x2022; 25 min &#x2022; Open area at OutpostX</div>
+    </div>
+    <div class="mission-body">
+      <div class="m-label">MASTER MATTHANE SAYS:</div>
+      <p class="m-narrative">"A lightsaber is not just a weapon, Youngling. It is an extension of you &#x2014; of your will, your focus, your courage. Today, I will teach you the three sacred forms. Watch closely."</p>
+      <div class="m-label">THE ACTIVITY</div>
+      <p>Matthew teaches Sybastian 3 lightsaber forms using their own lightsabers:</p>
+      <ul class="m-props">
+        <li><strong>The Shield</strong> &#x2014; hold saber horizontal in front (defense)</li>
+        <li><strong>The Strike</strong> &#x2014; overhead downward swing (attack)</li>
+        <li><strong>The Sweep</strong> &#x2014; side-to-side sweep at knee height</li>
+      </ul>
+      <p style="margin-top:12px;">Practice each 5 times slowly, then 3 times at speed. End with a slow-motion "duel" between Master and Youngling (for Megan's camera!).</p>
+      <div class="m-label">PROPS NEEDED</div>
+      <ul class="m-props">
+        <li>Both lightsabers (Sybastian's own)</li>
+        <li>Pool noodle targets (optional, for striking practice)</li>
+      </ul>
+      <div class="m-label">REWARD</div>
+      <span class="m-reward">&#x2B50; Padawan Bead #2 &#x2014; "Form I: Shii-Cho"</span>
+    </div>
+  </div>
+
+  <!-- Mission 3 -->
+  <div class="mission-card">
+    <div class="mission-header">
+      <div class="m-num">MISSION 3</div>
+      <h4>THE SAND CRUISER PATROL</h4>
+      <div class="m-meta">Day 2 &#x2022; 10:00 AM &#x2022; 30 min &#x2022; OutpostX property</div>
+    </div>
+    <div class="mission-body">
+      <div class="m-label">MASTER MATTHANE SAYS:</div>
+      <p class="m-narrative">"The Council has received reports of unusual activity on the far side of this outpost. We must patrol the perimeter. Stay sharp, Padawan &#x2014; report anything unusual you see."</p>
+      <div class="m-label">THE ACTIVITY</div>
+      <p>During the Sand Cruiser ride, Sybastian is the "Scout." He must spot and call out 5 interesting things he sees (unique rock formations, plants, structures, animals, shadows). Matthew confirms each sighting and adds Jedi lore. Use the OutpostX audio tour as the "intelligence briefing."</p>
+      <div class="m-label">PROPS NEEDED</div>
+      <ul class="m-props">
+        <li>Sand Cruiser (OutpostX amenity)</li>
+        <li>Small notepad for "mission log" (optional)</li>
+      </ul>
+      <div class="m-label">REWARD</div>
+      <span class="m-reward">&#x2B50; Padawan Bead #3 &#x2014; "Outer Rim Scout"</span>
+    </div>
+  </div>
+
+  <!-- Mission 4 -->
+  <div class="mission-card">
+    <div class="mission-header">
+      <div class="m-num">MISSION 4</div>
+      <h4>THE FORCE BALANCE</h4>
+      <div class="m-meta">Day 2 &#x2022; 11:00 AM &#x2022; 20 min &#x2022; Trampoline area</div>
+    </div>
+    <div class="mission-body">
+      <div class="m-label">MASTER MATTHANE SAYS:</div>
+      <p class="m-narrative">"A Jedi must command their body as well as their mind. Balance. Control. Grace. The Force flows through a body that is centered. Show me your balance, Youngling."</p>
+      <div class="m-label">THE ACTIVITY</div>
+      <p>On the in-ground trampolines at OutpostX, play "Jedi Simon Says." Matthew calls out moves and Sybastian copies:</p>
+      <ul class="m-props">
+        <li><strong>Force Jump</strong> &#x2014; high jump with arms up</li>
+        <li><strong>Jedi Freeze</strong> &#x2014; land and hold completely still for 5 seconds</li>
+        <li><strong>Spin Attack</strong> &#x2014; gentle spin jump</li>
+        <li><strong>Grogu Bounce</strong> &#x2014; tiny fast bounces with hands in fists (Baby Yoda ears!)</li>
+      </ul>
+      <p style="margin-top:12px;">End with both of them doing a synchronized "Force Jump" together.</p>
+      <div class="m-label">PROPS NEEDED</div>
+      <ul class="m-props">
+        <li>In-ground trampolines (OutpostX amenity)</li>
+      </ul>
+      <div class="m-label">REWARD</div>
+      <span class="m-reward">&#x2B50; Padawan Bead #4 &#x2014; "Force Balance"</span>
+    </div>
+  </div>
+
+  <!-- Mission 5 -->
+  <div class="mission-card">
+    <div class="mission-header">
+      <div class="m-num">MISSION 5</div>
+      <h4>CRAFTING A JEDI ARTIFACT</h4>
+      <div class="m-meta">Day 2 &#x2022; 2:00 PM &#x2022; 45 min &#x2022; Pottery studio</div>
+    </div>
+    <div class="mission-body">
+      <div class="m-label">MASTER MATTHANE SAYS:</div>
+      <p class="m-narrative">"Every Jedi creates something with their own hands &#x2014; a relic imbued with the Force. It becomes part of you. Today, you will craft your artifact from the clay of this desert world. Focus your energy into it."</p>
+      <div class="m-label">THE ACTIVITY</div>
+      <p>Use OutpostX's pottery wheels to create a small bowl, cup, or "Kyber crystal holder." Matthew and Sybastian each make one. No need for perfection &#x2014; it's about the focus and the memory. Megan can make one too or photograph the process.</p>
+      <div class="m-label">PROPS NEEDED</div>
+      <ul class="m-props">
+        <li>Pottery wheels (OutpostX amenity &#x2014; included)</li>
+      </ul>
+      <div class="m-label">REWARD</div>
+      <span class="m-reward">&#x2B50; Padawan Bead #5 &#x2014; "Jedi Artisan" + the pottery piece itself</span>
+    </div>
+  </div>
+
+  <!-- Mission 6 -->
+  <div class="mission-card">
+    <div class="mission-header">
+      <div class="m-num">MISSION 6</div>
+      <h4>TRACKING THE KYBER CRYSTAL</h4>
+      <div class="m-meta">Day 3 &#x2022; 9:30 AM &#x2022; 90 min &#x2022; Snow Canyon State Park</div>
+    </div>
+    <div class="mission-body">
+      <div class="m-label">MASTER MATTHANE SAYS:</div>
+      <p class="m-narrative">"Deep in the canyons of this world, the Force has hidden a Kyber Crystal &#x2014; the heart of every lightsaber. The crystal calls to those who are worthy. Listen, Padawan. Follow the signs. The crystal will reveal itself to you."</p>
+      <div class="m-label">THE ACTIVITY</div>
+      <p>Hike <strong>Jenny's Canyon</strong> (0.3 mi, very easy, slot canyon &#x2014; incredible scenery) and the <strong>Petrified Sand Dunes</strong> (1.2 mi, gentle). Megan pre-hides a crystal/geode at a scenic spot along the trail. Matthew gives Sybastian 3 "clues" at landmarks:</p>
+      <ul class="m-props">
+        <li>Clue 1: "The crystal is past the narrow passage" (slot canyon)</li>
+        <li>Clue 2: "Look where the ancient dunes turned to stone" (petrified dunes)</li>
+        <li>Clue 3: "It hides where a Jedi would stop to rest" (a scenic rock shelf)</li>
+      </ul>
+      <p style="margin-top:12px;">When Sybastian finds the crystal, Matthew kneels and says: "The crystal chose <em>you</em>, Syba Taan."</p>
+      <div class="m-label">PROPS NEEDED</div>
+      <ul class="m-props">
+        <li>Crystal or geode (buy beforehand &#x2014; wrap in cloth)</li>
+        <li>3 clue cards (print or handwrite on aged-looking paper)</li>
+        <li>Water bottles, sunscreen, snacks for the hike</li>
+      </ul>
+      <div class="m-label">REWARD</div>
+      <span class="m-reward">&#x2B50; Padawan Bead #6 &#x2014; "Crystal Guardian" + THE KYBER CRYSTAL</span>
+    </div>
+  </div>
+
+  <!-- Mission 7 -->
+  <div class="mission-card">
+    <div class="mission-header">
+      <div class="m-num">MISSION 7</div>
+      <h4>THE FINAL TRIALS</h4>
+      <div class="m-meta">Day 3 &#x2022; 3:00 PM &#x2022; 30 min &#x2022; OutpostX grounds</div>
+    </div>
+    <div class="mission-body">
+      <div class="m-label">MASTER MATTHANE SAYS:</div>
+      <p class="m-narrative">"You have trained well, Youngling. But before you can be knighted, you must pass the three Final Trials. These will test your body, your mind, and your heart. Are you ready?"</p>
+      <div class="m-label">THE ACTIVITY</div>
+      <p>Three mini-challenges, each 5&#x2013;10 minutes:</p>
+      <p><strong>Trial of Balance:</strong> Walk a straight line (draw in sand or use a rope) heel-to-toe for 10 steps without wobbling. Three attempts allowed.</p>
+      <p><strong>Trial of Focus:</strong> Stack 5 rocks into a cairn (rock tower) without it falling. Master and Youngling do this together, in silence.</p>
+      <p><strong>Trial of Courage:</strong> Stand tall, look Master Matthane in the eye, and recite the Youngling Jedi Code from memory:</p>
+      <p style="text-align:center; color:#ffd700; font-style:italic; margin:14px 0; font-size:17px; line-height:2.2;">
+        "I am calm.<br>I am kind.<br>I am brave.<br>I am one with the Force."
+      </p>
+      <p><em>Teach Sybastian this code earlier in the day so he can practice!</em></p>
+      <div class="m-label">PROPS NEEDED</div>
+      <ul class="m-props">
+        <li>Rope or stick (for the balance line)</li>
+        <li>Flat-ish rocks (find on property)</li>
+      </ul>
+      <div class="m-label">REWARD</div>
+      <span class="m-reward">&#x2B50; Padawan Bead #7 &#x2014; "Trials Complete &#x2014; Ready for Knighting"</span>
+    </div>
+  </div>
+
+  <!-- Mission 8 -->
+  <div class="mission-card">
+    <div class="mission-header">
+      <div class="m-num">MISSION 8</div>
+      <h4>THE KNIGHTING CEREMONY</h4>
+      <div class="m-meta">Day 3 &#x2022; 7:30 PM &#x2022; 15 min &#x2022; Under the stars</div>
+    </div>
+    <div class="mission-body">
+      <div class="m-label">MASTER MATTHANE SAYS:</div>
+      <p class="m-narrative">"Syba Taan. You came to this outpost a Youngling. You have trained in the ways of the Force. You have wielded a lightsaber. You have tracked a Kyber Crystal across the desert. You have passed the Final Trials. You are ready."</p>
+      <div class="m-label">THE CEREMONY</div>
+      <p>Outside under the stars at OutpostX. Fire pit glowing nearby. Megan filming and photographing.</p>
+      <ol>
+        <li>Sybastian kneels before Matthew</li>
+        <li>Matthew ignites his lightsaber, holds it overhead</li>
+        <li>Matthew touches the lightsaber to each of Sybastian's shoulders</li>
+        <li>Matthew says: <em>"By the will of the Force and the authority of the Jedi Council, I knight thee <strong>Jedi Knight Syba Taan</strong>. Rise, young Jedi."</em></li>
+        <li>Sybastian stands. They bow to each other.</li>
+        <li>Family hug. Sparkling cider toast.</li>
+      </ol>
+      <div class="m-label">PROPS NEEDED</div>
+      <ul class="m-props">
+        <li>Lightsabers (lit up for the ceremony)</li>
+        <li>Junior Jedi Knight Certificate (print beforehand)</li>
+        <li>All 7 Padawan beads displayed</li>
+        <li>Sparkling cider + cups for the family toast</li>
+      </ul>
+      <div class="m-label">REWARD</div>
+      <span class="m-reward">&#x1F31F; JEDI KNIGHT SYBA TAAN &#x2014; Certificate + all 7 beads + the Kyber Crystal</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════ -->
+<!--  SECTION 3: MEALS + RECIPES             -->
+<!-- ════════════════════════════════════════ -->
+<div class="container">
+  <div class="section-header">
+    <h2>GALACTIC PROVISIONS</h2>
+    <div class="section-sub">Meals, Recipes &amp; Grocery List</div>
+  </div>
+  <hr class="section-divider">
+
+  <!-- Day 1 Dinner -->
+  <div class="recipe-card">
+    <h4>&#x1F32F; Mos Eisley Cantina Wraps</h4>
+    <div class="r-when">Day 1 &#x2014; Dinner</div>
+    <div class="r-label">INGREDIENTS</div>
+    <ul>
+      <li>1 lb chicken breast, sliced thin</li>
+      <li>6 large flour tortillas</li>
+      <li>1 container hummus</li>
+      <li>Mixed greens</li>
+      <li>1 bell pepper, sliced</li>
+      <li>1 cucumber, sliced</li>
+      <li>Shredded cheese</li>
+      <li>Olive oil, cumin, paprika, garlic powder, salt, pepper</li>
+    </ul>
+    <div class="r-label">DIRECTIONS</div>
+    <ol>
+      <li>Season chicken with cumin, paprika, garlic powder, salt, pepper</li>
+      <li>Cook in skillet with olive oil, 6&#x2013;7 min per side until done</li>
+      <li>Slice chicken into strips</li>
+      <li>Spread hummus on tortilla, layer greens, chicken, veggies, cheese</li>
+      <li>Roll up, slice in half</li>
+    </ol>
+    <div class="r-label">BLUE MILK (side drink)</div>
+    <ul>
+      <li>2 cups milk + 1 tbsp vanilla + 2 tbsp honey + 3 drops blue food coloring</li>
+      <li>Blend with ice for milkshake version. Serve in fun cups.</li>
+    </ul>
+    <div class="r-label">FOR SYBASTIAN</div>
+    <ul>
+      <li>Fruit cup on the side (grapes, berries, banana slices)</li>
+    </ul>
+  </div>
+
+  <!-- Day 2 Breakfast -->
+  <div class="recipe-card">
+    <h4>&#x2615; Jedi Fuel</h4>
+    <div class="r-when">Day 2 &#x2014; Breakfast</div>
+    <div class="r-label">INGREDIENTS</div>
+    <ul>
+      <li>6 eggs</li>
+      <li>Shredded cheese</li>
+      <li>English muffins or toast + butter</li>
+      <li>Fruit bowl for Sybastian (berries, banana)</li>
+      <li>Coffee for the adults</li>
+    </ul>
+    <div class="r-label">DIRECTIONS</div>
+    <ol>
+      <li>Scramble eggs, top with cheese</li>
+      <li>Toast muffins, butter them</li>
+      <li>Slice fruit for Sybastian's bowl</li>
+      <li>Brew coffee. Keep it simple &#x2014; training starts soon.</li>
+    </ol>
+  </div>
+
+  <!-- Day 2 Lunch -->
+  <div class="recipe-card">
+    <h4>&#x1F959; Tatooine Trader's Pitas</h4>
+    <div class="r-when">Day 2 &#x2014; Lunch</div>
+    <div class="r-label">INGREDIENTS</div>
+    <ul>
+      <li>Pita bread (6 rounds)</li>
+      <li>Sliced turkey deli meat</li>
+      <li>Sliced cheese</li>
+      <li>Lettuce</li>
+      <li>Hummus</li>
+      <li>Fruit for Sybastian</li>
+    </ul>
+    <div class="r-label">DIRECTIONS</div>
+    <ol>
+      <li>Spread hummus inside pita pocket</li>
+      <li>Stuff with turkey, cheese, lettuce</li>
+      <li>Serve with extra hummus + pita chips on the side</li>
+    </ol>
+  </div>
+
+  <!-- Day 2 Dinner -->
+  <div class="recipe-card">
+    <h4>&#x1F525; Campfire Feast</h4>
+    <div class="r-when">Day 2 &#x2014; Dinner (fire pit)</div>
+    <div class="r-label">KEBAB INGREDIENTS</div>
+    <ul>
+      <li>1.5 lbs chicken breast, cubed</li>
+      <li>2 bell peppers (red + yellow), chunked</li>
+      <li>2 zucchini, thick slices</li>
+      <li>1 red onion, chunked</li>
+      <li>Wooden skewers (soak 30 min first)</li>
+      <li>Marinade: olive oil, lemon juice, minced garlic, oregano, salt, pepper</li>
+    </ul>
+    <div class="r-label">FOIL PACKET POTATOES</div>
+    <ul>
+      <li>4 medium potatoes, diced small</li>
+      <li>Olive oil, salt, pepper, garlic powder, paprika</li>
+      <li>Optional: diced onion, butter</li>
+    </ul>
+    <div class="r-label">DIRECTIONS</div>
+    <ol>
+      <li>Marinate chicken cubes 30+ min (can do this while resting)</li>
+      <li>Toss diced potatoes with oil + seasonings, wrap in heavy-duty foil packets</li>
+      <li>Place foil packets on fire pit coals &#x2014; cook 20&#x2013;25 min</li>
+      <li>Thread alternating chicken and veggies onto skewers</li>
+      <li>Grill kebabs over fire 10&#x2013;12 min, turning every few minutes</li>
+    </ol>
+    <div class="r-label">S'MORES DESSERT</div>
+    <ul>
+      <li>Graham crackers + marshmallows + chocolate bars</li>
+      <li>Roast marshmallows over fire, assemble, enjoy</li>
+    </ul>
+    <div class="r-label">DRINK: "JOGAN FRUIT PUNCH"</div>
+    <ul>
+      <li>Mixed berry juice served in camp cups</li>
+    </ul>
+  </div>
+
+  <!-- Day 3 Breakfast -->
+  <div class="recipe-card">
+    <h4>&#x1F963; Rebel Morning Rations</h4>
+    <div class="r-when">Day 3 &#x2014; Breakfast (prep the night before!)</div>
+    <div class="r-label">OVERNIGHT OATS</div>
+    <ul>
+      <li>2 cups rolled oats</li>
+      <li>2 cups milk</li>
+      <li>2 tbsp chia seeds</li>
+      <li>2 tbsp honey or maple syrup</li>
+      <li>1 tsp vanilla extract</li>
+      <li>Toppings: berries + banana for Sybastian, granola for adults</li>
+    </ul>
+    <div class="r-label">DIRECTIONS</div>
+    <ol>
+      <li>Night before: Mix oats, milk, chia seeds, honey, vanilla in jars/containers</li>
+      <li>Refrigerate overnight</li>
+      <li>Morning: top with fruit and eat cold (or warm up)</li>
+    </ol>
+  </div>
+
+  <!-- Day 3 Lunch -->
+  <div class="recipe-card">
+    <h4>&#x1F392; Rebel Rations Pack</h4>
+    <div class="r-when">Day 3 &#x2014; Trail Picnic at Snow Canyon</div>
+    <div class="r-label">PACK IN A COOLER BAG</div>
+    <ul>
+      <li>Turkey + cheese roll-ups</li>
+      <li>String cheese sticks</li>
+      <li>Trail mix</li>
+      <li>Granola bars</li>
+      <li>Fruit pouches (applesauce) for Sybastian</li>
+      <li>Water bottles (frozen overnight to stay cold)</li>
+    </ul>
+  </div>
+
+  <!-- Day 3 Dinner -->
+  <div class="recipe-card">
+    <h4>&#x1F969; Jedi Council Feast</h4>
+    <div class="r-when">Day 3 &#x2014; Dinner &#x2014; THE BIG ONE</div>
+    <div class="r-label">GRILLED STEAK</div>
+    <ul>
+      <li>2 ribeye or NY strip steaks (1&#x2013;1.5 lbs total)</li>
+      <li>Salt, pepper, garlic powder</li>
+      <li>Butter + fresh rosemary (optional)</li>
+    </ul>
+    <div class="r-label">DIRECTIONS</div>
+    <ol>
+      <li>Let steaks rest at room temp 30 min</li>
+      <li>Season generously: salt, pepper, garlic powder</li>
+      <li>Grill or cast iron over fire &#x2014; 4&#x2013;5 min per side for medium</li>
+      <li>Rest 5 min, top with butter and rosemary</li>
+      <li>Slice thin for Sybastian's portion</li>
+    </ol>
+    <div class="r-label">ROASTED VEGGIES (foil packet)</div>
+    <ul>
+      <li>Asparagus or green beans + cherry tomatoes</li>
+      <li>Toss with olive oil, salt, pepper</li>
+      <li>Wrap in foil, cook over fire 15&#x2013;20 min</li>
+    </ul>
+    <div class="r-label">GARLIC BREAD</div>
+    <ul>
+      <li>Baguette or pre-made frozen garlic bread</li>
+      <li>Warm over the fire or grill in foil</li>
+    </ul>
+    <div class="r-label">DESSERT: LIGHTSABER PRETZELS</div>
+    <ul>
+      <li>Pretzel rods + green/blue candy melts</li>
+      <li>Melt candy, dip pretzel rods &#x2190; instant mini lightsabers!</li>
+      <li>(Prep at home, bring ready-made)</li>
+    </ul>
+    <div class="r-label">CELEBRATION TOAST</div>
+    <ul>
+      <li>Sparkling apple cider in camp cups &#x2014; saved for the Knighting!</li>
+    </ul>
+  </div>
+
+  <!-- Day 4 Brunch -->
+  <div class="recipe-card">
+    <h4>&#x1F95E; Galactic Send-off</h4>
+    <div class="r-when">Day 4 &#x2014; Brunch</div>
+    <div class="r-label">INGREDIENTS</div>
+    <ul>
+      <li>Pancake mix + eggs + milk + butter (per box instructions)</li>
+      <li>Bacon (1 package)</li>
+      <li>Maple syrup</li>
+      <li>Fruit for Sybastian</li>
+      <li>Coffee for adults</li>
+    </ul>
+    <div class="r-label">DIRECTIONS</div>
+    <ol>
+      <li>Mix pancake batter per box</li>
+      <li>Use Star Wars cookie cutters for shapes if you have them</li>
+      <li>Cook bacon in skillet</li>
+      <li>Serve with maple syrup and fruit</li>
+      <li>Enjoy the last meal on the Outer Rim</li>
+    </ol>
+  </div>
+
+  <!-- ── GROCERY LIST ── -->
+  <div class="section-header" style="padding-top:40px;">
+    <h2 style="font-size:20px;">MASTER GROCERY LIST</h2>
+    <div class="section-sub">Buy in Las Vegas or St. George on the drive in</div>
+  </div>
+  <hr class="section-divider">
+
+  <div class="grocery-section">
+    <h4>&#x1F357; Protein</h4>
+    <ul>
+      <li>Chicken breast, 1 lb (Day 1 wraps)</li>
+      <li>Chicken breast, 1.5 lb (Day 2 kebabs)</li>
+      <li>Sliced turkey deli meat, 8 oz</li>
+      <li>2 ribeye or NY strip steaks</li>
+      <li>Bacon, 1 package</li>
+      <li>Eggs, 1 dozen</li>
+    </ul>
+  </div>
+
+  <div class="grocery-section">
+    <h4>&#x1F966; Produce</h4>
+    <ul>
+      <li>Mixed greens / lettuce, 1 bag</li>
+      <li>Bell peppers: 3 (1 red, 1 yellow, 1 any)</li>
+      <li>Cucumber, 1</li>
+      <li>Zucchini, 2</li>
+      <li>Red onion, 1</li>
+      <li>Asparagus or green beans, 1 bunch</li>
+      <li>Cherry tomatoes, 1 pint</li>
+      <li>Potatoes, 4 medium</li>
+      <li>Bananas, 1 bunch</li>
+      <li>Berries (strawberries + blueberries)</li>
+      <li>Grapes, small bag</li>
+      <li>Lemons, 2</li>
+      <li>Fresh garlic, 1 head</li>
+      <li>Fresh rosemary, 1 sprig (optional)</li>
+    </ul>
+  </div>
+
+  <div class="grocery-section">
+    <h4>&#x1F9C0; Dairy</h4>
+    <ul>
+      <li>Milk, half gallon</li>
+      <li>Shredded cheese, 1 bag</li>
+      <li>Sliced cheese, 1 pack</li>
+      <li>String cheese, 1 pack</li>
+      <li>Butter, 1 stick</li>
+    </ul>
+  </div>
+
+  <div class="grocery-section">
+    <h4>&#x1F35E; Bread &amp; Grains</h4>
+    <ul>
+      <li>Large flour tortillas, 6-pack</li>
+      <li>Pita bread, 6-pack</li>
+      <li>English muffins or sliced bread</li>
+      <li>Baguette or frozen garlic bread</li>
+      <li>Graham crackers, 1 box</li>
+      <li>Pancake mix, 1 box</li>
+    </ul>
+  </div>
+
+  <div class="grocery-section">
+    <h4>&#x1F36F; Pantry &amp; Snacks</h4>
+    <ul>
+      <li>Hummus, 2 containers</li>
+      <li>Pita chips, 1 bag</li>
+      <li>Rolled oats, 1 canister</li>
+      <li>Chia seeds, small bag</li>
+      <li>Trail mix, 1 bag</li>
+      <li>Granola bars, 1 box</li>
+      <li>Marshmallows, 1 bag</li>
+      <li>Chocolate bars (s'mores), 4</li>
+      <li>Wooden skewers, 1 pack</li>
+      <li>Heavy-duty aluminum foil</li>
+      <li>Applesauce / fruit pouches, 1 box</li>
+    </ul>
+  </div>
+
+  <div class="grocery-section">
+    <h4>&#x1F9C2; Spices &amp; Condiments</h4>
+    <ul>
+      <li>Olive oil</li>
+      <li>Cumin (ground)</li>
+      <li>Paprika</li>
+      <li>Garlic powder</li>
+      <li>Oregano (dried)</li>
+      <li>Salt &amp; pepper</li>
+      <li>Vanilla extract</li>
+      <li>Honey or maple syrup</li>
+      <li>Maple syrup (pancakes)</li>
+      <li>Blue food coloring</li>
+    </ul>
+  </div>
+
+  <div class="grocery-section">
+    <h4>&#x1F964; Beverages</h4>
+    <ul>
+      <li>Coffee (ground or pods)</li>
+      <li>Mixed berry juice, 1 bottle</li>
+      <li>Sparkling apple cider, 1 bottle</li>
+      <li>Water bottles, 1 case</li>
+    </ul>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════ -->
+<!--  SECTION 4: CLOTHING GUIDE              -->
+<!-- ════════════════════════════════════════ -->
+<div class="container">
+  <div class="section-header">
+    <h2>WARDROBE BRIEFING</h2>
+    <div class="section-sub">April Weather: Highs 55&#x2013;65&#xB0;F &#x2022; Lows 35&#xB0;F &#x2022; Layers Are Everything</div>
+  </div>
+  <hr class="section-divider">
+
+  <div class="clothing-card">
+    <h4>Day 1 &#x2014; Travel + Arrival</h4>
+    <div class="c-weather">Arrive afternoon ~55&#x2013;60&#xB0;F &#x2022; Evening drops to ~38&#xB0;F</div>
+    <div class="person">
+      <div class="person-name">&#x1F5E1; MASTER MATTHANE (Matthew)</div>
+      <p><strong>Travel:</strong> Jeans, casual tee, sneakers, hoodie for the plane</p>
+      <p><strong>Evening:</strong> Jedi robes over thermal base layer + warm pants, boots. Add beanie after dark.</p>
+    </div>
+    <div class="person">
+      <div class="person-name">&#x1F31F; YOUNGLING SYBA TAAN (Sybastian)</div>
+      <p><strong>Travel:</strong> Comfy play clothes, sneakers, zip-up jacket</p>
+      <p><strong>Evening:</strong> Padawan costume over long-sleeve thermal + warm pants. Warm hat + gloves for stargazing.</p>
+    </div>
+    <div class="person">
+      <div class="person-name">&#x2694; COMMANDER MEG'ARA (Megan)</div>
+      <p><strong>Travel:</strong> Desert-tone comfy outfit (cream or slate), comfy shoes</p>
+      <p><strong>Evening:</strong> Warm layers &#x2014; scarf, earth-tone wrap or jacket. Camera-ready but cozy.</p>
+    </div>
+  </div>
+
+  <div class="clothing-card">
+    <h4>Day 2 &#x2014; Full Training Day at OutpostX</h4>
+    <div class="c-weather">Morning ~40&#xB0;F &#x2022; Afternoon ~58&#xB0;F &#x2022; Evening ~40&#xB0;F</div>
+    <div class="person">
+      <div class="person-name">&#x1F5E1; MASTER MATTHANE</div>
+      <p><strong>Morning training:</strong> Full Jedi robes over thermal base + fleece mid-layer, boots</p>
+      <p><strong>Afternoon:</strong> Shed outer robe &#x2014; earth-tone henley, cargo pants, boots</p>
+      <p><strong>Evening:</strong> Layer back up for campfire + movie night</p>
+    </div>
+    <div class="person">
+      <div class="person-name">&#x1F31F; YOUNGLING SYBA TAAN</div>
+      <p><strong>Morning:</strong> Padawan costume over thermals, warm closed-toe shoes</p>
+      <p><strong>Afternoon:</strong> Change for pottery + trampoline &#x2014; comfy play clothes (can get messy!)</p>
+      <p><strong>Evening:</strong> Warm PJs + blanket for movie night</p>
+    </div>
+    <div class="person">
+      <div class="person-name">&#x2694; COMMANDER MEG'ARA</div>
+      <p><strong>Morning:</strong> Warrior costume with warm layers underneath, boots &#x2014; training photo ops!</p>
+      <p><strong>Afternoon:</strong> Desert casual (earth-tone top + leggings, comfortable shoes)</p>
+      <p><strong>Evening:</strong> Cozy layers, scarf, warm drink by the fire</p>
+    </div>
+  </div>
+
+  <div class="clothing-card">
+    <h4>Day 3 &#x2014; Hike + Knighting Ceremony</h4>
+    <div class="c-weather">Morning ~42&#xB0;F &#x2022; Afternoon ~60&#xB0;F &#x2022; Evening ~38&#xB0;F (ceremony under stars)</div>
+    <div class="person">
+      <div class="person-name">&#x1F5E1; MASTER MATTHANE</div>
+      <p><strong>Morning hike:</strong> Moisture-wicking base, fleece, earth-tone hiking pants, hiking shoes, hat, sunglasses</p>
+      <p><strong>Afternoon:</strong> Casual rest clothes</p>
+      <p><strong>Evening ceremony:</strong> Full Jedi robes over warm base layers &#x2014; this is THE moment</p>
+    </div>
+    <div class="person">
+      <div class="person-name">&#x1F31F; YOUNGLING SYBA TAAN</div>
+      <p><strong>Morning hike:</strong> Warm layers, sturdy shoes, hat, sunscreen</p>
+      <p><strong>Afternoon:</strong> Rest clothes / PJs for nap</p>
+      <p><strong>Evening ceremony:</strong> Full Padawan robes over warm thermals &#x2014; HIS big moment</p>
+    </div>
+    <div class="person">
+      <div class="person-name">&#x2694; COMMANDER MEG'ARA</div>
+      <p><strong>Morning hike:</strong> Earth-tone hiking layers, sturdy shoes, hat, sunscreen</p>
+      <p><strong>Afternoon:</strong> Comfortable rest wear</p>
+      <p><strong>Evening ceremony:</strong> Warrior costume or desert elegant &#x2014; the ceremony photos!</p>
+    </div>
+  </div>
+
+  <div class="clothing-card">
+    <h4>Day 4 &#x2014; Departure</h4>
+    <div class="c-weather">Morning ~40&#xB0;F</div>
+    <div class="person">
+      <div class="person-name">ALL</div>
+      <p>Comfortable travel clothes for the drive + flight home</p>
+      <p>&#x1F4F8; <strong>One last costume photo</strong> before packing up &#x2014; do this first thing!</p>
+    </div>
+  </div>
+
+  <!-- ── PACKING ESSENTIALS ── -->
+  <div class="clothing-card" style="margin-top:32px;">
+    <h4>&#x1F9F3; Packing Essentials (Everyone)</h4>
+    <div class="c-weather">Don't forget these!</div>
+    <ul style="list-style:none; padding:0; columns:2; column-gap:24px;">
+      <li style="padding:4px 0; font-size:14px; color:#aabbcc;">&#x2610; Star Wars costume</li>
+      <li style="padding:4px 0; font-size:14px; color:#aabbcc;">&#x2610; Thermal base layers (3&#x2013;4)</li>
+      <li style="padding:4px 0; font-size:14px; color:#aabbcc;">&#x2610; Warm fleece or jacket</li>
+      <li style="padding:4px 0; font-size:14px; color:#aabbcc;">&#x2610; Hiking shoes + casual shoes</li>
+      <li style="padding:4px 0; font-size:14px; color:#aabbcc;">&#x2610; Hat + sunglasses</li>
+      <li style="padding:4px 0; font-size:14px; color:#aabbcc;">&#x2610; Sunscreen</li>
+      <li style="padding:4px 0; font-size:14px; color:#aabbcc;">&#x2610; Beanie + gloves (evenings)</li>
+      <li style="padding:4px 0; font-size:14px; color:#aabbcc;">&#x2610; Warm scarf</li>
+      <li style="padding:4px 0; font-size:14px; color:#aabbcc;">&#x2610; Pajamas (2 sets)</li>
+      <li style="padding:4px 0; font-size:14px; color:#aabbcc;">&#x2610; Swimsuit (hot tub!)</li>
+      <li style="padding:4px 0; font-size:14px; color:#aabbcc;">&#x2610; Portable phone charger</li>
+      <li style="padding:4px 0; font-size:14px; color:#aabbcc;">&#x2610; Camera + extra battery</li>
+      <li style="padding:4px 0; font-size:14px; color:#aabbcc;">&#x2610; Reusable water bottles</li>
+      <li style="padding:4px 0; font-size:14px; color:#aabbcc;">&#x2610; Small first aid kit</li>
+      <li style="padding:4px 0; font-size:14px; color:#aabbcc;">&#x2610; Lightsabers (both!)</li>
+      <li style="padding:4px 0; font-size:14px; color:#aabbcc;">&#x2610; Small backpack (for hike)</li>
+    </ul>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════ -->
+<!--  SECTION 5: MISSION PREP KIT            -->
+<!-- ════════════════════════════════════════ -->
+<div class="container">
+  <div class="section-header">
+    <h2>MISSION PREP KIT</h2>
+    <div class="section-sub">Prepare Before the Trip &#x2014; Commander Meg'ara's Checklist</div>
+  </div>
+  <hr class="section-divider">
+
+  <div class="prep-kit">
+    <h4>BUY / MAKE BEFORE DEPARTURE</h4>
+    <ul>
+      <li><strong>7 Padawan Beads</strong> &#x2014; small wooden or colored beads from a craft store. String on a cord as they're earned. Each represents a completed mission.</li>
+      <li><strong>1 Kyber Crystal</strong> &#x2014; a real crystal, geode, or polished stone (Amazon or crystal shop). Wrap in cloth for the treasure hunt.</li>
+      <li><strong>3 Clue Cards</strong> &#x2014; handwrite or print on tea-stained paper for the canyon hike. Age them with crumpled edges.</li>
+      <li><strong>Jedi Knight Certificate</strong> &#x2014; print a fancy certificate: "The Jedi Council hereby certifies SYBA TAAN as a Jedi Knight." Decorate with gold.</li>
+      <li><strong>Bandana</strong> &#x2014; for the blindfold in Mission 1 (earth tone to match costumes).</li>
+      <li><strong>Lightsaber Pretzels</strong> &#x2014; pretzel rods + green/blue candy melts. Dip at home, bring in a container.</li>
+      <li><strong>Blue Food Coloring</strong> &#x2014; for Blue Milk (1 small bottle).</li>
+      <li><strong>Star Wars Cookie Cutters</strong> &#x2014; optional, for Day 4 pancakes.</li>
+      <li><strong>Small Notepad</strong> &#x2014; for Sybastian's "mission log" during Sand Cruiser patrol.</li>
+      <li><strong>Rope or long stick</strong> &#x2014; for the balance trial (or draw a line in the sand).</li>
+    </ul>
+  </div>
+
+  <div class="prep-kit" style="border-color: rgba(255,215,0,0.15); background: rgba(255,215,0,0.03);">
+    <h4 style="color: #ffd700;">TEACH SYBASTIAN BEFORE THE TRIP</h4>
+    <ul>
+      <li><strong>The Youngling Jedi Code</strong> &#x2014; practice this at home so he can recite it at the Final Trials:</li>
+    </ul>
+    <p style="text-align:center; color:#ffd700; font-style:italic; font-size:18px; line-height:2.4; margin:20px 0;">
+      "I am calm.<br>
+      I am kind.<br>
+      I am brave.<br>
+      I am one with the Force."
+    </p>
+  </div>
+</div>
+
+
+<!-- ── Footer ── -->
+<div style="text-align:center; padding:60px 24px 40px; color:#334455; font-size:13px; letter-spacing:1px;">
+  <div style="font-size:28px; opacity:0.2; margin-bottom:12px;">&#x2726;</div>
+  MAY THE FORCE BE WITH THE SOL FAMILY. ALWAYS.<br>
+  <span style="font-size:11px; color:#223344;">Operation OutpostX &#x2022; April 2026</span>
+</div>
+
+</body>
+</html>

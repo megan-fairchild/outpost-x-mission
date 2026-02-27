@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operation OutpostX — Mission Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ── Hub-Specific Card Grid ── */
+    .hub-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px 40px;
+    }
+    .hub-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      background: #0f0f1e;
+      border: 1px solid #1a1a2e;
+      border-radius: 10px;
+      padding: 36px 24px 30px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .hub-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 10px;
+      opacity: 0.06;
+      z-index: 0;
+      transition: opacity 0.3s;
+    }
+    .hub-card:nth-child(1)::before { background: linear-gradient(135deg, #ffd700, #ff6b35); }
+    .hub-card:nth-child(2)::before { background: linear-gradient(135deg, #ff6b35, #ff3366); }
+    .hub-card:nth-child(3)::before { background: linear-gradient(135deg, #66ccff, #44dd66); }
+    .hub-card:nth-child(4)::before { background: linear-gradient(135deg, #aa66ff, #66aaff); }
+    .hub-card:hover {
+      border-color: #ffd700;
+      box-shadow: 0 0 24px rgba(255, 215, 0, 0.08);
+      transform: translateY(-3px);
+      text-decoration: none;
+    }
+    .hub-card:hover::before { opacity: 0.12; }
+    .hub-card .card-icon {
+      font-size: 44px;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+    .hub-card .card-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffd700;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+    .hub-card .card-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #8899aa;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Quick Links Section ── */
+    .quick-links {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px 40px;
+    }
+    .quick-links-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    /* ── Cover Family Info ── */
+    .family-info {
+      margin-top: 16px;
+      font-size: 13px;
+      color: #667788;
+      line-height: 1.8;
+    }
+    .family-info .names {
+      color: #99aabb;
+      font-weight: 600;
+    }
+
+    @media (max-width: 600px) {
+      .hub-grid { grid-template-columns: 1fr; }
+      .hub-card { padding: 28px 20px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav Bar ── -->
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <a href="mission-hub.html" class="nav-brand">OUTPOST X</a>
+      <div class="nav-links">
+        <a href="mission-hub.html" class="active">HOME</a>
+        <a href="itinerary.html">ITINERARY</a>
+        <a href="missions.html">MISSIONS</a>
+        <a href="meals.html">PROVISIONS</a>
+        <a href="clothing.html">WARDROBE</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Cover Section ── -->
+  <header class="page-header">
+    <div class="emblem">⚔️</div>
+    <h1>OPERATION OUTPOST X</h1>
+    <p class="subtitle">FULL MISSION BRIEFING</p>
+    <div class="family-info">
+      <p class="names">Master Matthane Sol &bull; Youngling Syba Taan &bull; Commander Meg'ara Kyn</p>
+      <p>April 8–11, 2026 &bull; OutpostX Beryl Utah &bull; Glass Cave Villa</p>
+    </div>
+  </header>
+
+  <hr class="section-divider" style="margin-top: 0; margin-bottom: 40px;">
+
+  <!-- ── Navigation Cards ── -->
+  <div class="hub-grid">
+
+    <a href="itinerary.html" class="hub-card">
+      <div class="card-icon">📋</div>
+      <div class="card-title">THE ITINERARY</div>
+      <div class="card-desc">Four days on the Outer Rim. Hour-by-hour mission timeline.</div>
+    </a>
+
+    <a href="missions.html" class="hub-card">
+      <div class="card-icon">⚔️</div>
+      <div class="card-title">JEDI TRAINING MISSIONS</div>
+      <div class="card-desc">8 missions for Youngling Syba Taan. Led by Master Matthane Sol.</div>
+    </a>
+
+    <a href="meals.html" class="hub-card">
+      <div class="card-icon">🍽️</div>
+      <div class="card-title">GALACTIC PROVISIONS</div>
+      <div class="card-desc">Themed meals, recipes, and master grocery list.</div>
+    </a>
+
+    <a href="clothing.html" class="hub-card">
+      <div class="card-icon">👕</div>
+      <div class="card-title">WARDROBE BRIEFING</div>
+      <div class="card-desc">Day-by-day clothing guide and packing checklist.</div>
+    </a>
+
+  </div>
+
+  <!-- ── Quick Links ── -->
+  <div class="section-header">
+    <h2>QUICK LINKS</h2>
+    <p class="section-sub">EXTERNAL INTEL &amp; RESOURCES</p>
+  </div>
+  <hr class="section-divider" style="margin-bottom: 24px;">
+
+  <div class="quick-links">
+    <div class="quick-links-grid">
+      <a href="https://outpost-x.com/" target="_blank" class="ext-link">🌐 OutpostX Official</a>
+      <a href="https://outpost-x.com/" target="_blank" class="ext-link">🏠 Glass Cave Villa</a>
+      <a href="https://outpost-x.com/" target="_blank" class="ext-link">🚗 Sand Cruiser Experience</a>
+      <a href="https://stateparks.utah.gov/parks/snow-canyon/" target="_blank" class="ext-link">🏜️ Snow Canyon State Park</a>
+      <a href="https://www.alltrails.com/trail/us/utah/petrified-dunes-trail" target="_blank" class="ext-link">🪨 Petrified Sand Dunes Trail</a>
+      <a href="https://www.alltrails.com/trail/us/utah/lava-flow-trail" target="_blank" class="ext-link">🌋 Lava Flow Trail</a>
+    </div>
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer class="page-footer">
+    <div class="footer-emblem">⚔️</div>
+    <p>MAY THE FORCE BE WITH THE SOL FAMILY. ALWAYS.</p>
+  </footer>
+
+</body>
+</html>
