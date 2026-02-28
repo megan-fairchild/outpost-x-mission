@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0A0A14">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Jedi Training — OutpostX</title>
+<link rel="manifest" href="manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ── */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0A0A14;--card:#0F0F1E;--gold:#FFD700;--orange:#FF6B35;--cyan:#00D4FF;--green:#39FF14;--dim:#555;--text:#E8E6E3;--radius:14px}
+html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+button{font-family:inherit;cursor:pointer;border:none;outline:none;-webkit-appearance:none}
+
+/* ── HEADER ── */
+.header{position:sticky;top:0;z-index:100;background:linear-gradient(180deg,#0d0d1a 60%,transparent);padding:10px 16px 6px}
+.header-row{display:flex;align-items:center;justify-content:space-between}
+.role-btn{width:44px;height:44px;border-radius:50%;background:var(--card);border:2px solid var(--gold);font-size:22px;display:flex;align-items:center;justify-content:center}
+.header-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:15px;letter-spacing:2px;color:var(--gold);text-align:center}
+.bead-count{font-size:14px;font-weight:700;color:var(--gold);white-space:nowrap}
+.progress-track{height:5px;background:#1a1a2e;border-radius:3px;margin-top:8px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--orange),var(--gold));border-radius:3px;transition:width .6s ease}
+
+/* ── ROLE SELECTION ── */
+.screen{display:none;padding:16px;padding-bottom:100px}
+.screen.active{display:block}
+#roleScreen{display:none;padding:40px 16px;text-align:center}
+#roleScreen.active{display:flex;flex-direction:column;align-items:center;gap:16px}
+#roleScreen h2{font-family:'Orbitron',sans-serif;color:var(--gold);font-size:20px;margin-bottom:8px}
+.role-card{width:100%;max-width:340px;background:var(--card);border:2px solid #1e1e3a;border-radius:var(--radius);padding:24px 20px;text-align:center;cursor:pointer;transition:transform .2s,border-color .3s}
+.role-card:active{transform:scale(.97)}
+.role-card:hover{border-color:var(--gold)}
+.role-card .emoji{font-size:42px;margin-bottom:8px}
+.role-card .name{font-family:'Orbitron',sans-serif;font-size:14px;color:var(--gold);margin-bottom:4px}
+.role-card .desc{font-size:13px;color:var(--dim)}
+
+/* ── MASTER VIEW ── */
+.mission-card{background:var(--card);border:1px solid #1e1e3a;border-radius:var(--radius);margin-bottom:14px;overflow:hidden;transition:border-color .3s}
+.mission-card.done{border-color:var(--green);opacity:.85}
+.mc-header{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;min-height:58px}
+.mc-num{width:36px;height:36px;border-radius:50%;background:var(--orange);color:#000;font-family:'Orbitron',sans-serif;font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mission-card.done .mc-num{background:var(--green)}
+.mc-info{flex:1;min-width:0}
+.mc-title{font-family:'Orbitron',sans-serif;font-size:12px;color:var(--gold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mc-meta{font-size:11px;color:var(--dim);margin-top:2px}
+.mc-chevron{font-size:18px;color:var(--dim);transition:transform .3s;flex-shrink:0}
+.mission-card.open .mc-chevron{transform:rotate(180deg)}
+.mc-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.mission-card.open .mc-body{max-height:2000px}
+.mc-content{padding:0 16px 16px}
+.quote-box{background:#111128;border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:14px;margin-bottom:14px;font-size:14px;line-height:1.6;color:#ddd;font-style:italic}
+.quote-label{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--orange);margin-bottom:6px;letter-spacing:1px;font-style:normal}
+.section-label{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--cyan);letter-spacing:1px;margin:14px 0 8px}
+.mc-content p,.mc-content li{font-size:13px;line-height:1.7;color:#bbb}
+.mc-content ul{padding-left:18px;list-style:none}
+.mc-content li::before{content:'▸ ';color:var(--orange)}
+.check-item{display:flex;align-items:center;gap:10px;min-height:44px;font-size:14px}
+.check-item input[type=checkbox]{width:22px;height:22px;accent-color:var(--gold);flex-shrink:0}
+.complete-btn{width:100%;padding:16px;margin-top:14px;border-radius:10px;background:linear-gradient(135deg,var(--orange),var(--gold));color:#000;font-family:'Orbitron',sans-serif;font-weight:700;font-size:14px;letter-spacing:1px;transition:box-shadow .3s,transform .2s}
+.complete-btn:active{transform:scale(.96)}
+.complete-btn.done{background:var(--green);pointer-events:none}
+.complete-btn.glow{box-shadow:0 0 30px var(--gold),0 0 60px var(--orange);animation:pulse .6s ease}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+
+/* ── YOUNGLING VIEW ── */
+#younglingScreen{text-align:center;padding-top:20px}
+.yl-emoji{font-size:72px;margin-bottom:10px;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.yl-title{font-family:'Orbitron',sans-serif;font-size:22px;color:var(--gold);margin-bottom:6px}
+.yl-location{font-size:16px;color:var(--orange);margin-bottom:20px}
+.bead-row{display:flex;justify-content:center;gap:10px;margin:24px 0}
+.bead{width:36px;height:36px;border-radius:50%;background:#1a1a2e;border:2px solid #333;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .4s}
+.bead.earned{background:var(--gold);border-color:var(--gold);box-shadow:0 0 12px var(--gold)}
+.yl-nav{margin-top:30px}
+.yl-nav button{padding:16px 40px;border-radius:12px;background:var(--orange);color:#fff;font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;min-height:54px}
+.yl-nav button:disabled{opacity:.3;pointer-events:none}
+.celebration{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center}
+.celebration.active{display:flex}
+.celebration h1{font-family:'Orbitron',sans-serif;font-size:26px;color:var(--gold);margin-bottom:10px}
+.celebration p{font-size:18px;color:var(--cyan)}
+.stars-container{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:200}
+.star-particle{position:absolute;font-size:20px;animation:starfall linear forwards}
+@keyframes starfall{0%{opacity:1;transform:translateY(-20px) rotate(0deg)}100%{opacity:0;transform:translateY(100vh) rotate(720deg)}}
+
+/* ── COMMANDER VIEW ── */
+.cmd-section{margin-bottom:20px}
+.cmd-section-title{font-family:'Orbitron',sans-serif;font-size:12px;color:var(--cyan);letter-spacing:1px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #1e1e3a}
+.timeline-item{display:flex;gap:12px;margin-bottom:12px}
+.tl-dot{width:12px;height:12px;border-radius:50%;background:var(--dim);margin-top:4px;flex-shrink:0}
+.tl-dot.done{background:var(--green)}
+.tl-dot.next{background:var(--orange);box-shadow:0 0 8px var(--orange)}
+.tl-info{flex:1}
+.tl-title{font-size:13px;font-weight:600;color:var(--text)}
+.tl-time{font-size:11px;color:var(--dim);margin-top:2px}
+.cmd-card{background:var(--card);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px}
+.cmd-card h4{font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold);margin-bottom:10px}
+.prep-group{margin-bottom:16px}
+.prep-group h5{font-size:12px;color:var(--orange);margin-bottom:6px}
+
+/* ── UTILITY ── */
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header" id="appHeader" style="display:none">
+  <div class="header-row">
+    <button class="role-btn" id="roleSwitcher" aria-label="Switch role"></button>
+    <span class="header-title">JEDI TRAINING</span>
+    <span class="bead-count" id="beadCount">⭐ 0/7</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<!-- ROLE SELECTION -->
+<div id="roleScreen" class="active">
+  <h2>CHOOSE YOUR PATH</h2>
+  <div class="role-card" onclick="selectRole('master')">
+    <div class="emoji">🗡️</div>
+    <div class="name">MASTER MATTHANE SOL</div>
+    <div class="desc">Lead the training</div>
+  </div>
+  <div class="role-card" onclick="selectRole('youngling')">
+    <div class="emoji">🌟</div>
+    <div class="name">YOUNGLING SYBA TAAN</div>
+    <div class="desc">Track your journey</div>
+  </div>
+  <div class="role-card" onclick="selectRole('commander')">
+    <div class="emoji">⚔️</div>
+    <div class="name">COMMANDER MEG'ARA KYN</div>
+    <div class="desc">Mission control</div>
+  </div>
+</div>
+
+<!-- MASTER VIEW -->
+<div id="masterScreen" class="screen"></div>
+
+<!-- YOUNGLING VIEW -->
+<div id="younglingScreen" class="screen"></div>
+
+<!-- COMMANDER VIEW -->
+<div id="commanderScreen" class="screen"></div>
+
+<!-- STAR PARTICLES (celebration) -->
+<div class="stars-container" id="starsContainer"></div>
+
+<script>
+/* ════════════════════════════════════════════════
+   MISSION DATA
+   ════════════════════════════════════════════════ */
+const MISSIONS = [
+  { id:1, title:"AWAKENING THE FORCE", day:"Day 1", time:"Evening", duration:"15 min", location:"Fire Pit", icon:"🔥",
+    masterDialogue:"The Force is all around us, Syba Taan. It flows through every rock, every flame, every gust of wind. A Jedi does not see the Force — a Jedi feels it. Close your eyes. Tell me what the Force is showing you.",
+    activity:"Blindfold with bandana near fire pit. Identify 5 sounds: wind, fire crackling, footsteps, clapping, rocks tapping.",
+    props:["Bandana (blindfold)","Small rocks to tap together"],
+    reward:"Force Awareness",
+    photoOps:["Fire pit portrait","Blindfold moment","Reveal reaction"] },
+  { id:2, title:"THE WAY OF THE LIGHTSABER", day:"Day 2", time:"9:00 AM", duration:"25 min", location:"Open area", icon:"⚔️",
+    masterDialogue:"A lightsaber is not just a weapon, Youngling. It is an extension of you — of your will, your focus, your courage. Today, I will teach you the three sacred forms. Watch closely.",
+    activity:"Teach 3 forms: The Shield (horizontal defense), The Strike (overhead swing), The Sweep (side-to-side). Practice 5× slow, 3× fast. End with slow-motion duel.",
+    props:["Both lightsabers","Pool noodle targets (optional)"],
+    reward:"Form I: Shii-Cho",
+    photoOps:["Training stance","Father-son duel","Victory pose"] },
+  { id:3, title:"THE SAND CRUISER PATROL", day:"Day 2", time:"10:00 AM", duration:"30 min", location:"OutpostX property", icon:"🏜️",
+    masterDialogue:"The Council has received reports of unusual activity on the far side of this outpost. We must patrol the perimeter. Stay sharp, Padawan — report anything unusual you see.",
+    activity:"During Sand Cruiser ride, Sybastian is the Scout. Spot 5 interesting things. Matthew confirms each and adds Jedi lore.",
+    props:["Sand Cruiser (OutpostX amenity)","Small notepad for mission log"],
+    reward:"Outer Rim Scout",
+    photoOps:["Sand Cruiser action shot","Scouting pose","Desert panorama"] },
+  { id:4, title:"THE FORCE BALANCE", day:"Day 2", time:"11:00 AM", duration:"20 min", location:"Trampoline area", icon:"🤸",
+    masterDialogue:"A Jedi must command their body as well as their mind. Balance. Control. Grace. The Force flows through a body that is centered. Show me your balance, Youngling.",
+    activity:"Jedi Simon Says on trampolines: Force Jump, Jedi Freeze (hold 5 sec), Spin Attack, Grogu Bounce (tiny bounces with fist ears). End with synchronized Force Jump.",
+    props:["In-ground trampolines (OutpostX amenity)"],
+    reward:"Force Balance",
+    photoOps:["Mid-air jump","Freeze pose","Synchronized jump"] },
+  { id:5, title:"CRAFTING A JEDI ARTIFACT", day:"Day 2", time:"2:00 PM", duration:"45 min", location:"Pottery studio", icon:"🏺",
+    masterDialogue:"Every Jedi creates something with their own hands — a relic imbued with the Force. It becomes part of you. Today, you will craft your artifact from the clay of this desert world. Focus your energy into it.",
+    activity:"Pottery wheels — create a small bowl, cup, or Kyber crystal holder. Both Matthew and Sybastian make one.",
+    props:["Pottery wheels (OutpostX amenity — included)"],
+    reward:"Jedi Artisan",
+    photoOps:["Hands on clay","Focused faces","Finished artifacts"] },
+  { id:6, title:"TRACKING THE KYBER CRYSTAL", day:"Day 3", time:"9:30 AM", duration:"90 min", location:"Snow Canyon State Park", icon:"💎",
+    masterDialogue:"Deep in the canyons of this world, the Force has hidden a Kyber Crystal — the heart of every lightsaber. The crystal calls to those who are worthy. Listen, Padawan. Follow the signs. The crystal will reveal itself to you.",
+    activity:"Hike Petrified Sand Dunes + Lava Flow Trail. Megan pre-hides crystal. 3 clues: (1) Past where ancient dunes turned to stone, (2) Where fire once flowed from the earth, (3) It hides where a Jedi would stop to rest. When found: \"The crystal chose you, Syba Taan.\"",
+    props:["Crystal or geode (wrapped in cloth)","3 clue cards","Water + sunscreen + snacks"],
+    reward:"Crystal Guardian",
+    photoOps:["Canyon panorama","Clue discovery","Crystal reveal","Kneeling moment"] },
+  { id:7, title:"THE FINAL TRIALS", day:"Day 3", time:"3:00 PM", duration:"30 min", location:"OutpostX grounds", icon:"🏛️",
+    masterDialogue:"You have trained well, Youngling. But before you can be knighted, you must pass the three Final Trials. These will test your body, your mind, and your heart. Are you ready?",
+    activity:"Trial of Balance (walk line heel-to-toe 10 steps), Trial of Focus (stack 5 rocks into cairn in silence), Trial of Courage (recite Jedi Code: \"I am calm. I am kind. I am brave. I am one with the Force.\")",
+    props:["Rope or stick (balance line)","Flat rocks"],
+    reward:"Trials Complete",
+    photoOps:["Balance walk","Rock cairn","Code recitation"] },
+  { id:8, title:"THE KNIGHTING CEREMONY", day:"Day 3", time:"7:30 PM", duration:"15 min", location:"Under the stars", icon:"👑",
+    masterDialogue:"Syba Taan. You came to this outpost a Youngling. You have trained in the ways of the Force. You have wielded a lightsaber. You have tracked a Kyber Crystal across the desert. You have passed the Final Trials. You are ready.",
+    activity:"(1) Sybastian kneels, (2) Matthew ignites lightsaber overhead, (3) Touches each shoulder, (4) Says knighting words, (5) Sybastian stands, bow, (6) Presents Kyber Crystal with dialogue, (7) Family hug, sparkling cider toast.",
+    props:["Lightsabers (lit)","Kyber Crystal","Certificate","All 7 beads","Sparkling cider + cups"],
+    reward:"JEDI KNIGHT SYBA TAAN",
+    photoOps:["Kneeling","Lightsaber overhead","Shoulder touch","Rising","Crystal presentation","Family embrace","Toast under stars"] }
+];
+
+const ROLE_ICONS = { master:"🗡️", youngling:"🌟", commander:"⚔️" };
+const BEAD_EMOJIS = ["🔵","🟣","🟠","🟡","🟢","🔴","⚪"];
+
+/* ════════════════════════════════════════════════
+   STATE MANAGEMENT
+   ════════════════════════════════════════════════ */
+function load(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } }
+function save(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
+
+let state = {
+  role: load("jt_role", null),
+  completed: load("jt_completed", []),          // array of mission ids
+  props: load("jt_props", {}),                   // { "1_0": true, ... }
+  photos: load("jt_photos", {}),                 // { "1_0": true, ... }
+  prep: load("jt_prep", {}),                     // { "item_text": true }
+  ylIndex: load("jt_ylIndex", 0)                 // current youngling mission index
+};
+
+function persist() {
+  save("jt_completed", state.completed);
+  save("jt_props", state.props);
+  save("jt_photos", state.photos);
+  save("jt_prep", state.prep);
+  save("jt_ylIndex", state.ylIndex);
+}
+
+function beadsEarned() { return Math.min(state.completed.length, 7); }
+function missionDone(id) { return state.completed.includes(id); }
+
+/* ════════════════════════════════════════════════
+   ROLE SELECTION
+   ════════════════════════════════════════════════ */
+function selectRole(role) {
+  state.role = role;
+  save("jt_role", role);
+  showApp();
+}
+
+function showRoleScreen() {
+  document.getElementById("appHeader").style.display = "none";
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById("roleScreen").classList.add("active");
+}
+
+function showApp() {
+  document.getElementById("roleScreen").classList.remove("active");
+  document.getElementById("appHeader").style.display = "";
+  document.getElementById("roleSwitcher").textContent = ROLE_ICONS[state.role] || "?";
+  updateHeader();
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  if (state.role === "master") renderMaster();
+  else if (state.role === "youngling") renderYoungling();
+  else if (state.role === "commander") renderCommander();
+  document.getElementById(state.role + "Screen").classList.add("active");
+}
+
+document.getElementById("roleSwitcher").addEventListener("click", showRoleScreen);
+
+/* ════════════════════════════════════════════════
+   HEADER UPDATE
+   ════════════════════════════════════════════════ */
+function updateHeader() {
+  const b = beadsEarned();
+  document.getElementById("beadCount").textContent = `⭐ ${b}/7`;
+  document.getElementById("progressFill").style.width = `${(state.completed.length / 8) * 100}%`;
+}
+
+/* ════════════════════════════════════════════════
+   MASTER VIEW
+   ════════════════════════════════════════════════ */
+function renderMaster() {
+  const el = document.getElementById("masterScreen");
+  el.innerHTML = MISSIONS.map(m => {
+    const done = missionDone(m.id);
+    return `
+    <div class="mission-card ${done ? 'done' : ''}" id="mc${m.id}">
+      <div class="mc-header" onclick="toggleCard(${m.id})">
+        <div class="mc-num">${done ? '✓' : m.id}</div>
+        <div class="mc-info">
+          <div class="mc-title">${m.title}</div>
+          <div class="mc-meta">${m.day} · ${m.time} · ${m.duration} · ${m.location}</div>
+        </div>
+        <span class="mc-chevron">▾</span>
+      </div>
+      <div class="mc-body"><div class="mc-content">
+        <div class="quote-box">
+          <div class="quote-label">MASTER SAYS</div>
+          "${m.masterDialogue}"
+        </div>
+        <div class="section-label">ACTIVITY</div>
+        <p>${m.activity}</p>
+        <div class="section-label">PROPS</div>
+        <div>${m.props.map((p, i) => `<label class="check-item"><input type="checkbox" ${state.props[m.id+'_'+i] ? 'checked' : ''} onchange="toggleProp(${m.id},${i},this.checked)">${p}</label>`).join('')}</div>
+        <div class="section-label">REWARD</div>
+        <p style="color:var(--gold);font-weight:700">⭐ ${m.reward}</p>
+        <button class="complete-btn ${done ? 'done' : ''}" onclick="completeMission(${m.id})" ${done ? 'disabled' : ''}>${done ? 'MISSION COMPLETE ✓' : 'MISSION COMPLETE ✓'}</button>
+      </div></div>
+    </div>`;
+  }).join('');
+}
+
+function toggleCard(id) {
+  const card = document.getElementById("mc" + id);
+  card.classList.toggle("open");
+}
+
+function toggleProp(mid, idx, val) {
+  state.props[mid + '_' + idx] = val;
+  persist();
+}
+
+/* ════════════════════════════════════════════════
+   COMPLETE MISSION (shared logic)
+   ════════════════════════════════════════════════ */
+function completeMission(id) {
+  if (missionDone(id)) return;
+  state.completed.push(id);
+  persist();
+  updateHeader();
+
+  // Animate the button
+  const card = document.getElementById("mc" + id);
+  if (card) {
+    const btn = card.querySelector(".complete-btn");
+    btn.classList.add("glow", "done");
+    btn.disabled = true;
+    setTimeout(() => { card.classList.add("done"); card.classList.remove("open"); }, 800);
+    card.querySelector(".mc-num").textContent = "✓";
+  }
+
+  // If youngling view is active, refresh it
+  if (state.role === "youngling") renderYoungling();
+  if (state.role === "commander") renderCommander();
+}
+
+/* ════════════════════════════════════════════════
+   YOUNGLING VIEW
+   ════════════════════════════════════════════════ */
+function renderYoungling() {
+  const el = document.getElementById("younglingScreen");
+  const allDone = state.completed.length >= 8;
+
+  if (allDone) {
+    el.innerHTML = `
+      <div class="celebration active">
+        <div style="font-size:80px;margin-bottom:20px">👑</div>
+        <h1>JEDI KNIGHT<br>SYBA TAAN</h1>
+        <p>The Force will be with you, always. 🌟</p>
+        <div class="bead-row" style="margin-top:30px">${BEAD_EMOJIS.map(() => `<div class="bead earned">⭐</div>`).join('')}</div>
+      </div>`;
+    spawnStars();
+    return;
+  }
+
+  // Find current mission index (first not-done)
+  let idx = MISSIONS.findIndex(m => !missionDone(m.id));
+  if (idx === -1) idx = 7;
+  const m = MISSIONS[idx];
+  const b = beadsEarned();
+
+  el.innerHTML = `
+    <div class="yl-emoji">${m.icon}</div>
+    <div class="yl-title">${m.title}</div>
+    <div class="yl-location">📍 ${m.location}</div>
+    <p style="font-size:18px;color:#aaa;max-width:300px;margin:0 auto">${m.day} · ${m.time}</p>
+    <div class="bead-row">
+      ${BEAD_EMOJIS.map((e, i) => `<div class="bead ${i < b ? 'earned' : ''}">${i < b ? '⭐' : ''}</div>`).join('')}
+    </div>
+    <p style="font-size:14px;color:var(--dim);margin-top:4px">Mission ${m.id} of 8</p>
+    <div class="yl-nav">
+      <button onclick="completeFromYoungling(${m.id})" ${missionDone(m.id) ? 'disabled' : ''}>
+        ${missionDone(m.id) ? 'DONE ✓' : 'WAITING...'}
+      </button>
+    </div>`;
+}
+
+function completeFromYoungling(id) {
+  completeMission(id);
+}
+
+function spawnStars() {
+  const c = document.getElementById("starsContainer");
+  c.innerHTML = "";
+  for (let i = 0; i < 40; i++) {
+    const s = document.createElement("div");
+    s.className = "star-particle";
+    s.textContent = ["⭐","🌟","✨","💫"][i % 4];
+    s.style.left = Math.random() * 100 + "%";
+    s.style.animationDuration = (2 + Math.random() * 3) + "s";
+    s.style.animationDelay = (Math.random() * 2) + "s";
+    s.style.fontSize = (14 + Math.random() * 20) + "px";
+    c.appendChild(s);
+  }
+  setTimeout(() => c.innerHTML = "", 6000);
+}
+
+/* ════════════════════════════════════════════════
+   COMMANDER VIEW
+   ════════════════════════════════════════════════ */
+const PREP_ITEMS = [
+  "Both lightsabers (charged/batteries)",
+  "Bandana (blindfold)",
+  "Small rocks for tapping",
+  "Pool noodle targets",
+  "Small notepad + pen",
+  "Crystal or geode (wrapped)",
+  "3 printed clue cards",
+  "Rope or stick (balance line)",
+  "Flat rocks for cairn",
+  "Knighting certificate",
+  "7 bead rewards (in order)",
+  "Sparkling cider + cups",
+  "Water bottles + sunscreen + snacks",
+  "Camera / phone (charged!)"
+];
+
+function renderCommander() {
+  const el = document.getElementById("commanderScreen");
+
+  // Timeline
+  const nextId = MISSIONS.find(m => !missionDone(m.id))?.id ?? 99;
+  const timeline = MISSIONS.map(m => {
+    const done = missionDone(m.id);
+    const isNext = m.id === nextId;
+    return `<div class="timeline-item">
+      <div class="tl-dot ${done ? 'done' : isNext ? 'next' : ''}"></div>
+      <div class="tl-info">
+        <div class="tl-title">${done ? '✓ ' : ''}${m.id}. ${m.title}</div>
+        <div class="tl-time">${m.day} · ${m.time} · ${m.duration} · ${m.location}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Photo ops
+  const photos = MISSIONS.map(m => `
+    <div class="cmd-card">
+      <h4>${m.id}. ${m.title}</h4>
+      ${m.photoOps.map((p, i) => `<label class="check-item"><input type="checkbox" ${state.photos[m.id+'_'+i] ? 'checked' : ''} onchange="togglePhoto(${m.id},${i},this.checked)">${p}</label>`).join('')}
+    </div>`).join('');
+
+  // Props by day
+  const days = ["Day 1","Day 2","Day 3"];
+  const propsHtml = days.map(d => {
+    const dm = MISSIONS.filter(m => m.day === d);
+    if (!dm.length) return '';
+    return `<div class="prep-group"><h5>${d}</h5>${dm.map(m =>
+      `<div style="font-size:12px;color:var(--dim);margin-bottom:2px"><b style="color:var(--gold)">${m.id}.</b> ${m.props.join(', ')}</div>`
+    ).join('')}</div>`;
+  }).join('');
+
+  // Prep checklist
+  const prep = PREP_ITEMS.map(p => `<label class="check-item"><input type="checkbox" ${state.prep[p] ? 'checked' : ''} onchange="togglePrep(this.checked,'${p.replace(/'/g,"\\'")}')">${p}</label>`).join('');
+
+  el.innerHTML = `
+    <div class="cmd-section">
+      <div class="cmd-section-title">📋 MISSION TIMELINE</div>
+      ${timeline}
+    </div>
+    <div class="cmd-section">
+      <div class="cmd-section-title">📸 PHOTO OPS</div>
+      ${photos}
+    </div>
+    <div class="cmd-section">
+      <div class="cmd-section-title">🎒 PROPS BY MISSION</div>
+      <div class="cmd-card">${propsHtml}</div>
+    </div>
+    <div class="cmd-section">
+      <div class="cmd-section-title">✅ PRE-TRIP PREP</div>
+      <div class="cmd-card">${prep}</div>
+    </div>`;
+}
+
+function togglePhoto(mid, idx, val) { state.photos[mid+'_'+idx] = val; persist(); }
+function togglePrep(val, item) { state.prep[item] = val; persist(); }
+
+/* ════════════════════════════════════════════════
+   INIT
+   ════════════════════════════════════════════════ */
+if (state.role) showApp();
+else showRoleScreen();
+
+// Register service worker for offline support
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
+</script>
+</body>
+</html>
