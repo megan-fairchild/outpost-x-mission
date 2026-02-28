@@ -62,7 +62,7 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none;-webkit-appea
 .check-item input[type=checkbox]{width:22px;height:22px;accent-color:var(--gold);flex-shrink:0}
 .complete-btn{width:100%;padding:16px;margin-top:14px;border-radius:10px;background:linear-gradient(135deg,var(--orange),var(--gold));color:#000;font-family:'Orbitron',sans-serif;font-weight:700;font-size:14px;letter-spacing:1px;transition:box-shadow .3s,transform .2s}
 .complete-btn:active{transform:scale(.96)}
-.complete-btn.done{background:var(--green);pointer-events:none}
+.complete-btn.done{background:var(--green)}
 .complete-btn.glow{box-shadow:0 0 30px var(--gold),0 0 60px var(--orange);animation:pulse .6s ease}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
 
@@ -299,7 +299,7 @@ function renderMaster() {
         <div>${m.props.map((p, i) => `<label class="check-item"><input type="checkbox" ${state.props[m.id+'_'+i] ? 'checked' : ''} onchange="toggleProp(${m.id},${i},this.checked)">${p}</label>`).join('')}</div>
         <div class="section-label">REWARD</div>
         <p style="color:var(--gold);font-weight:700">⭐ ${m.reward}</p>
-        <button class="complete-btn ${done ? 'done' : ''}" onclick="completeMission(${m.id})" ${done ? 'disabled' : ''}>${done ? 'MISSION COMPLETE ✓' : 'MISSION COMPLETE ✓'}</button>
+        <button class="complete-btn ${done ? 'done' : ''}" onclick="completeMission(${m.id})">${done ? '↺ UNDO COMPLETE' : 'MISSION COMPLETE ✓'}</button>
       </div></div>
     </div>`;
   }).join('');
@@ -319,7 +319,16 @@ function toggleProp(mid, idx, val) {
    COMPLETE MISSION (shared logic)
    ════════════════════════════════════════════════ */
 function completeMission(id) {
-  if (missionDone(id)) return;
+  if (missionDone(id)) {
+    // Undo
+    state.completed = state.completed.filter(c => c !== id);
+    persist();
+    updateHeader();
+    renderMaster();
+    if (state.role === "youngling") renderYoungling();
+    if (state.role === "commander") renderCommander();
+    return;
+  }
   state.completed.push(id);
   persist();
   updateHeader();
@@ -329,7 +338,7 @@ function completeMission(id) {
   if (card) {
     const btn = card.querySelector(".complete-btn");
     btn.classList.add("glow", "done");
-    btn.disabled = true;
+    btn.textContent = "↺ UNDO COMPLETE";
     setTimeout(() => { card.classList.add("done"); card.classList.remove("open"); }, 800);
     card.querySelector(".mc-num").textContent = "✓";
   }
