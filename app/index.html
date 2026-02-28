@@ -37,6 +37,8 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none;-webkit-appea
 .role-card .emoji{font-size:42px;margin-bottom:8px}
 .role-card .name{font-family:'Orbitron',sans-serif;font-size:14px;color:var(--gold);margin-bottom:4px}
 .role-card .desc{font-size:13px;color:var(--dim)}
+.reset-btn{margin-top:12px;background:none;border:1px solid #333;border-radius:10px;padding:8px 16px;color:var(--dim);font-size:12px;display:flex;align-items:center;gap:6px;transition:border-color .3s,color .3s}
+.reset-btn:hover{border-color:var(--orange);color:var(--orange)}
 
 /* ── MASTER VIEW ── */
 .mission-card{background:var(--card);border:1px solid #1e1e3a;border-radius:var(--radius);margin-bottom:14px;overflow:hidden;transition:border-color .3s}
@@ -62,8 +64,8 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none;-webkit-appea
 .check-item input[type=checkbox]{width:22px;height:22px;accent-color:var(--gold);flex-shrink:0}
 .complete-btn{width:100%;padding:16px;margin-top:14px;border-radius:10px;background:linear-gradient(135deg,var(--orange),var(--gold));color:#000;font-family:'Orbitron',sans-serif;font-weight:700;font-size:14px;letter-spacing:1px;transition:box-shadow .3s,transform .2s}
 .complete-btn:active{transform:scale(.96)}
-.complete-btn.done{background:var(--green)}
-.complete-btn.glow{box-shadow:0 0 30px var(--gold),0 0 60px var(--orange);animation:pulse .6s ease}
+.complete-btn.done{background:var(--green);color:#000;box-shadow:0 0 12px rgba(57,255,20,.4)}
+.complete-btn.glow{box-shadow:0 0 30px var(--green),0 0 60px rgba(57,255,20,.5);animation:pulse .6s ease}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
 
 /* ── YOUNGLING VIEW ── */
@@ -135,6 +137,7 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none;-webkit-appea
     <div class="name">COMMANDER MEG'ARA KYN</div>
     <div class="desc">Mission control</div>
   </div>
+  <button class="reset-btn" onclick="resetAll()">🔄 Reset All Progress</button>
 </div>
 
 <!-- MASTER VIEW -->
@@ -261,6 +264,18 @@ function showApp() {
 }
 
 document.getElementById("roleSwitcher").addEventListener("click", showRoleScreen);
+
+function resetAll() {
+  if (!confirm("⚠️ Reset all progress?\n\nThis will clear all completed missions, checkboxes, and beads. You cannot undo this.")) return;
+  localStorage.removeItem("jt_role");
+  localStorage.removeItem("jt_completed");
+  localStorage.removeItem("jt_props");
+  localStorage.removeItem("jt_photos");
+  localStorage.removeItem("jt_prep");
+  localStorage.removeItem("jt_ylIndex");
+  state = { role:null, completed:[], props:{}, photos:{}, prep:{}, ylIndex:0 };
+  showRoleScreen();
+}
 
 /* ════════════════════════════════════════════════
    HEADER UPDATE
