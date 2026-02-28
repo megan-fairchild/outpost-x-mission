@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0A0A14">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Holocron Archives — OutpostX</title>
+<link rel="manifest" href="manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0A0A14;--card:#0F0F1E;--gold:#FFD700;--orange:#FF6B35;--cyan:#00D4FF;--green:#39FF14;--dim:#667;--text:#E8E6E3;--r:14px}
+html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+a{color:var(--cyan);text-decoration:none}
+a:hover{text-decoration:underline}
+button{font-family:inherit;cursor:pointer;border:none;outline:none}
+
+/* ── TAB BAR ── */
+.tab-bar{position:fixed;bottom:0;left:0;right:0;z-index:100;background:#0d0d1a;border-top:1px solid #1a1a2e;display:flex;padding:4px 0 env(safe-area-inset-bottom,8px)}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0;background:none;color:var(--dim);font-size:10px;font-family:'Orbitron',sans-serif;letter-spacing:1px;transition:color .3s}
+.tab.active{color:var(--gold)}
+.tab .ico{font-size:22px}
+
+/* ── HEADER ── */
+.header{position:sticky;top:0;z-index:90;background:linear-gradient(180deg,#0d0d1a 80%,transparent);padding:14px 16px 10px;text-align:center}
+.header h1{font-family:'Orbitron',sans-serif;font-size:16px;color:var(--gold);letter-spacing:3px}
+.header .sub{font-size:12px;color:var(--dim);margin-top:4px}
+
+/* ── SCREENS ── */
+.screen{display:none;padding:16px;padding-bottom:100px}
+.screen.active{display:block}
+
+/* ── HUB ── */
+.hub-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
+.hub-card{background:var(--card);border:1px solid #1e1e3a;border-radius:var(--r);padding:24px 16px;text-align:center;cursor:pointer;transition:border-color .3s,transform .2s}
+.hub-card:active{transform:scale(.97)}
+.hub-card:hover{border-color:var(--gold)}
+.hub-card .hc-icon{font-size:36px;margin-bottom:8px}
+.hub-card .hc-title{font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold);letter-spacing:1px;margin-bottom:6px}
+.hub-card .hc-desc{font-size:12px;color:var(--dim);line-height:1.5}
+.transmission-link{display:block;text-align:center;margin:20px 0;padding:16px;background:var(--card);border:1px solid rgba(255,215,0,.2);border-radius:var(--r);font-family:'Orbitron',sans-serif;font-size:12px;color:var(--gold);letter-spacing:2px;transition:border-color .3s}
+.transmission-link:hover{border-color:var(--gold);text-decoration:none}
+.family-badge{text-align:center;margin-top:24px;padding:16px;font-size:12px;color:var(--dim);line-height:1.8}
+.family-badge .names{color:var(--gold);font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:1px}
+
+/* ── SHARED CONTENT STYLES ── */
+.section-title{font-family:'Orbitron',sans-serif;font-size:13px;color:var(--gold);letter-spacing:2px;margin:24px 0 12px;padding-bottom:8px;border-bottom:1px solid #1e1e3a}
+.section-title:first-child{margin-top:0}
+
+/* Day cards */
+.day-card{background:var(--card);border:1px solid #1e1e3a;border-radius:var(--r);margin-bottom:16px;overflow:hidden}
+.day-head{padding:14px 16px;cursor:pointer;display:flex;align-items:center;gap:12px}
+.day-badge{background:var(--orange);color:#000;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;padding:6px 12px;border-radius:8px;white-space:nowrap}
+.day-info{flex:1;min-width:0}
+.day-name{font-family:'Orbitron',sans-serif;font-size:12px;color:var(--gold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.day-date{font-size:11px;color:var(--dim);margin-top:2px}
+.day-chev{font-size:18px;color:var(--dim);transition:transform .3s;flex-shrink:0}
+.day-card.open .day-chev{transform:rotate(180deg)}
+.day-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.day-card.open .day-body{max-height:5000px}
+.day-content{padding:0 16px 16px}
+
+/* Timeline items */
+.tl{list-style:none;padding:0}
+.tl li{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid #111128;font-size:13px;line-height:1.6}
+.tl li:last-child{border:none}
+.tl .time{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--cyan);min-width:44px;padding-top:2px;flex-shrink:0}
+.tag{display:inline-block;font-size:9px;font-family:'Orbitron',sans-serif;padding:2px 6px;border-radius:4px;margin-left:4px;vertical-align:middle}
+.tag-m{background:rgba(255,107,53,.15);color:var(--orange)}
+.tag-f{background:rgba(255,215,0,.1);color:var(--gold)}
+.tag-p{background:rgba(0,212,255,.1);color:var(--cyan)}
+.photo-ops{margin-top:12px;padding:10px 14px;background:#111128;border-radius:8px;font-size:12px;color:var(--dim)}
+.photo-ops b{color:var(--cyan);font-size:10px;font-family:'Orbitron',sans-serif;letter-spacing:1px}
+.photo-ops ul{list-style:none;padding:0;margin-top:6px;columns:2;column-gap:12px}
+.photo-ops li::before{content:'📸 ';font-size:10px}
+.photo-ops li{padding:2px 0}
+
+/* Mission cards (static reference) */
+.ms-card{background:var(--card);border:1px solid #1e1e3a;border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.ms-head{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer}
+.ms-num{width:36px;height:36px;border-radius:50%;background:var(--orange);color:#000;font-family:'Orbitron',sans-serif;font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ms-info{flex:1;min-width:0}
+.ms-title{font-family:'Orbitron',sans-serif;font-size:12px;color:var(--gold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ms-meta{font-size:11px;color:var(--dim);margin-top:2px}
+.ms-chev{font-size:18px;color:var(--dim);transition:transform .3s;flex-shrink:0}
+.ms-card.open .ms-chev{transform:rotate(180deg)}
+.ms-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.ms-card.open .ms-body{max-height:3000px}
+.ms-content{padding:0 16px 16px}
+.ms-label{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--cyan);letter-spacing:1px;margin:14px 0 6px}
+.ms-label:first-child{margin-top:0}
+.ms-narrative{background:#111128;border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:12px;font-size:13px;line-height:1.6;color:#ddd;font-style:italic}
+.ms-content p{font-size:13px;line-height:1.7;color:#bbb}
+.ms-content ul{padding-left:16px;list-style:none}
+.ms-content li{font-size:13px;line-height:1.7;color:#bbb;padding:2px 0}
+.ms-content li::before{content:'▸ ';color:var(--orange)}
+.ms-reward{color:var(--gold);font-weight:700}
+.ms-note{margin-top:10px;font-size:12px;color:#cc9900;padding:8px 12px;background:rgba(255,215,0,.04);border:1px solid rgba(255,215,0,.12);border-radius:6px}
+
+/* Recipe cards */
+.recipe-card{background:var(--card);border:1px solid #1e1e3a;border-radius:var(--r);margin-bottom:14px;overflow:hidden;position:relative}
+.rc-head{padding:14px 16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between}
+.rc-title{font-family:'Orbitron',sans-serif;font-size:12px;color:var(--gold)}
+.rc-when{font-size:11px;color:var(--dim)}
+.rc-chev{font-size:18px;color:var(--dim);transition:transform .3s}
+.recipe-card.open .rc-chev{transform:rotate(180deg)}
+.rc-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.recipe-card.open .rc-body{max-height:3000px}
+.rc-content{padding:0 16px 16px}
+.rc-label{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--orange);letter-spacing:1px;margin:12px 0 6px}
+.rc-content ul,.rc-content ol{padding-left:18px;font-size:13px;color:#bbb;line-height:1.8}
+
+/* Grocery */
+.grocery-section{background:var(--card);border-radius:var(--r);padding:14px 16px;margin-bottom:10px}
+.grocery-section h4{font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold);margin-bottom:8px}
+.grocery-section ul{list-style:none;padding:0;columns:2;column-gap:16px}
+.grocery-section li{font-size:12px;color:#bbb;padding:3px 0}
+.grocery-section li::before{color:var(--dim)}
+
+/* Clothing */
+.cloth-card{background:var(--card);border:1px solid #1e1e3a;border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.cl-head{padding:14px 16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between}
+.cl-title{font-family:'Orbitron',sans-serif;font-size:12px;color:var(--gold)}
+.cl-weather{font-size:11px;color:var(--dim)}
+.cl-chev{font-size:18px;color:var(--dim);transition:transform .3s}
+.cloth-card.open .cl-chev{transform:rotate(180deg)}
+.cl-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.cloth-card.open .cl-body{max-height:3000px}
+.cl-content{padding:0 16px 16px}
+.person-block{margin-bottom:14px}
+.person-name{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--orange);letter-spacing:1px;margin-bottom:6px}
+.person-block p{font-size:13px;color:#bbb;line-height:1.7;margin-bottom:4px}
+
+/* Packing checklist */
+.pack-grid{columns:2;column-gap:16px}
+.pack-grid label{display:flex;align-items:center;gap:8px;font-size:13px;padding:6px 0;color:#bbb;cursor:pointer}
+.pack-grid input[type=checkbox]{width:18px;height:18px;flex-shrink:0;appearance:none;-webkit-appearance:none;border:2px solid #555;border-radius:4px;background:transparent;cursor:pointer;position:relative}
+.pack-grid input[type=checkbox]:checked{background:var(--green);border-color:var(--green)}
+.pack-grid input[type=checkbox]:checked::after{content:'✓';position:absolute;top:-1px;left:2px;font-size:13px;color:#000;font-weight:bold}
+.pack-grid label:has(input:checked){color:var(--dim);text-decoration:line-through}
+
+/* Meal swap */
+.swap-toggle{position:absolute;top:10px;right:12px;padding:5px 14px;border-radius:8px;font-size:11px;font-family:'Orbitron',sans-serif;letter-spacing:1px;background:var(--card);color:var(--orange);border:1px solid var(--orange);cursor:pointer;transition:all .3s;z-index:2}
+.swap-toggle:hover{background:var(--orange);color:#000}
+
+/* Grocery checkboxes */
+.grocery-section ul{list-style:none;padding:0}
+.grocery-section li{padding:0}
+.grocery-check{display:flex;align-items:center;gap:8px;font-size:13px;padding:5px 0;color:#bbb;cursor:pointer}
+.grocery-check input[type=checkbox]{width:18px;height:18px;accent-color:var(--green);flex-shrink:0;appearance:none;-webkit-appearance:none;border:2px solid #555;border-radius:4px;background:transparent;cursor:pointer;position:relative}
+.grocery-check input[type=checkbox]:checked{background:var(--green);border-color:var(--green)}
+.grocery-check input[type=checkbox]:checked::after{content:'✓';position:absolute;top:-1px;left:2px;font-size:13px;color:#000;font-weight:bold}
+.grocery-check.checked{color:var(--dim);text-decoration:line-through}
+
+/* Prep kit */
+.prep-box{background:var(--card);border:1px solid #1e1e3a;border-radius:var(--r);padding:14px 16px;margin-bottom:14px}
+.prep-box h4{font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold);margin-bottom:10px}
+.prep-box.code{border-color:rgba(255,215,0,.15);background:rgba(255,215,0,.03)}
+.prep-box .code-text{text-align:center;color:var(--gold);font-style:italic;font-size:16px;line-height:2.2}
+
+/* Quick links */
+.ext-link{display:inline-block;padding:6px 12px;background:var(--card);border:1px solid #1e1e3a;border-radius:8px;font-size:12px;margin:4px;transition:border-color .3s}
+.ext-link:hover{border-color:var(--cyan);text-decoration:none}
+
+.mission-artifact{display:inline-block;margin:6px 4px 0;padding:6px 14px;background:rgba(232,160,40,0.1);border:1px solid rgba(232,160,40,0.3);border-radius:8px;font-size:11px;font-family:'Orbitron',sans-serif;letter-spacing:1px;color:var(--orange);text-decoration:none;transition:all .3s}
+.mission-artifact:hover{background:var(--orange);color:#000}
+
+@media(max-width:400px){
+  .hub-grid{grid-template-columns:1fr}
+  .grocery-section ul{columns:1}
+  .pack-grid{columns:1}
+  .photo-ops ul{columns:1}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>📜 HOLOCRON ARCHIVES</h1>
+  <div class="sub">OPERATION OUTPOST X — FULL MISSION BRIEFING</div>
+</div>
+
+<!-- SCREENS -->
+<div id="hubScreen" class="screen active"></div>
+<div id="itineraryScreen" class="screen"></div>
+<div id="missionsScreen" class="screen"></div>
+<div id="mealsScreen" class="screen"></div>
+<div id="wardrobeScreen" class="screen"></div>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <button class="tab active" onclick="showTab('hub')"><span class="ico">🏠</span>HOME</button>
+  <button class="tab" onclick="showTab('itinerary')"><span class="ico">📋</span>ITINERARY</button>
+  <button class="tab" onclick="showTab('missions')"><span class="ico">⚔️</span>MISSIONS</button>
+  <button class="tab" onclick="showTab('meals')"><span class="ico">🍽️</span>PROVISIONS</button>
+  <button class="tab" onclick="showTab('wardrobe')"><span class="ico">👕</span>WARDROBE</button>
+</div>
+
+<script>
+/* ════════════════════════════════════════════
+   DATA
+   ════════════════════════════════════════════ */
+const DAYS = [
+  { num:"Day 1", name:"ARRIVAL ON THE OUTER RIM", date:"Wednesday, April 8", items:[
+    {t:"AM",e:"Fly Seattle → Las Vegas (early flight)"},
+    {t:"11:00",e:"Pick up rental car + grocery stop in Las Vegas or St. George"},
+    {t:"12:00",e:"Drive to OutpostX (~2.5 hrs)"},
+    {t:"2:30",e:"Arrive at OutpostX, check into Glass Cave Villa"},
+    {t:"3:30",e:"Costume up! Everyone changes into Star Wars gear"},
+    {t:"4:00",e:'Sand Cruiser orientation ride <span class="tag tag-p">PHOTO</span>'},
+    {t:"5:30",e:'Dinner: "Mos Eisley Cantina Wraps" <span class="tag tag-f">MEAL</span>'},
+    {t:"6:30",e:'Mission 1: "Awakening the Force" at fire pit <span class="tag tag-m">MISSION</span>'},
+    {t:"7:30",e:'Stargazing from the deck — "Blue Milk" drinks <span class="tag tag-p">PHOTO</span>'}
+  ], photos:["Arrival silhouette","Glass Cave interior","Sand Cruiser shot","Fire pit portrait","Stargazing"]},
+
+  { num:"Day 2", name:"THE TRAINING BEGINS", date:"Thursday, April 9", items:[
+    {t:"7:30",e:'Sunrise + coffee. Breakfast: "Jedi Fuel" <span class="tag tag-f">MEAL</span>'},
+    {t:"9:00",e:'Mission 2: "The Way of the Lightsaber" <span class="tag tag-m">MISSION</span>'},
+    {t:"10:00",e:'Mission 3: "The Sand Cruiser Patrol" <span class="tag tag-m">MISSION</span>'},
+    {t:"11:00",e:'Mission 4: "The Force Balance" — trampoline <span class="tag tag-m">MISSION</span>'},
+    {t:"12:00",e:'Lunch: "Tatooine Trader\'s Pitas" <span class="tag tag-f">MEAL</span>'},
+    {t:"1:00",e:"Rest, free play, explore"},
+    {t:"2:00",e:'Mission 5: "Crafting a Jedi Artifact" — pottery <span class="tag tag-m">MISSION</span>'},
+    {t:"3:30",e:'Cantina mocktails <span class="tag tag-p">PHOTO</span>'},
+    {t:"4:00",e:'Spa: "Healing Springs" — hot tub, sauna, clay bath'},
+    {t:"5:30",e:'Dinner: "Campfire Feast" — kebabs + s\'mores <span class="tag tag-f">MEAL</span>'},
+    {t:"7:30",e:'Movie night at Kaan Lounge — Star Wars: A New Hope <span class="tag tag-p">PHOTO</span>'}
+  ], photos:["Father-son lightsaber training","Sand Cruiser action","Pottery candid","Cantina toast","Campfire family","Movie night"]},
+
+  { num:"Day 3", name:"THE QUEST BEYOND THE OUTPOST", date:"Friday, April 10", items:[
+    {t:"7:30",e:'Breakfast: "Rebel Morning Rations" (overnight oats) <span class="tag tag-f">MEAL</span>'},
+    {t:"8:30",e:"Pack picnic, drive to Snow Canyon State Park (~45 min)"},
+    {t:"9:30",e:'Mission 6: "Tracking the Kyber Crystal" — Petrified Dunes + Lava Flow Trail <span class="tag tag-m">MISSION</span>'},
+    {t:"11:30",e:'Picnic: "Rebel Rations Pack" <span class="tag tag-f">MEAL</span>'},
+    {t:"12:30",e:"Drive back to OutpostX"},
+    {t:"1:30",e:"Rest / nap for Syba Taan"},
+    {t:"3:00",e:'Mission 7: "The Final Trials" <span class="tag tag-m">MISSION</span>'},
+    {t:"4:30",e:"Spa / free time"},
+    {t:"5:30",e:"Costume up for the ceremony"},
+    {t:"6:00",e:'Dinner: "Jedi Council Feast" — steak + sparkling cider <span class="tag tag-f">MEAL</span>'},
+    {t:"7:30",e:'Mission 8: "The Knighting Ceremony" — under the stars <span class="tag tag-m">MISSION</span> <span class="tag tag-p">PHOTO</span>'},
+    {t:"8:30",e:"Celebration toast, stargazing"}
+  ], photos:["Canyon hike panorama","Kyber crystal discovery","Final Trials","Pre-ceremony portrait","THE KNIGHTING","Family under stars"]},
+
+  { num:"Day 4", name:"RETURN TO THE CORE WORLDS", date:"Saturday, April 11", items:[
+    {t:"7:00",e:"Sunrise meditation (optional)"},
+    {t:"7:30",e:'Brunch: "Galactic Send-off" — pancakes + bacon <span class="tag tag-f">MEAL</span>'},
+    {t:"9:00",e:'Final Sand Cruiser ride, last costume photos <span class="tag tag-p">PHOTO</span>'},
+    {t:"10:00",e:"Pack up, check out"},
+    {t:"10:30",e:"Drive to Las Vegas (~2.5 hrs)"},
+    {t:"1:00",e:"Arrive Las Vegas, return rental"},
+    {t:"PM",e:"Fly home to Seattle"}
+  ], photos:["Sunrise silhouette","Final costume portrait","Departure 'walking away' shot"]}
+];
+
+const MISSIONS = [
+  { id:1, title:"AWAKENING THE FORCE", meta:"Day 1 · Evening · 15 min · Fire Pit",
+    dialogue:"The Force is all around us, Syba Taan. It flows through every rock, every flame, every gust of wind. A Jedi does not see the Force — a Jedi feels it. Close your eyes. Tell me what the Force is showing you.",
+    activity:"Blindfold Sybastian with a bandana near the fire pit. He must sit still, breathe, and identify 5 sounds: wind, fire crackling, footsteps (Matthew walks around), Megan clapping, rocks tapping. Master explains how Jedi use the Force to sense what they cannot see.",
+    props:["Bandana (blindfold)","Small rocks to tap together"], reward:"Force Awareness" },
+  { id:2, title:"THE WAY OF THE LIGHTSABER", meta:"Day 2 · 9:00 AM · 25 min · Open area",
+    dialogue:"A lightsaber is not just a weapon, Youngling. It is an extension of you — of your will, your focus, your courage. Today, I will teach you the three sacred forms. Watch closely.",
+    activity:"Teach 3 lightsaber forms: The Shield (horizontal defense), The Strike (overhead swing), The Sweep (side-to-side at knee height). Practice 5× slow, 3× fast. End with slow-motion duel.",
+    props:["Both lightsabers","Pool noodle targets (optional)"], reward:"Form I: Shii-Cho" },
+  { id:3, title:"THE SAND CRUISER PATROL", meta:"Day 2 · 10:00 AM · 30 min · OutpostX property",
+    dialogue:"The Council has received reports of unusual activity on the far side of this outpost. We must patrol the perimeter. Stay sharp, Padawan — report anything unusual you see.",
+    activity:"During Sand Cruiser ride, Sybastian is the 'Scout.' Spot and call out 5 interesting things. Matthew confirms each and adds Jedi lore.",
+    props:["Sand Cruiser (OutpostX amenity)","Small notepad for mission log"], reward:"Outer Rim Scout" },
+  { id:4, title:"THE FORCE BALANCE", meta:"Day 2 · 11:00 AM · 20 min · Trampoline area",
+    dialogue:"A Jedi must command their body as well as their mind. Balance. Control. Grace. The Force flows through a body that is centered. Show me your balance, Youngling.",
+    activity:"Jedi Simon Says on trampolines: Force Jump (high jump arms up), Jedi Freeze (hold still 5 sec), Spin Attack (gentle spin jump), Grogu Bounce (tiny fast bounces with fist ears). End with synchronized Force Jump.",
+    props:["In-ground trampolines (OutpostX amenity)"], reward:"Force Balance" },
+  { id:5, title:"CRAFTING A JEDI ARTIFACT", meta:"Day 2 · 2:00 PM · 45 min · Pottery studio",
+    dialogue:"Every Jedi creates something with their own hands — a relic imbued with the Force. It becomes part of you. Today, you will craft your artifact from the clay of this desert world. Focus your energy into it.",
+    activity:"OutpostX pottery wheels — create a small bowl, cup, or Kyber crystal holder. Both Matthew and Sybastian make one.",
+    props:["Pottery wheels (OutpostX amenity — included)"], reward:"Jedi Artisan" },
+  { id:6, title:"TRACKING THE KYBER CRYSTAL", meta:"Day 3 · 9:30 AM · 90 min · Snow Canyon State Park",
+    dialogue:"Deep in the canyons of this world, the Force has hidden a Kyber Crystal — the heart of every lightsaber. The crystal calls to those who are worthy. Listen, Padawan. Follow the signs. The crystal will reveal itself to you.",
+    activity:'Hike Petrified Sand Dunes (1.2 mi) + Lava Flow Trail (1.7 mi). Megan pre-hides crystal. 3 clues: (1) Past where ancient dunes turned to stone, (2) Where fire once flowed from the earth, (3) It hides where a Jedi would stop to rest. When found: "The crystal chose you, Syba Taan."',
+    props:["Crystal or geode (wrapped in cloth)","3 clue cards","Water + sunscreen + snacks"],
+    reward:"Crystal Guardian",
+    note:"⚠️ Jenny's Canyon is closed March 15–June 1. Petrified Dunes and Lava Flow Trail are open year-round!" },
+  { id:7, title:"THE FINAL TRIALS", meta:"Day 3 · 3:00 PM · 30 min · OutpostX grounds",
+    dialogue:"You have trained well, Youngling. But before you can be knighted, you must pass the three Final Trials. These will test your body, your mind, and your heart. Are you ready?",
+    activity:"Trial of Balance: Walk a line heel-to-toe 10 steps. Trial of Focus: Stack 5 rocks into a cairn in silence. Trial of Courage: Recite the Jedi Code — 'I am calm. I am kind. I am brave. I am one with the Force.'",
+    props:["Rope or stick (balance line)","Flat rocks"], reward:"Trials Complete" },
+  { id:8, title:"THE KNIGHTING CEREMONY", meta:"Day 3 · 7:30 PM · 15 min · Under the stars",
+    dialogue:"Syba Taan. You came to this outpost a Youngling. You have trained in the ways of the Force. You have wielded a lightsaber. You have tracked a Kyber Crystal across the desert. You have passed the Final Trials. You are ready.",
+    activity:'(1) Sybastian kneels, (2) Matthew ignites lightsaber overhead, (3) Touches each shoulder, (4) "By the will of the Force and the authority of the Jedi Council, I knight thee Jedi Knight Syba Taan. Rise, young Jedi." (5) Bow. (6) Present Kyber Crystal: "This crystal chose you in the desert, Syba Taan. It is yours — the heart of your lightsaber." (7) Family hug + sparkling cider toast.',
+    props:["Lightsabers (lit)","Kyber Crystal","Certificate","All 7 beads","Sparkling cider + cups"],
+    reward:"🌟 JEDI KNIGHT SYBA TAAN" }
+];
+
+const MEAL_SLOTS = [
+  { id:'d1d', label:'Day 1 — Dinner', options:[
+    { title:"🌯 Mos Eisley Cantina Wraps", sections:[
+      {label:"INGREDIENTS",items:["1 lb chicken breast, sliced thin","6 large flour tortillas","1 container hummus","Mixed greens","1 bell pepper, sliced","1 cucumber, sliced","Shredded cheese","Olive oil / cumin / paprika / garlic powder / salt / pepper"]},
+      {label:"DIRECTIONS",items:["Season chicken with cumin, paprika, garlic powder, salt & pepper","Cook in skillet with olive oil, 6–7 min per side","Slice into strips","Spread hummus on tortillas","Layer greens, pepper, cucumber, chicken, cheese","Roll up tightly and halve"],ordered:true},
+      {label:"🥛 BLUE MILK",items:["2 cups milk + 1 tbsp vanilla + 2 tbsp honey + 3 drops blue food coloring","Blend with ice and serve cold"]},
+      {label:"👶 FOR SYBASTIAN",items:["Fruit cup (grapes, berries, banana)"]}],
+      grocery:[{c:"🍗 Protein",i:"Chicken breast — 1 lb"},{c:"🥦 Produce",i:"Mixed greens"},{c:"🥦 Produce",i:"1 bell pepper"},{c:"🥦 Produce",i:"1 cucumber"},{c:"🥦 Produce",i:"Grapes — small bag"},{c:"🥦 Produce",i:"Berries (strawberries + blueberries)"},{c:"🥦 Produce",i:"Bananas"},{c:"🧀 Dairy",i:"Shredded cheese"},{c:"🍞 Bread",i:"Flour tortillas — 6-pack"},{c:"🍯 Pantry",i:"Hummus"},{c:"🧂 Spices",i:"Cumin"},{c:"🧂 Spices",i:"Paprika"},{c:"🧂 Spices",i:"Garlic powder"},{c:"🧂 Spices",i:"Blue food coloring"}]
+    },
+    { title:"🍔 Bantha Burgers", sections:[
+      {label:"INGREDIENTS",items:["1.5 lb ground beef","6 hamburger buns","Lettuce, tomato, onion slices","Sliced cheese","Ketchup, mustard","Pickles (optional)"]},
+      {label:"DIRECTIONS",items:["Form beef into 4–6 patties, season with salt & pepper","Grill 4–5 min per side","Toast buns on grill last minute","Assemble with toppings"],ordered:true},
+      {label:"🥛 BLUE MILK",items:["2 cups milk + 1 tbsp vanilla + 2 tbsp honey + 3 drops blue food coloring","Blend with ice and serve cold"]},
+      {label:"👶 FOR SYBASTIAN",items:["Fruit cup (grapes, berries, banana)"]}],
+      grocery:[{c:"🍗 Protein",i:"Ground beef — 1.5 lb"},{c:"🥦 Produce",i:"Lettuce"},{c:"🥦 Produce",i:"Tomato"},{c:"🥦 Produce",i:"Onion"},{c:"🥦 Produce",i:"Grapes — small bag"},{c:"🥦 Produce",i:"Berries (strawberries + blueberries)"},{c:"🥦 Produce",i:"Bananas"},{c:"🧀 Dairy",i:"Sliced cheese"},{c:"🍞 Bread",i:"Hamburger buns — 6-pack"},{c:"🍯 Pantry",i:"Ketchup"},{c:"🍯 Pantry",i:"Mustard"},{c:"🧂 Spices",i:"Blue food coloring"}]
+    }
+  ]},
+  { id:'d2b', label:'Day 2 — Breakfast', options:[
+    { title:"☕ Jedi Fuel", sections:[
+      {label:"INGREDIENTS",items:["6 eggs","Shredded cheese","English muffins or toast + butter","Fruit for Sybastian","Coffee"]},
+      {label:"DIRECTIONS",items:["Scramble eggs with cheese","Toast muffins and butter","Slice fruit","Brew coffee"],ordered:true}],
+      grocery:[{c:"🍗 Protein",i:"Eggs — 1 dozen"},{c:"🧀 Dairy",i:"Shredded cheese"},{c:"🧀 Dairy",i:"Butter — 1 stick"},{c:"🍞 Bread",i:"English muffins or bread"},{c:"🥤 Beverages",i:"Coffee"}]
+    }
+  ]},
+  { id:'d2l', label:'Day 2 — Lunch', options:[
+    { title:"🥙 Tatooine Trader's Pitas", sections:[
+      {label:"INGREDIENTS",items:["6 pita breads","Sliced turkey","Sliced cheese","Lettuce","Hummus"]},
+      {label:"DIRECTIONS",items:["Spread hummus inside pita","Stuff with turkey, cheese, lettuce","Serve with pita chips"],ordered:true}],
+      grocery:[{c:"🍗 Protein",i:"Turkey deli meat — 8 oz"},{c:"🧀 Dairy",i:"Sliced cheese"},{c:"🥦 Produce",i:"Lettuce"},{c:"🍞 Bread",i:"Pita breads — 6-pack"},{c:"🍯 Pantry",i:"Hummus"},{c:"🍯 Pantry",i:"Pita chips"}]
+    },
+    { title:"🌮 Wookiee Quesadillas", sections:[
+      {label:"INGREDIENTS",items:["6 flour tortillas","Shredded chicken (leftover or rotisserie)","Shredded cheese","Salsa","Sour cream"]},
+      {label:"DIRECTIONS",items:["Layer cheese and chicken on half of tortilla","Fold and cook in skillet 3 min per side","Slice into wedges","Serve with salsa and sour cream"],ordered:true}],
+      grocery:[{c:"🍗 Protein",i:"Rotisserie chicken"},{c:"🧀 Dairy",i:"Shredded cheese"},{c:"🧀 Dairy",i:"Sour cream"},{c:"🍞 Bread",i:"Flour tortillas — 6-pack"},{c:"🍯 Pantry",i:"Salsa"}]
+    }
+  ]},
+  { id:'d2d', label:'Day 2 — Dinner', options:[
+    { title:"🔥 Campfire Feast", sections:[
+      {label:"KEBABS",items:["1.5 lbs chicken breast, cubed","2 bell peppers, chunked","2 zucchini, thick sliced","1 red onion, chunked","Wooden skewers (soak 30 min)","Marinade: olive oil / lemon / garlic / oregano / salt / pepper"]},
+      {label:"FOIL POTATOES",items:["4 potatoes, diced","Olive oil, salt, pepper, garlic powder, paprika"]},
+      {label:"DIRECTIONS",items:["Marinate chicken 30 min","Toss potatoes with spices, wrap in foil","Place foil on coals 20–25 min, flip halfway","Thread chicken + veggies on skewers","Grill 10–12 min, turning occasionally"],ordered:true},
+      {label:"🍫 S'MORES",items:["Graham crackers + marshmallows + chocolate bars"]},
+      {label:"🥤 DRINK",items:["'Jogan Fruit Punch' — mixed berry juice in camp cups"]}],
+      grocery:[{c:"🍗 Protein",i:"Chicken breast — 1.5 lb"},{c:"🥦 Produce",i:"2 bell peppers"},{c:"🥦 Produce",i:"2 zucchini"},{c:"🥦 Produce",i:"1 red onion"},{c:"🥦 Produce",i:"4 potatoes"},{c:"🥦 Produce",i:"2 lemons"},{c:"🥦 Produce",i:"1 garlic head"},{c:"🍯 Pantry",i:"Wooden skewers"},{c:"🍯 Pantry",i:"Heavy-duty foil"},{c:"🍯 Pantry",i:"Marshmallows"},{c:"🍯 Pantry",i:"Chocolate bars × 4"},{c:"🍞 Bread",i:"Graham crackers"},{c:"🧂 Spices",i:"Olive oil"},{c:"🧂 Spices",i:"Oregano"},{c:"🧂 Spices",i:"Garlic powder"},{c:"🧂 Spices",i:"Paprika"},{c:"🥤 Beverages",i:"Mixed berry juice"}]
+    },
+    { title:"🍲 Endor Campfire Chili", sections:[
+      {label:"INGREDIENTS",items:["1.5 lb ground beef","1 onion, diced","2 bell peppers, diced","2 cans kidney beans, drained","2 cans diced tomatoes","2 tbsp tomato paste","Shredded cheese (topping)"]},
+      {label:"DIRECTIONS",items:["Brown beef with onion and peppers in large pot","Add beans, tomatoes, tomato paste, and spices","Simmer 25–30 min, stirring occasionally","Serve topped with cheese"],ordered:true},
+      {label:"🍫 S'MORES",items:["Graham crackers + marshmallows + chocolate bars"]},
+      {label:"🥤 DRINK",items:["'Jogan Fruit Punch' — mixed berry juice in camp cups"]}],
+      grocery:[{c:"🍗 Protein",i:"Ground beef — 1.5 lb"},{c:"🥦 Produce",i:"1 onion"},{c:"🥦 Produce",i:"2 bell peppers"},{c:"🍯 Pantry",i:"Canned kidney beans × 2"},{c:"🍯 Pantry",i:"Canned diced tomatoes × 2"},{c:"🍯 Pantry",i:"Tomato paste"},{c:"🍯 Pantry",i:"Marshmallows"},{c:"🍯 Pantry",i:"Chocolate bars × 4"},{c:"🍞 Bread",i:"Graham crackers"},{c:"🧀 Dairy",i:"Shredded cheese"},{c:"🧂 Spices",i:"Chili powder"},{c:"🧂 Spices",i:"Cumin"},{c:"🧂 Spices",i:"Paprika"},{c:"🥤 Beverages",i:"Mixed berry juice"}]
+    }
+  ]},
+  { id:'d3b', label:'Day 3 — Breakfast', options:[
+    { title:"🥣 Rebel Morning Rations", sections:[
+      {label:"OVERNIGHT OATS",items:["2 cups rolled oats","2 cups milk","2 tbsp chia seeds","2 tbsp honey","1 tsp vanilla","Toppings: berries + banana"]},
+      {label:"DIRECTIONS",items:["Mix oats, milk, chia, honey, vanilla in jars night before","Refrigerate overnight","Top with berries + banana in the morning"],ordered:true}],
+      grocery:[{c:"🍯 Pantry",i:"Rolled oats"},{c:"🍯 Pantry",i:"Chia seeds"},{c:"🧀 Dairy",i:"Milk — half gallon"},{c:"🧂 Spices",i:"Honey"},{c:"🧂 Spices",i:"Vanilla extract"},{c:"🥦 Produce",i:"Berries (strawberries + blueberries)"},{c:"🥦 Produce",i:"Bananas"}]
+    }
+  ]},
+  { id:'d3l', label:'Day 3 — Trail Picnic', options:[
+    { title:"🎒 Rebel Rations Pack", sections:[
+      {label:"PACK IN COOLER BAG",items:["Turkey + cheese roll-ups","String cheese","Trail mix","Granola bars","Fruit pouches for Sybastian","Water bottles (freeze overnight)"]}],
+      grocery:[{c:"🍗 Protein",i:"Turkey deli meat — 8 oz"},{c:"🧀 Dairy",i:"String cheese"},{c:"🍯 Pantry",i:"Trail mix"},{c:"🍯 Pantry",i:"Granola bars"},{c:"🍯 Pantry",i:"Fruit pouches"}]
+    }
+  ]},
+  { id:'d3d', label:'Day 3 — Dinner — THE BIG ONE', options:[
+    { title:"🥩 Jedi Council Feast", sections:[
+      {label:"STEAK",items:["2 ribeye or NY strip steaks (1–1.5 lbs)","Salt / pepper / garlic powder","Butter + fresh rosemary"]},
+      {label:"DIRECTIONS",items:["Bring steaks to room temp 30 min","Season generously","Grill 4–5 min per side for medium","Rest 5 min, top with butter + rosemary","Slice thin for Sybastian"],ordered:true},
+      {label:"VEGGIES",items:["Asparagus or green beans + cherry tomatoes in foil","Drizzle olive oil, salt & pepper","Cook 15–20 min on fire"]},
+      {label:"GARLIC BREAD",items:["Baguette or frozen garlic bread — warm in foil"]},
+      {label:"⚔️ LIGHTSABER PRETZELS",items:["Pretzel rods dipped in green/blue candy melts (prep at home)"]},
+      {label:"🥂 TOAST",items:["Sparkling apple cider — saved for the Knighting!"]}],
+      grocery:[{c:"🍗 Protein",i:"2 steaks (ribeye or NY strip)"},{c:"🥦 Produce",i:"Asparagus or green beans"},{c:"🥦 Produce",i:"Cherry tomatoes — 1 pint"},{c:"🥦 Produce",i:"Fresh rosemary (optional)"},{c:"🧀 Dairy",i:"Butter — 1 stick"},{c:"🍞 Bread",i:"Baguette or frozen garlic bread"},{c:"🧂 Spices",i:"Olive oil"},{c:"🧂 Spices",i:"Garlic powder"},{c:"🧂 Spices",i:"Salt + pepper"},{c:"🥤 Beverages",i:"Sparkling apple cider"}]
+    },
+    { title:"🍗 Mandalorian Grilled Chicken", sections:[
+      {label:"INGREDIENTS",items:["2 lbs chicken thighs (bone-in for flavor)","2 lemons, juiced","Fresh rosemary + oregano","Garlic, minced","Olive oil, salt & pepper"]},
+      {label:"DIRECTIONS",items:["Marinate chicken in lemon, herbs, garlic, oil for 30 min","Grill 7–8 min per side until cooked through","Rest 5 min, slice for serving","Slice thin for Sybastian"],ordered:true},
+      {label:"VEGGIES",items:["Asparagus or green beans + cherry tomatoes in foil","Drizzle olive oil, salt & pepper","Cook 15–20 min on fire"]},
+      {label:"GARLIC BREAD",items:["Baguette or frozen garlic bread — warm in foil"]},
+      {label:"🥂 TOAST",items:["Sparkling apple cider — saved for the Knighting!"]}],
+      grocery:[{c:"🍗 Protein",i:"Chicken thighs — 2 lbs"},{c:"🥦 Produce",i:"2 lemons"},{c:"🥦 Produce",i:"Fresh rosemary"},{c:"🥦 Produce",i:"1 garlic head"},{c:"🥦 Produce",i:"Asparagus or green beans"},{c:"🥦 Produce",i:"Cherry tomatoes — 1 pint"},{c:"🍞 Bread",i:"Baguette or frozen garlic bread"},{c:"🧂 Spices",i:"Olive oil"},{c:"🧂 Spices",i:"Oregano"},{c:"🧂 Spices",i:"Salt + pepper"},{c:"🥤 Beverages",i:"Sparkling apple cider"}]
+    }
+  ]},
+  { id:'d4b', label:'Day 4 — Brunch', options:[
+    { title:"🥞 Galactic Send-off", sections:[
+      {label:"INGREDIENTS",items:["Pancake mix + eggs + milk + butter","Bacon","Maple syrup","Fruit for Sybastian","Coffee"]},
+      {label:"DIRECTIONS",items:["Mix batter per package","Use Star Wars cookie cutters for shapes (optional)","Cook bacon separately","Serve with syrup + fruit"],ordered:true}],
+      grocery:[{c:"🍗 Protein",i:"Bacon — 1 pkg"},{c:"🍗 Protein",i:"Eggs — 1 dozen"},{c:"🧀 Dairy",i:"Milk — half gallon"},{c:"🧀 Dairy",i:"Butter — 1 stick"},{c:"🍞 Bread",i:"Pancake mix"},{c:"🧂 Spices",i:"Maple syrup"},{c:"🥤 Beverages",i:"Coffee"}]
+    },
+    { title:"🌯 Hyperspace Breakfast Burritos", sections:[
+      {label:"INGREDIENTS",items:["6 eggs","6 flour tortillas","Bacon or sausage","Shredded cheese","1 bell pepper, diced","Salsa"]},
+      {label:"DIRECTIONS",items:["Cook bacon/sausage, chop into bits","Sauté diced bell pepper 3 min","Scramble eggs, mix in meat and pepper","Spoon onto tortillas, top with cheese and salsa","Roll up and serve"],ordered:true}],
+      grocery:[{c:"🍗 Protein",i:"Eggs — 1 dozen"},{c:"🍗 Protein",i:"Bacon — 1 pkg"},{c:"🧀 Dairy",i:"Shredded cheese"},{c:"🍞 Bread",i:"Flour tortillas — 6-pack"},{c:"🥦 Produce",i:"1 bell pepper"},{c:"🍯 Pantry",i:"Salsa"},{c:"🥤 Beverages",i:"Coffee"}]
+    }
+  ]}
+];
+
+const BASE_GROCERY = [
+  {c:"🧂 Spices",i:"Salt + pepper"},
+  {c:"🧂 Spices",i:"Olive oil"},
+  {c:"🥤 Beverages",i:"Water bottles — case"}
+];
+
+const WARDROBE = [
+  { day:"Day 1 — Travel + Arrival", weather:"Arrive afternoon ~55–60°F · Evening drops to ~38°F", people:[
+    {name:"🗡 MASTER MATTHANE SOL",lines:["Travel: Jeans, casual tee, sneakers, hoodie for the plane","Evening: Jedi robes over thermal base layer + warm pants, boots. Add beanie after dark."]},
+    {name:"🌟 YOUNGLING SYBA TAAN",lines:["Travel: Comfy play clothes, sneakers, zip-up jacket","Evening: Padawan costume over long-sleeve thermal + warm pants. Warm hat + gloves for stargazing."]},
+    {name:"⚔️ COMMANDER MEG'ARA KYN",lines:["Travel: Desert-tone comfy outfit (cream or slate), comfy shoes","Evening: Warm layers — scarf, earth-tone wrap or jacket. Camera-ready but cozy."]}
+  ]},
+  { day:"Day 2 — Full Training Day", weather:"Morning ~40°F · Afternoon ~58°F · Evening ~40°F", people:[
+    {name:"🗡 MASTER MATTHANE SOL",lines:["Morning: Full Jedi robes over thermal base + fleece mid-layer, boots","Afternoon: Shed outer robe — earth-tone henley, cargo pants, boots","Evening: Layer back up for campfire + movie night"]},
+    {name:"🌟 YOUNGLING SYBA TAAN",lines:["Morning: Padawan costume over thermals, warm closed-toe shoes","Afternoon: Comfy play clothes for pottery + trampoline (can get messy!)","Evening: Warm PJs + blanket for movie night"]},
+    {name:"⚔️ COMMANDER MEG'ARA KYN",lines:["Morning: Warrior costume with warm layers underneath, boots — training photo ops!","Afternoon: Desert casual (earth-tone top + leggings, comfortable shoes)","Evening: Cozy layers, scarf, warm drink by the fire"]}
+  ]},
+  { day:"Day 3 — Hike + Knighting Ceremony", weather:"Morning ~42°F · Afternoon ~60°F · Evening ~38°F", people:[
+    {name:"🗡 MASTER MATTHANE SOL",lines:["Morning hike: Moisture-wicking base, fleece, hiking pants, hiking shoes, hat, sunglasses","Afternoon: Casual rest clothes","Evening ceremony: Full Jedi robes over warm base layers — THIS is THE moment"]},
+    {name:"🌟 YOUNGLING SYBA TAAN",lines:["Morning hike: Warm layers, sturdy shoes, hat, sunscreen","Afternoon: Rest clothes / PJs for nap","Evening ceremony: Full Padawan robes over warm thermals — HIS big moment"]},
+    {name:"⚔️ COMMANDER MEG'ARA KYN",lines:["Morning hike: Earth-tone hiking layers, sturdy shoes, hat, sunscreen","Afternoon: Comfortable rest wear","Evening ceremony: Warrior costume or desert elegant — the ceremony photos!"]}
+  ]},
+  { day:"Day 4 — Departure", weather:"Morning ~40°F", people:[
+    {name:"ALL",lines:["Comfortable travel clothes for the drive + flight home","📸 One last costume photo before packing up — do this first thing!"]}
+  ]}
+];
+
+const PACKING = [
+  "Star Wars costume","Thermal base layers (3–4)","Warm fleece/jacket","Hiking shoes + casual shoes","Hat + sunglasses","Sunscreen","Beanie + gloves (evenings)","Warm scarf","Pajamas (2 sets)","Swimsuit (hot tub!)","Portable phone charger","Camera + extra battery","Reusable water bottles","Small first aid kit","Lightsabers (both!)","Small backpack (for hike)"
+];
+
+const PREP_BUY = [
+  "7 Padawan Beads — small wooden or colored beads, string on cord as earned",
+  "1 Kyber Crystal — real crystal, geode, or polished stone. Wrap in cloth",
+  "3 Clue Cards — handwrite or print on tea-stained paper. Age with crumpled edges",
+  "Jedi Knight Certificate — fancy certificate for Syba Taan",
+  "Bandana — for blindfold in Mission 1 (earth tone)",
+  "Lightsaber Pretzels — pretzel rods + green/blue candy melts. Dip at home",
+  "Blue Food Coloring — for Blue Milk",
+  "Star Wars Cookie Cutters — optional, Day 4 pancakes",
+  "Small Notepad — for mission log",
+  "Rope or long stick — for balance trial"
+];
+
+/* ════════════════════════════════════════════
+   PACKING STATE (persisted)
+   ════════════════════════════════════════════ */
+function loadPack() { try { return JSON.parse(localStorage.getItem('holo_pack')) || {}; } catch { return {}; } }
+function savePack(s) { localStorage.setItem('holo_pack', JSON.stringify(s)); }
+let packState = loadPack();
+function togglePack(item, cb) { packState[item] = cb.checked; savePack(packState); }
+
+function loadMeals() { try { return JSON.parse(localStorage.getItem('holo_meals')) || {}; } catch { return {}; } }
+function saveMeals(s) { localStorage.setItem('holo_meals', JSON.stringify(s)); }
+let mealState = loadMeals();
+function getSlotChoice(slotId) { return mealState[slotId] || 0; }
+function setSlotChoice(slotId, idx) {
+  mealState[slotId] = idx; saveMeals(mealState);
+  const card = document.querySelector(`[data-slot="${slotId}"]`);
+  const wasOpen = card && card.classList.contains('open');
+  const slot = MEAL_SLOTS.find(s => s.id === slotId);
+  const r = slot.options[idx];
+  const next = (idx + 1) % slot.options.length;
+  card.querySelector('.rc-title').textContent = r.title;
+  card.querySelector('.swap-toggle').setAttribute('onclick', `event.stopPropagation();setSlotChoice('${slotId}',${next})`);
+  card.querySelector('.rc-content').innerHTML = r.sections.map(s => `
+    <div class="rc-label">${s.label}</div>
+    ${s.ordered ? `<ol>${s.items.map(i => `<li>${i}</li>`).join('')}</ol>` : `<ul>${s.items.map(i => `<li>${i}</li>`).join('')}</ul>`}
+  `).join('');
+  if (wasOpen) card.classList.add('open');
+  rebuildGrocery();
+}
+
+function loadGroceryChecks() { try { return JSON.parse(localStorage.getItem('holo_groc')) || {}; } catch { return {}; } }
+function saveGroceryChecks(s) { localStorage.setItem('holo_groc', JSON.stringify(s)); }
+let groceryChecks = loadGroceryChecks();
+function toggleGrocery(item, cb) {
+  groceryChecks[item] = cb.checked;
+  saveGroceryChecks(groceryChecks);
+  cb.parentElement.classList.toggle('checked', cb.checked);
+}
+
+function buildGroceryList() {
+  const all = [...BASE_GROCERY];
+  MEAL_SLOTS.forEach(slot => {
+    const choice = getSlotChoice(slot.id);
+    const recipe = slot.options[choice];
+    if (recipe && recipe.grocery) all.push(...recipe.grocery);
+  });
+  const cats = {};
+  const catOrder = ["🍗 Protein","🥦 Produce","🧀 Dairy","🍞 Bread","🍯 Pantry","🧂 Spices","🥤 Beverages"];
+  catOrder.forEach(c => cats[c] = []);
+  all.forEach(g => {
+    if (!cats[g.c]) cats[g.c] = [];
+    if (!cats[g.c].includes(g.i)) cats[g.c].push(g.i);
+  });
+  return catOrder.filter(c => cats[c].length > 0).map(c => ({cat:c, items:cats[c]}));
+}
+
+/* ════════════════════════════════════════════
+   NAVIGATION
+   ════════════════════════════════════════════ */
+function showTab(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(name + 'Screen').classList.add('active');
+  document.querySelectorAll('.tab')[['hub','itinerary','missions','meals','wardrobe'].indexOf(name)].classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function goTab(name) { showTab(name); }
+
+/* ════════════════════════════════════════════
+   TOGGLE ACCORDION
+   ════════════════════════════════════════════ */
+function toggle(el) { el.closest('.day-card,.ms-card,.recipe-card,.cloth-card').classList.toggle('open'); }
+
+/* ════════════════════════════════════════════
+   RENDER HUB
+   ════════════════════════════════════════════ */
+function renderHub() {
+  document.getElementById('hubScreen').innerHTML = `
+    <div class="hub-grid">
+      <div class="hub-card" onclick="goTab('itinerary')">
+        <div class="hc-icon">📋</div>
+        <div class="hc-title">ITINERARY</div>
+        <div class="hc-desc">4-day timeline with missions, meals & photo ops</div>
+      </div>
+      <div class="hub-card" onclick="goTab('missions')">
+        <div class="hc-icon">⚔️</div>
+        <div class="hc-title">MISSIONS</div>
+        <div class="hc-desc">8 Jedi training missions with dialogue & props</div>
+      </div>
+      <div class="hub-card" onclick="goTab('meals')">
+        <div class="hc-icon">🍽️</div>
+        <div class="hc-title">PROVISIONS</div>
+        <div class="hc-desc">Themed recipes & master grocery list</div>
+      </div>
+      <div class="hub-card" onclick="goTab('wardrobe')">
+        <div class="hc-icon">👕</div>
+        <div class="hc-title">WARDROBE</div>
+        <div class="hc-desc">Day-by-day clothing guide & packing checklist</div>
+      </div>
+    </div>
+    <a href="../printables/index.html" target="_blank" class="transmission-link">🖨️ PRINTABLES — Clue Cards · Certificate · Chant · Activity Book</a>
+    <a href="https://megan-fairchild.github.io/outpost-x-mission/" target="_blank" class="transmission-link">📡 VIEW ORIGINAL TRANSMISSION</a>
+    <div style="text-align:center;margin-top:12px">
+      <a href="https://megan-fairchild.github.io/outpost-x-mission/app/" target="_blank" class="ext-link">🗡️ Missions Tracker App</a>
+    </div>
+    <div style="text-align:center;margin-top:20px">
+      <a href="https://outpost-x.com/" target="_blank" class="ext-link">🌐 OutpostX</a>
+      <a href="https://stateparks.utah.gov/parks/snow-canyon/" target="_blank" class="ext-link">🏜️ Snow Canyon</a>
+      <a href="https://www.alltrails.com/trail/us/utah/petrified-dunes-trail" target="_blank" class="ext-link">🪨 Petrified Dunes</a>
+      <a href="https://www.alltrails.com/trail/us/utah/lava-flow-trail" target="_blank" class="ext-link">🌋 Lava Flow</a>
+    </div>
+    <div class="family-badge">
+      <div class="names">Master Matthane Sol · Youngling Syba Taan · Commander Meg'ara Kyn</div>
+      <div style="margin-top:4px">April 8–11, 2026 · OutpostX Beryl Utah · Glass Cave Villa</div>
+      <div style="margin-top:12px;color:var(--gold);font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px">MAY THE FORCE BE WITH YOU. ALWAYS.</div>
+    </div>`;
+}
+
+/* ════════════════════════════════════════════
+   RENDER ITINERARY
+   ════════════════════════════════════════════ */
+function renderItinerary() {
+  document.getElementById('itineraryScreen').innerHTML = DAYS.map(d => `
+    <div class="day-card">
+      <div class="day-head" onclick="toggle(this)">
+        <div class="day-badge">${d.num}</div>
+        <div class="day-info">
+          <div class="day-name">"${d.name}"</div>
+          <div class="day-date">${d.date}</div>
+        </div>
+        <span class="day-chev">▾</span>
+      </div>
+      <div class="day-body"><div class="day-content">
+        <ul class="tl">${d.items.map(i => `<li><span class="time">${i.t}</span><span>${i.e}</span></li>`).join('')}</ul>
+        <div class="photo-ops"><b>📸 PHOTO OPS</b><ul>${d.photos.map(p => `<li>${p}</li>`).join('')}</ul></div>
+      </div></div>
+    </div>`).join('');
+}
+
+/* ════════════════════════════════════════════
+   RENDER MISSIONS
+   ════════════════════════════════════════════ */
+function renderMissions() {
+  const el = document.getElementById('missionsScreen');
+  el.innerHTML = MISSIONS.map(m => `
+    <div class="ms-card">
+      <div class="ms-head" onclick="toggle(this)">
+        <div class="ms-num">${m.id}</div>
+        <div class="ms-info">
+          <div class="ms-title">${m.title}</div>
+          <div class="ms-meta">${m.meta}</div>
+        </div>
+        <span class="ms-chev">▾</span>
+      </div>
+      <div class="ms-body"><div class="ms-content">
+        <div class="ms-label">MASTER SAYS</div>
+        <p class="ms-narrative">"${m.dialogue}"</p>
+        <div class="ms-label">ACTIVITY</div>
+        <p>${m.activity}</p>
+        <div class="ms-label">PROPS</div>
+        <ul>${m.props.map(p => `<li>${p}</li>`).join('')}</ul>
+        ${m.note ? `<div class="ms-note">${m.note}</div>` : ''}
+        <div class="ms-label">REWARD</div>
+        <p><span class="ms-reward">⭐ ${m.reward}</span></p>
+        ${m.id === 6 ? '<div style="margin-top:10px"><a href="../printables/clue-cards.html" target="_blank" class="mission-artifact">📜 PRINT CLUE CARDS</a></div>' : ''}
+        ${m.id === 8 ? '<div style="margin-top:10px"><a href="../printables/certificate.html" target="_blank" class="mission-artifact">🌟 PRINT CERTIFICATE</a></div>' : ''}
+      </div></div>
+    </div>`).join('') + `
+
+    <div class="section-title">MISSION PREP KIT</div>
+    <div class="prep-box">
+      <h4>BUY / MAKE BEFORE DEPARTURE</h4>
+      <ul style="list-style:none;padding:0">${PREP_BUY.map(p => `<li style="font-size:13px;color:#bbb;padding:4px 0;line-height:1.6">▸ ${p}</li>`).join('')}</ul>
+    </div>
+    <div class="prep-box code">
+      <h4 style="color:var(--gold)">TEACH SYBASTIAN BEFORE THE TRIP</h4>
+      <p style="font-size:12px;color:#bbb;margin-bottom:8px">The Youngling Jedi Code — practice at home for the Final Trials:</p>
+      <div class="code-text">"I am calm.<br>I am kind.<br>I am brave.<br>I am one with the Force."</div>
+      <div style="margin-top:10px"><a href="../printables/chant-card.html" target="_blank" class="mission-artifact">⚔️ PRINT CHANT CARD</a></div>
+    </div>
+    <a href="../printables/index.html" target="_blank" class="transmission-link">🖨️ PRINTABLES — Clue Cards · Certificate · Chant · Activity Book</a>
+    <a href="../app/index.html" target="_blank" style="display:block;text-align:center;margin:20px 0;padding:14px;background:var(--orange);color:#000;border-radius:var(--r);font-family:'Orbitron',sans-serif;font-weight:700;font-size:14px;letter-spacing:1px;text-decoration:none">🎯 LAUNCH MISSION TRACKER APP</a>`;
+}
+
+/* ════════════════════════════════════════════
+   RENDER MEALS
+   ════════════════════════════════════════════ */
+function renderMeals() {
+  const el = document.getElementById('mealsScreen');
+  const recipes = MEAL_SLOTS.map(slot => {
+    const sel = getSlotChoice(slot.id);
+    const r = slot.options[sel];
+    const hasAlts = slot.options.length > 1;
+    return `
+    <div class="recipe-card" data-slot="${slot.id}">
+      ${hasAlts ? `<button class="swap-toggle" onclick="event.stopPropagation();setSlotChoice('${slot.id}',${(sel+1)%slot.options.length})">⇄ SWAP</button>` : ''}
+      <div class="rc-head" onclick="toggle(this)">
+        <div>
+          <div class="rc-title">${r.title}</div>
+          <div class="rc-when">${slot.label}</div>
+        </div>
+        <span class="rc-chev">▾</span>
+      </div>
+      <div class="rc-body"><div class="rc-content">
+        ${r.sections.map(s => `
+          <div class="rc-label">${s.label}</div>
+          ${s.ordered ? `<ol>${s.items.map(i => `<li>${i}</li>`).join('')}</ol>` : `<ul>${s.items.map(i => `<li>${i}</li>`).join('')}</ul>`}
+        `).join('')}
+      </div></div>
+    </div>`;
+  }).join('');
+
+  const groceryHtml = buildGroceryHtml();
+
+  el.innerHTML = recipes + `<div id="groceryContainer">${groceryHtml}</div>`;
+}
+
+function buildGroceryHtml() {
+  const groceryList = buildGroceryList();
+  return `<div class="section-title">MASTER GROCERY LIST</div>
+    <p style="font-size:12px;color:var(--dim);margin-bottom:12px">Auto-updated based on selected meals • Buy in Las Vegas or St. George</p>
+    ${groceryList.map(g => `<div class="grocery-section"><h4>${g.cat}</h4><ul>${g.items.map(i => {
+      const ck = groceryChecks[i] ? 'checked' : '';
+      return `<li><label class="grocery-check ${ck ? 'checked' : ''}"><input type="checkbox" ${ck} onchange="toggleGrocery('${i.replace(/'/g,"\\'")}',this)">${i}</label></li>`;
+    }).join('')}</ul></div>`).join('')}`;
+}
+
+function rebuildGrocery() {
+  const gc = document.getElementById('groceryContainer');
+  if (gc) gc.innerHTML = buildGroceryHtml();
+}
+
+/* ════════════════════════════════════════════
+   RENDER WARDROBE
+   ════════════════════════════════════════════ */
+function renderWardrobe() {
+  const el = document.getElementById('wardrobeScreen');
+  const cards = WARDROBE.map(w => `
+    <div class="cloth-card">
+      <div class="cl-head" onclick="toggle(this)">
+        <div>
+          <div class="cl-title">${w.day}</div>
+          <div class="cl-weather">${w.weather}</div>
+        </div>
+        <span class="cl-chev">▾</span>
+      </div>
+      <div class="cl-body"><div class="cl-content">
+        ${w.people.map(p => `<div class="person-block"><div class="person-name">${p.name}</div>${p.lines.map(l => `<p>${l}</p>`).join('')}</div>`).join('')}
+      </div></div>
+    </div>`).join('');
+
+  const packing = `<div class="section-title">🧳 PACKING CHECKLIST</div>
+    <div style="background:var(--card);border-radius:var(--r);padding:14px 16px;margin-bottom:14px">
+      <div class="pack-grid">${PACKING.map(p => `<label><input type="checkbox" ${packState[p]?'checked':''} onchange="togglePack('${p.replace(/'/g,"\\'")}',this)">${p}</label>`).join('')}</div>
+    </div>`;
+
+  el.innerHTML = cards + packing;
+}
+
+/* ════════════════════════════════════════════
+   INIT
+   ════════════════════════════════════════════ */
+renderHub();
+renderItinerary();
+renderMissions();
+renderMeals();
+renderWardrobe();
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kyber Crystal Clue Cards</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a14;font-family:Georgia,'Times New Roman',serif;display:flex;flex-direction:column;align-items:center;padding:20px;gap:40px}
+h1{font-family:'Orbitron',sans-serif;color:#e8a028;font-size:20px;letter-spacing:3px;margin-bottom:10px;text-align:center}
+p.subtitle{color:#8899aa;font-size:13px;text-align:center;margin-bottom:20px;font-style:italic}
+
+.card{
+  width:5in;height:3in;
+  border:3px solid #e8a028;
+  border-radius:12px;
+  background:linear-gradient(135deg,#1a1510 0%,#0d0b08 50%,#1a1510 100%);
+  position:relative;
+  overflow:hidden;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  padding:24px 32px;
+  page-break-inside:avoid;
+}
+.card::before{
+  content:'';position:absolute;inset:8px;
+  border:1px solid rgba(232,160,40,0.25);border-radius:8px;pointer-events:none;
+}
+.card::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,0.5) 100%);
+  pointer-events:none;
+}
+
+.card-num{
+  font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:4px;
+  color:#e8a028;opacity:0.6;margin-bottom:8px;
+}
+.card-icon{font-size:36px;margin-bottom:12px;position:relative;z-index:1}
+.card-clue{
+  font-size:18px;color:#ddc89b;text-align:center;line-height:1.6;
+  font-style:italic;position:relative;z-index:1;
+  text-shadow:0 0 20px rgba(232,160,40,0.2);
+}
+.card-footer{
+  font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;
+  color:#e8a028;opacity:0.4;margin-top:14px;position:relative;z-index:1;
+}
+
+/* Corner decorations */
+.corner{position:absolute;width:20px;height:20px;z-index:2}
+.corner svg{width:100%;height:100%}
+.tl{top:14px;left:14px}
+.tr{top:14px;right:14px;transform:scaleX(-1)}
+.bl{bottom:14px;left:14px;transform:scaleY(-1)}
+.br{bottom:14px;right:14px;transform:scale(-1)}
+
+.print-btn{
+  font-family:'Orbitron',sans-serif;padding:12px 32px;
+  background:#e8a028;color:#000;border:none;border-radius:8px;
+  font-size:14px;cursor:pointer;letter-spacing:2px;font-weight:700;
+  margin-top:10px;
+}
+.print-btn:hover{background:#f0b848}
+
+.instructions{
+  background:#111;border:1px solid #333;border-radius:10px;padding:16px 24px;
+  max-width:5in;color:#8899aa;font-size:13px;line-height:1.7;
+}
+.instructions strong{color:#e8a028}
+
+@media print{
+  body{background:#fff;padding:0;gap:0.3in}
+  .card{border-color:#333;background:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .card::before{border-color:rgba(0,0,0,0.15)}
+  .card::after{display:none}
+  .card-clue{color:#222;text-shadow:none}
+  .card-num,.card-footer{color:#666}
+  .card-icon{filter:grayscale(1)}
+  .corner svg line{stroke:#999 !important}
+  .print-btn,.instructions,h1,p.subtitle{display:none}
+}
+</style>
+</head>
+<body>
+
+<div>
+  <h1>⚔️ KYBER CRYSTAL CLUE CARDS</h1>
+  <p class="subtitle">Mission 6 — Snow Canyon State Park — Pre-hide the crystal, hand clues one at a time</p>
+</div>
+
+<div class="card">
+  <span class="corner tl"><svg viewBox="0 0 20 20"><line x1="0" y1="0" x2="20" y2="0" stroke="#e8a028" stroke-width="2"/><line x1="0" y1="0" x2="0" y2="20" stroke="#e8a028" stroke-width="2"/></svg></span>
+  <span class="corner tr"><svg viewBox="0 0 20 20"><line x1="0" y1="0" x2="20" y2="0" stroke="#e8a028" stroke-width="2"/><line x1="0" y1="0" x2="0" y2="20" stroke="#e8a028" stroke-width="2"/></svg></span>
+  <span class="corner bl"><svg viewBox="0 0 20 20"><line x1="0" y1="0" x2="20" y2="0" stroke="#e8a028" stroke-width="2"/><line x1="0" y1="0" x2="0" y2="20" stroke="#e8a028" stroke-width="2"/></svg></span>
+  <span class="corner br"><svg viewBox="0 0 20 20"><line x1="0" y1="0" x2="20" y2="0" stroke="#e8a028" stroke-width="2"/><line x1="0" y1="0" x2="0" y2="20" stroke="#e8a028" stroke-width="2"/></svg></span>
+  <div class="card-num">CLUE I</div>
+  <div class="card-icon">🪨</div>
+  <div class="card-clue">"Past where ancient dunes<br>turned to stone…"</div>
+  <div class="card-footer">JEDI COUNCIL INTELLIGENCE</div>
+</div>
+
+<div class="card">
+  <span class="corner tl"><svg viewBox="0 0 20 20"><line x1="0" y1="0" x2="20" y2="0" stroke="#e8a028" stroke-width="2"/><line x1="0" y1="0" x2="0" y2="20" stroke="#e8a028" stroke-width="2"/></svg></span>
+  <span class="corner tr"><svg viewBox="0 0 20 20"><line x1="0" y1="0" x2="20" y2="0" stroke="#e8a028" stroke-width="2"/><line x1="0" y1="0" x2="0" y2="20" stroke="#e8a028" stroke-width="2"/></svg></span>
+  <span class="corner bl"><svg viewBox="0 0 20 20"><line x1="0" y1="0" x2="20" y2="0" stroke="#e8a028" stroke-width="2"/><line x1="0" y1="0" x2="0" y2="20" stroke="#e8a028" stroke-width="2"/></svg></span>
+  <span class="corner br"><svg viewBox="0 0 20 20"><line x1="0" y1="0" x2="20" y2="0" stroke="#e8a028" stroke-width="2"/><line x1="0" y1="0" x2="0" y2="20" stroke="#e8a028" stroke-width="2"/></svg></span>
+  <div class="card-num">CLUE II</div>
+  <div class="card-icon">🌋</div>
+  <div class="card-clue">"Where fire once flowed<br>from the earth…"</div>
+  <div class="card-footer">JEDI COUNCIL INTELLIGENCE</div>
+</div>
+
+<div class="card">
+  <span class="corner tl"><svg viewBox="0 0 20 20"><line x1="0" y1="0" x2="20" y2="0" stroke="#e8a028" stroke-width="2"/><line x1="0" y1="0" x2="0" y2="20" stroke="#e8a028" stroke-width="2"/></svg></span>
+  <span class="corner tr"><svg viewBox="0 0 20 20"><line x1="0" y1="0" x2="20" y2="0" stroke="#e8a028" stroke-width="2"/><line x1="0" y1="0" x2="0" y2="20" stroke="#e8a028" stroke-width="2"/></svg></span>
+  <span class="corner bl"><svg viewBox="0 0 20 20"><line x1="0" y1="0" x2="20" y2="0" stroke="#e8a028" stroke-width="2"/><line x1="0" y1="0" x2="0" y2="20" stroke="#e8a028" stroke-width="2"/></svg></span>
+  <span class="corner br"><svg viewBox="0 0 20 20"><line x1="0" y1="0" x2="20" y2="0" stroke="#e8a028" stroke-width="2"/><line x1="0" y1="0" x2="0" y2="20" stroke="#e8a028" stroke-width="2"/></svg></span>
+  <div class="card-num">CLUE III</div>
+  <div class="card-icon">💎</div>
+  <div class="card-clue">"It hides where a Jedi<br>would stop to rest."</div>
+  <div class="card-footer">JEDI COUNCIL INTELLIGENCE</div>
+</div>
+
+<div class="instructions">
+  <strong>HOW TO USE:</strong><br>
+  Print and cut out each card. At Snow Canyon, hand Sybastian <strong>Clue I</strong> at the Petrified Sand Dunes trailhead. 
+  Give <strong>Clue II</strong> after passing the dunes onto the Lava Flow Trail. 
+  Give <strong>Clue III</strong> near the bench/rest area where you've pre-hidden the crystal (wrapped in cloth). 
+  When he finds it, Matthew says: <em>"The crystal chose you, Syba Taan."</em>
+</div>
+
+<button class="print-btn" onclick="window.print()">🖨️ PRINT CLUE CARDS</button>
+
+</body>
+</html>

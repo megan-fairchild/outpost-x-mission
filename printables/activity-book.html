@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Youngling Activity Book — OutpostX</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a14;color:#ccc;font-family:'Inter',sans-serif}
+
+/* Screen layout */
+.screen-header{text-align:center;padding:30px 20px 10px}
+.screen-header h1{font-family:'Orbitron',sans-serif;color:#e8a028;font-size:22px;letter-spacing:3px}
+.screen-header p{color:#889;font-size:13px;margin-top:6px}
+
+.page-list{display:flex;flex-direction:column;align-items:center;gap:20px;padding:20px}
+
+.print-all{
+  font-family:'Orbitron',sans-serif;padding:14px 36px;
+  background:#e8a028;color:#000;border:none;border-radius:8px;
+  font-size:14px;cursor:pointer;letter-spacing:2px;font-weight:700;
+  margin:20px auto;display:block;
+}
+.print-all:hover{background:#f0b848}
+
+/* Each activity page */
+.activity-page{
+  width:8in;min-height:10in;
+  background:#fff;color:#111;
+  border-radius:8px;overflow:hidden;
+  padding:0.6in 0.7in;
+  page-break-after:always;
+  position:relative;
+}
+.activity-page:last-child{page-break-after:auto}
+
+/* Page header */
+.pg-header{text-align:center;margin-bottom:24px;padding-bottom:14px;border-bottom:2px solid #e8a028}
+.pg-header h2{font-family:'Orbitron',sans-serif;font-size:16px;color:#1a1a2e;letter-spacing:3px;margin-bottom:4px}
+.pg-header p{font-size:12px;color:#888;font-style:italic}
+
+/* Page footer */
+.pg-footer{
+  position:absolute;bottom:0.4in;left:0;right:0;
+  text-align:center;font-family:'Orbitron',sans-serif;
+  font-size:8px;letter-spacing:3px;color:#ccc;
+}
+
+/* --- MAZE --- */
+.maze-container{display:flex;justify-content:center;margin:20px 0}
+.maze{display:grid;gap:0}
+.maze-cell{width:28px;height:28px;border:2px solid #1a1a2e}
+.maze-cell.wall{background:#1a1a2e}
+.maze-cell.path{background:#fff}
+.maze-cell.start{background:#4CAF50;border-radius:50%}
+.maze-cell.end{background:#e8a028;display:flex;align-items:center;justify-content:center;font-size:16px}
+.maze-label{text-align:center;font-size:13px;color:#555;margin-top:10px}
+
+/* --- WORD SEARCH --- */
+.ws-grid{display:inline-grid;gap:0;margin:16px auto;font-family:'Courier New',monospace}
+.ws-cell{
+  width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:700;color:#1a1a2e;
+  border:1px solid #e0e0e0;
+}
+.ws-words{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:center;margin-top:16px}
+.ws-words span{font-size:14px;font-weight:600;color:#1a1a2e;letter-spacing:2px}
+.ws-container{text-align:center}
+
+/* --- DRAWING --- */
+.draw-box{
+  border:2px dashed #ccc;border-radius:12px;
+  min-height:3.5in;margin:16px 0;
+  display:flex;align-items:center;justify-content:center;
+  color:#ddd;font-size:40px;
+}
+.draw-prompt{font-size:16px;color:#333;text-align:center;margin:12px 0;line-height:1.6}
+
+/* --- DOT TO DOT --- */
+.dot-svg{display:block;margin:0 auto}
+
+/* --- SPOT DIFFERENCE --- */
+.diff-scenes{display:flex;gap:24px;justify-content:center;margin:16px 0}
+.diff-scene{
+  width:3in;height:3in;border:2px solid #1a1a2e;border-radius:8px;
+  position:relative;overflow:hidden;background:#f5f0e8;
+}
+.diff-label{text-align:center;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:3px;color:#888;margin-top:6px}
+
+/* --- SCAVENGER --- */
+.scav-list{list-style:none;padding:0;columns:2;column-gap:30px}
+.scav-list li{
+  display:flex;align-items:center;gap:10px;
+  font-size:15px;padding:10px 0;border-bottom:1px solid #eee;
+  break-inside:avoid;
+}
+.scav-box{
+  width:22px;height:22px;border:2px solid #1a1a2e;border-radius:4px;flex-shrink:0;
+}
+
+/* --- COLORING --- */
+.color-svg{display:block;margin:0 auto}
+
+/* --- JOURNAL --- */
+.journal-entry{margin:20px 0;page-break-inside:avoid}
+.journal-entry h3{font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:2px;color:#1a1a2e;margin-bottom:10px}
+.journal-lines{border-top:1px solid #ddd}
+.journal-line{height:36px;border-bottom:1px solid #e0e0e0}
+.journal-draw{height:2.5in;border:2px dashed #ccc;border-radius:8px;margin-top:10px}
+
+/* --- DECODER --- */
+.decoder-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(60px,1fr));gap:6px;margin:12px 0}
+.decoder-pair{text-align:center;padding:6px;border:1px solid #ddd;border-radius:6px}
+.decoder-pair .symbol{font-size:22px}
+.decoder-pair .letter{font-size:10px;color:#888;font-family:'Orbitron',sans-serif;letter-spacing:1px}
+.decode-puzzle{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin:20px 0}
+.decode-blank{
+  width:36px;height:44px;border-bottom:2px solid #1a1a2e;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:2px;
+}
+.decode-blank .symbol{font-size:18px}
+.decode-space{width:20px}
+
+@media print{
+  body{background:#fff}
+  .screen-header,.print-all,.page-list{display:contents}
+  .activity-page{border-radius:0;box-shadow:none;width:auto;padding:0.5in 0.6in;min-height:auto}
+  @page{size:letter portrait;margin:0.25in}
+}
+</style>
+</head>
+<body>
+
+<div class="screen-header">
+  <h1>⚔️ YOUNGLING ACTIVITY BOOK</h1>
+  <p>Training exercises for Padawan Syba Taan — Print & bring on the trip!</p>
+</div>
+
+<button class="print-all" onclick="window.print()">🖨️ PRINT ACTIVITY BOOK</button>
+
+<div class="page-list">
+
+<!-- ════════════════════════ PAGE 1: MAZE ════════════════════════ -->
+<div class="activity-page" id="p1">
+  <div class="pg-header">
+    <h2>🗺️ NAVIGATE THE CANYON</h2>
+    <p>Help Padawan Syba Taan find the hidden Kyber Crystal through Snow Canyon!</p>
+  </div>
+
+  <div class="maze-container">
+    <div id="mazeGrid"></div>
+  </div>
+  <div class="maze-label">START at the green circle 🟢 — Find the 💎 crystal!</div>
+
+  <div class="pg-footer">OUTPOSTX · YOUNGLING ACTIVITY BOOK · PAGE 1</div>
+</div>
+
+<!-- ════════════════════════ PAGE 2: WORD SEARCH ════════════════════════ -->
+<div class="activity-page" id="p2">
+  <div class="pg-header">
+    <h2>🔍 JEDI WORD SEARCH</h2>
+    <p>Find all the hidden words from your Jedi training!</p>
+  </div>
+
+  <div class="ws-container" id="wordSearchGrid"></div>
+
+  <div class="pg-footer">OUTPOSTX · YOUNGLING ACTIVITY BOOK · PAGE 2</div>
+</div>
+
+<!-- ════════════════════════ PAGE 3: DRAW YOUR LIGHTSABER ════════════════════════ -->
+<div class="activity-page" id="p3">
+  <div class="pg-header">
+    <h2>✏️ DESIGN YOUR LIGHTSABER</h2>
+    <p>Every Jedi builds their own lightsaber. Draw yours below! What color is the blade?</p>
+  </div>
+
+  <div style="text-align:center;margin:10px 0">
+    <svg width="60" height="300" viewBox="0 0 60 300" style="margin:0 auto">
+      <!-- Handle outline for reference -->
+      <rect x="18" y="160" width="24" height="120" rx="4" fill="none" stroke="#ccc" stroke-width="2" stroke-dasharray="6,4"/>
+      <rect x="14" y="155" width="32" height="12" rx="2" fill="none" stroke="#ccc" stroke-width="2" stroke-dasharray="6,4"/>
+      <circle cx="30" cy="140" r="4" fill="none" stroke="#ccc" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <text x="30" y="300" text-anchor="middle" font-size="9" fill="#aaa">handle guide</text>
+    </svg>
+  </div>
+
+  <div class="draw-prompt">Draw the blade shooting up from the handle!<br>Add details to the handle — buttons, grips, decorations!</div>
+
+  <div style="border:2px dashed #ccc;border-radius:12px;height:2in;margin:16px 0;display:flex;align-items:center;justify-content:center;color:#ddd;font-size:14px">
+    ← Extra space for your lightsaber design →
+  </div>
+
+  <div class="draw-prompt" style="font-size:13px;color:#888">
+    My lightsaber blade color: ________________<br>
+    I named my lightsaber: ________________
+  </div>
+
+  <div class="pg-footer">OUTPOSTX · YOUNGLING ACTIVITY BOOK · PAGE 3</div>
+</div>
+
+<!-- ════════════════════════ PAGE 4: SPOT THE DIFFERENCE ════════════════════════ -->
+<div class="activity-page" id="p4">
+  <div class="pg-header">
+    <h2>👀 SPOT THE DIFFERENCES</h2>
+    <p>These two OutpostX scenes look the same, but 6 things are different! Can you find them all?</p>
+  </div>
+
+  <div class="diff-scenes">
+    <div>
+      <svg class="diff-scene" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        <rect width="300" height="300" fill="#f5e6c8"/>
+        <!-- sky -->
+        <rect width="300" height="120" fill="#87CEEB"/>
+        <!-- suns -->
+        <circle cx="60" cy="40" r="22" fill="#FFD700"/>
+        <circle cx="230" cy="55" r="16" fill="#FFA500"/>
+        <!-- mountains -->
+        <polygon points="0,120 60,60 120,120" fill="#c4956a"/>
+        <polygon points="80,120 160,50 240,120" fill="#b8845c"/>
+        <polygon points="200,120 270,70 300,120" fill="#c4956a"/>
+        <!-- ground -->
+        <rect y="120" width="300" height="180" fill="#e8d5a8"/>
+        <!-- dome building -->
+        <ellipse cx="150" cy="180" rx="40" ry="30" fill="#d4b896" stroke="#8b7355" stroke-width="2"/>
+        <rect x="138" y="185" width="24" height="30" fill="#5a3e28" rx="3"/>
+        <!-- moisture vaporator -->
+        <rect x="60" y="145" width="8" height="50" fill="#888" stroke="#666" stroke-width="1"/>
+        <rect x="55" y="145" width="18" height="5" fill="#999"/>
+        <line x1="64" y1="145" x2="64" y2="135" stroke="#888" stroke-width="2"/>
+        <!-- cactus -->
+        <rect x="240" y="155" width="8" height="40" fill="#5a8a3c" rx="4"/>
+        <rect x="248" y="165" width="15" height="6" fill="#5a8a3c" rx="3"/>
+        <rect x="237" y="170" width="12" height="5" fill="#5a8a3c" rx="3"/>
+        <!-- flag -->
+        <line x1="150" y1="148" x2="150" y2="125" stroke="#333" stroke-width="2"/>
+        <polygon points="150,125 172,132 150,139" fill="#e8a028"/>
+        <!-- rocks -->
+        <ellipse cx="100" cy="250" rx="18" ry="10" fill="#bfa882"/>
+        <ellipse cx="200" cy="240" rx="14" ry="8" fill="#c4a87a"/>
+        <!-- person -->
+        <circle cx="180" cy="210" r="6" fill="#8B4513"/>
+        <rect x="176" y="216" width="8" height="16" fill="#4a6" rx="2"/>
+        <line x1="180" y1="232" x2="176" y2="248" stroke="#8B4513" stroke-width="2"/>
+        <line x1="180" y1="232" x2="184" y2="248" stroke="#8B4513" stroke-width="2"/>
+        <!-- 3 stars -->
+        <text x="140" y="30" font-size="10" fill="#fff">✦</text>
+        <text x="180" y="20" font-size="8" fill="#fff">✦</text>
+        <text x="110" y="18" font-size="12" fill="#fff">✦</text>
+      </svg>
+      <div class="diff-label">SCENE A</div>
+    </div>
+    <div>
+      <svg class="diff-scene" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        <rect width="300" height="300" fill="#f5e6c8"/>
+        <!-- sky -->
+        <rect width="300" height="120" fill="#87CEEB"/>
+        <!-- suns — DIFF 1: only one sun -->
+        <circle cx="60" cy="40" r="22" fill="#FFD700"/>
+        <!-- MISSING second sun -->
+        <!-- mountains -->
+        <polygon points="0,120 60,60 120,120" fill="#c4956a"/>
+        <polygon points="80,120 160,50 240,120" fill="#b8845c"/>
+        <polygon points="200,120 270,70 300,120" fill="#c4956a"/>
+        <!-- ground -->
+        <rect y="120" width="300" height="180" fill="#e8d5a8"/>
+        <!-- dome building -->
+        <ellipse cx="150" cy="180" rx="40" ry="30" fill="#d4b896" stroke="#8b7355" stroke-width="2"/>
+        <!-- DIFF 2: door is wider -->
+        <rect x="134" y="185" width="32" height="30" fill="#5a3e28" rx="3"/>
+        <!-- moisture vaporator — DIFF 3: taller -->
+        <rect x="60" y="135" width="8" height="60" fill="#888" stroke="#666" stroke-width="1"/>
+        <rect x="55" y="135" width="18" height="5" fill="#999"/>
+        <line x1="64" y1="135" x2="64" y2="125" stroke="#888" stroke-width="2"/>
+        <!-- cactus -->
+        <rect x="240" y="155" width="8" height="40" fill="#5a8a3c" rx="4"/>
+        <rect x="248" y="165" width="15" height="6" fill="#5a8a3c" rx="3"/>
+        <!-- DIFF 4: missing left arm of cactus -->
+        <!-- flag — DIFF 5: different color -->
+        <line x1="150" y1="148" x2="150" y2="125" stroke="#333" stroke-width="2"/>
+        <polygon points="150,125 172,132 150,139" fill="#3ba8e8"/>
+        <!-- rocks -->
+        <ellipse cx="100" cy="250" rx="18" ry="10" fill="#bfa882"/>
+        <ellipse cx="200" cy="240" rx="14" ry="8" fill="#c4a87a"/>
+        <!-- person — DIFF 6: different color outfit -->
+        <circle cx="180" cy="210" r="6" fill="#8B4513"/>
+        <rect x="176" y="216" width="8" height="16" fill="#a44" rx="2"/>
+        <line x1="180" y1="232" x2="176" y2="248" stroke="#8B4513" stroke-width="2"/>
+        <line x1="180" y1="232" x2="184" y2="248" stroke="#8B4513" stroke-width="2"/>
+        <!-- stars — same -->
+        <text x="140" y="30" font-size="10" fill="#fff">✦</text>
+        <text x="180" y="20" font-size="8" fill="#fff">✦</text>
+        <text x="110" y="18" font-size="12" fill="#fff">✦</text>
+      </svg>
+      <div class="diff-label">SCENE B</div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:16px">
+    <p style="font-size:14px;color:#333;font-weight:600">I found ___ / 6 differences!</p>
+    <p style="font-size:11px;color:#aaa;margin-top:8px">Hint: Look at the sky, the building, the tower, the plants, the flag, and the person</p>
+  </div>
+
+  <div class="pg-footer">OUTPOSTX · YOUNGLING ACTIVITY BOOK · PAGE 4</div>
+</div>
+
+<!-- ════════════════════════ PAGE 5: SECRET CODE ════════════════════════ -->
+<div class="activity-page" id="p5">
+  <div class="pg-header">
+    <h2>🔐 JEDI SECRET CODE</h2>
+    <p>Use the decoder to figure out the secret Jedi message!</p>
+  </div>
+
+  <div class="decoder-grid">
+    <div class="decoder-pair"><div class="symbol">☀</div><div class="letter">A</div></div>
+    <div class="decoder-pair"><div class="symbol">🌙</div><div class="letter">B</div></div>
+    <div class="decoder-pair"><div class="symbol">⭐</div><div class="letter">C</div></div>
+    <div class="decoder-pair"><div class="symbol">💫</div><div class="letter">D</div></div>
+    <div class="decoder-pair"><div class="symbol">🔥</div><div class="letter">E</div></div>
+    <div class="decoder-pair"><div class="symbol">🌊</div><div class="letter">F</div></div>
+    <div class="decoder-pair"><div class="symbol">🪨</div><div class="letter">G</div></div>
+    <div class="decoder-pair"><div class="symbol">🌿</div><div class="letter">H</div></div>
+    <div class="decoder-pair"><div class="symbol">💎</div><div class="letter">I</div></div>
+    <div class="decoder-pair"><div class="symbol">⚡</div><div class="letter">J</div></div>
+    <div class="decoder-pair"><div class="symbol">🗝</div><div class="letter">K</div></div>
+    <div class="decoder-pair"><div class="symbol">🌀</div><div class="letter">L</div></div>
+    <div class="decoder-pair"><div class="symbol">🎯</div><div class="letter">M</div></div>
+    <div class="decoder-pair"><div class="symbol">🔮</div><div class="letter">N</div></div>
+    <div class="decoder-pair"><div class="symbol">🌕</div><div class="letter">O</div></div>
+    <div class="decoder-pair"><div class="symbol">🛡</div><div class="letter">P</div></div>
+    <div class="decoder-pair"><div class="symbol">❄</div><div class="letter">R</div></div>
+    <div class="decoder-pair"><div class="symbol">🌋</div><div class="letter">S</div></div>
+    <div class="decoder-pair"><div class="symbol">⚔</div><div class="letter">T</div></div>
+    <div class="decoder-pair"><div class="symbol">🏔</div><div class="letter">U</div></div>
+    <div class="decoder-pair"><div class="symbol">🌸</div><div class="letter">W</div></div>
+    <div class="decoder-pair"><div class="symbol">🦅</div><div class="letter">Y</div></div>
+  </div>
+
+  <!-- THE FORCE IS STRONG WITH YOU -->
+  <div style="text-align:center;margin:20px 0">
+    <p style="font-size:13px;color:#555;margin-bottom:16px;font-weight:600">Decode this message:</p>
+    <div class="decode-puzzle">
+      <div class="decode-blank"><span class="symbol">⚔</span></div>
+      <div class="decode-blank"><span class="symbol">🌿</span></div>
+      <div class="decode-blank"><span class="symbol">🔥</span></div>
+      <div class="decode-space"></div>
+      <div class="decode-blank"><span class="symbol">🌊</span></div>
+      <div class="decode-blank"><span class="symbol">🌕</span></div>
+      <div class="decode-blank"><span class="symbol">❄</span></div>
+      <div class="decode-blank"><span class="symbol">⭐</span></div>
+      <div class="decode-blank"><span class="symbol">🔥</span></div>
+      <div class="decode-space"></div>
+      <div class="decode-blank"><span class="symbol">💎</span></div>
+      <div class="decode-blank"><span class="symbol">🌋</span></div>
+      <div class="decode-space"></div>
+      <div class="decode-blank"><span class="symbol">🌋</span></div>
+      <div class="decode-blank"><span class="symbol">⚔</span></div>
+      <div class="decode-blank"><span class="symbol">❄</span></div>
+      <div class="decode-blank"><span class="symbol">🌕</span></div>
+      <div class="decode-blank"><span class="symbol">🔮</span></div>
+      <div class="decode-blank"><span class="symbol">🪨</span></div>
+    </div>
+    <div class="decode-puzzle" style="margin-top:12px">
+      <div class="decode-blank"><span class="symbol">🌸</span></div>
+      <div class="decode-blank"><span class="symbol">💎</span></div>
+      <div class="decode-blank"><span class="symbol">⚔</span></div>
+      <div class="decode-blank"><span class="symbol">🌿</span></div>
+      <div class="decode-space"></div>
+      <div class="decode-blank"><span class="symbol">🦅</span></div>
+      <div class="decode-blank"><span class="symbol">🌕</span></div>
+      <div class="decode-blank"><span class="symbol">🏔</span></div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:30px">
+    <p style="font-size:13px;color:#555;font-weight:600">The secret message says:</p>
+    <div style="border-bottom:2px solid #1a1a2e;width:80%;margin:16px auto;height:36px"></div>
+  </div>
+
+  <div class="pg-footer">OUTPOSTX · YOUNGLING ACTIVITY BOOK · PAGE 5</div>
+</div>
+
+<!-- ════════════════════════ PAGE 6: SCAVENGER HUNT ════════════════════════ -->
+<div class="activity-page" id="p6">
+  <div class="pg-header">
+    <h2>🔎 OUTPOSTX SCAVENGER HUNT</h2>
+    <p>Check off each item as you find it during your Jedi training at OutpostX!</p>
+  </div>
+
+  <ul class="scav-list">
+    <li><span class="scav-box"></span> A rock shaped like a spaceship</li>
+    <li><span class="scav-box"></span> An animal track in the sand</li>
+    <li><span class="scav-box"></span> Something that looks like a lightsaber</li>
+    <li><span class="scav-box"></span> A lizard or bug</li>
+    <li><span class="scav-box"></span> Red-colored rocks</li>
+    <li><span class="scav-box"></span> A bird flying overhead</li>
+    <li><span class="scav-box"></span> Your shadow being really long</li>
+    <li><span class="scav-box"></span> A cloud that looks like a Star Wars ship</li>
+    <li><span class="scav-box"></span> Something smooth and something rough</li>
+    <li><span class="scav-box"></span> The two suns (sunrise & sunset)</li>
+    <li><span class="scav-box"></span> A hole made by an animal</li>
+    <li><span class="scav-box"></span> A plant growing in the desert</li>
+    <li><span class="scav-box"></span> Footprints (yours or someone else's!)</li>
+    <li><span class="scav-box"></span> Stars in the night sky</li>
+    <li><span class="scav-box"></span> A perfectly round rock</li>
+    <li><span class="scav-box"></span> Something the wind moved</li>
+    <li><span class="scav-box"></span> A sound that could be from Star Wars</li>
+    <li><span class="scav-box"></span> The coolest rock you can find</li>
+  </ul>
+
+  <div style="text-align:center;margin-top:20px">
+    <p style="font-size:14px;color:#333;font-weight:600">I found ___ / 18 items! 🏆</p>
+  </div>
+
+  <div class="pg-footer">OUTPOSTX · YOUNGLING ACTIVITY BOOK · PAGE 6</div>
+</div>
+
+<!-- ════════════════════════ PAGE 7: DRAW THE OUTPOST ════════════════════════ -->
+<div class="activity-page" id="p7">
+  <div class="pg-header">
+    <h2>🎨 DRAW YOUR ADVENTURE</h2>
+    <p>Draw your favorite moment from OutpostX!</p>
+  </div>
+
+  <div style="text-align:center;font-size:14px;color:#555;margin-bottom:10px;font-weight:600">
+    My favorite mission was: ________________________________
+  </div>
+
+  <div class="draw-box" style="height:4.5in">🖍️</div>
+
+  <div style="margin-top:16px">
+    <p style="font-size:13px;color:#555;font-weight:600;margin-bottom:4px">Tell the story of your drawing:</p>
+    <div class="journal-lines">
+      <div class="journal-line"></div>
+      <div class="journal-line"></div>
+      <div class="journal-line"></div>
+      <div class="journal-line"></div>
+    </div>
+  </div>
+
+  <div class="pg-footer">OUTPOSTX · YOUNGLING ACTIVITY BOOK · PAGE 7</div>
+</div>
+
+<!-- ════════════════════════ PAGE 8: COLORING PAGE ════════════════════════ -->
+<div class="activity-page" id="p8">
+  <div class="pg-header">
+    <h2>🖍️ COLOR THE OUTPOST</h2>
+    <p>Color this desert outpost scene — make it your own!</p>
+  </div>
+
+  <svg class="color-svg" viewBox="0 0 600 500" width="100%" xmlns="http://www.w3.org/2000/svg">
+    <!-- Ground line -->
+    <line x1="0" y1="300" x2="600" y2="300" stroke="#333" stroke-width="1.5"/>
+    <!-- Mountains -->
+    <polyline points="0,300 80,180 160,300" fill="none" stroke="#333" stroke-width="1.5"/>
+    <polyline points="120,300 220,150 320,300" fill="none" stroke="#333" stroke-width="1.5"/>
+    <polyline points="400,300 500,200 600,300" fill="none" stroke="#333" stroke-width="1.5"/>
+    <!-- Two suns -->
+    <circle cx="120" cy="80" r="35" fill="none" stroke="#333" stroke-width="1.5"/>
+    <!-- sun rays -->
+    <line x1="120" y1="35" x2="120" y2="25" stroke="#333" stroke-width="1"/>
+    <line x1="120" y1="125" x2="120" y2="135" stroke="#333" stroke-width="1"/>
+    <line x1="75" y1="80" x2="65" y2="80" stroke="#333" stroke-width="1"/>
+    <line x1="165" y1="80" x2="175" y2="80" stroke="#333" stroke-width="1"/>
+    <line x1="95" y1="55" x2="88" y2="48" stroke="#333" stroke-width="1"/>
+    <line x1="145" y1="55" x2="152" y2="48" stroke="#333" stroke-width="1"/>
+    <line x1="95" y1="105" x2="88" y2="112" stroke="#333" stroke-width="1"/>
+    <line x1="145" y1="105" x2="152" y2="112" stroke="#333" stroke-width="1"/>
+    <circle cx="460" cy="100" r="25" fill="none" stroke="#333" stroke-width="1.5"/>
+    <!-- Dome building 1 -->
+    <path d="M 240,300 Q 240,230 300,220 Q 360,230 360,300 Z" fill="none" stroke="#333" stroke-width="1.5"/>
+    <rect x="280" y="260" width="40" height="40" rx="5" fill="none" stroke="#333" stroke-width="1.5"/>
+    <!-- Dome building 2 (smaller) -->
+    <path d="M 400,300 Q 400,260 430,255 Q 460,260 460,300 Z" fill="none" stroke="#333" stroke-width="1.5"/>
+    <rect x="418" y="278" width="24" height="22" rx="3" fill="none" stroke="#333" stroke-width="1.5"/>
+    <!-- Moisture vaporator -->
+    <rect x="160" y="260" width="10" height="40" fill="none" stroke="#333" stroke-width="1.5"/>
+    <rect x="155" y="255" width="20" height="8" fill="none" stroke="#333" stroke-width="1.5"/>
+    <line x1="165" y1="255" x2="165" y2="240" stroke="#333" stroke-width="1.5"/>
+    <line x1="158" y1="243" x2="172" y2="243" stroke="#333" stroke-width="1"/>
+    <!-- Jedi figure -->
+    <circle cx="500" cy="268" r="10" fill="none" stroke="#333" stroke-width="1.5"/>
+    <rect x="494" y="278" width="12" height="22" rx="2" fill="none" stroke="#333" stroke-width="1.5"/>
+    <!-- robe -->
+    <line x1="494" y1="285" x2="484" y2="295" stroke="#333" stroke-width="1.5"/>
+    <line x1="506" y1="285" x2="516" y2="295" stroke="#333" stroke-width="1.5"/>
+    <!-- legs -->
+    <line x1="498" y1="300" x2="494" y2="320" stroke="#333" stroke-width="1.5"/>
+    <line x1="502" y1="300" x2="506" y2="320" stroke="#333" stroke-width="1.5"/>
+    <!-- lightsaber -->
+    <line x1="516" y1="295" x2="530" y2="250" stroke="#333" stroke-width="2"/>
+    <!-- Ground details -->
+    <ellipse cx="80" cy="310" rx="25" ry="8" fill="none" stroke="#333" stroke-width="1"/>
+    <ellipse cx="350" cy="320" rx="20" ry="6" fill="none" stroke="#333" stroke-width="1"/>
+    <ellipse cx="540" cy="315" rx="30" ry="7" fill="none" stroke="#333" stroke-width="1"/>
+    <!-- Small cactus-like plant -->
+    <rect x="50" y="285" width="6" height="15" rx="3" fill="none" stroke="#333" stroke-width="1.2"/>
+    <rect x="56" y="289" width="10" height="4" rx="2" fill="none" stroke="#333" stroke-width="1.2"/>
+    <rect x="44" y="292" width="8" height="3" rx="2" fill="none" stroke="#333" stroke-width="1.2"/>
+    <!-- Stars (small) -->
+    <text x="200" y="60" font-size="14" fill="#333">✦</text>
+    <text x="350" y="45" font-size="10" fill="#333">✦</text>
+    <text x="300" y="80" font-size="8" fill="#333">✦</text>
+    <text x="520" y="55" font-size="12" fill="#333">✦</text>
+    <text x="400" y="35" font-size="9" fill="#333">✦</text>
+    <!-- Sand dunes in foreground -->
+    <path d="M 0,380 Q 100,350 200,380 Q 300,410 400,380 Q 500,350 600,380 L 600,500 L 0,500 Z" fill="none" stroke="#333" stroke-width="1"/>
+  </svg>
+
+  <div class="pg-footer">OUTPOSTX · YOUNGLING ACTIVITY BOOK · PAGE 8</div>
+</div>
+
+<!-- ════════════════════════ PAGE 9: MISSION JOURNAL ════════════════════════ -->
+<div class="activity-page" id="p9">
+  <div class="pg-header">
+    <h2>📓 PADAWAN MISSION JOURNAL</h2>
+    <p>Record your training after each mission — a true Jedi keeps a journal!</p>
+  </div>
+
+  <div class="journal-entry">
+    <h3>⚔️ MISSION 1 — AWAKENING THE FORCE</h3>
+    <p style="font-size:12px;color:#888;margin-bottom:6px">What 5 sounds did you hear with the blindfold?</p>
+    <div class="journal-lines">
+      <div class="journal-line"></div>
+      <div class="journal-line"></div>
+    </div>
+  </div>
+
+  <div class="journal-entry">
+    <h3>⚔️ MISSION 2 — THE WAY OF THE LIGHTSABER</h3>
+    <p style="font-size:12px;color:#888;margin-bottom:6px">Which lightsaber form was your favorite? The Shield, Strike, or Sweep?</p>
+    <div class="journal-lines">
+      <div class="journal-line"></div>
+      <div class="journal-line"></div>
+    </div>
+  </div>
+
+  <div class="journal-entry">
+    <h3>⚔️ MISSION 3 — SAND CRUISER PATROL</h3>
+    <p style="font-size:12px;color:#888;margin-bottom:6px">What 5 things did you spot during the patrol?</p>
+    <div class="journal-lines">
+      <div class="journal-line"></div>
+      <div class="journal-line"></div>
+    </div>
+  </div>
+
+  <div class="journal-entry">
+    <h3>⚔️ MISSION 4 — THE FORCE BALANCE</h3>
+    <p style="font-size:12px;color:#888;margin-bottom:6px">What was the hardest Jedi move on the trampoline?</p>
+    <div class="journal-lines">
+      <div class="journal-line"></div>
+      <div class="journal-line"></div>
+    </div>
+  </div>
+
+  <div class="journal-entry">
+    <h3>⚔️ MISSION 5 — CRAFTING A JEDI ARTIFACT</h3>
+    <p style="font-size:12px;color:#888;margin-bottom:6px">What did you make on the pottery wheel? Draw it!</p>
+    <div class="journal-draw"></div>
+  </div>
+
+  <div class="pg-footer">OUTPOSTX · YOUNGLING ACTIVITY BOOK · PAGE 9</div>
+</div>
+
+<!-- ════════════════════════ PAGE 10: MISSION JOURNAL PT 2 ════════════════════════ -->
+<div class="activity-page" id="p10">
+  <div class="pg-header">
+    <h2>📓 PADAWAN MISSION JOURNAL</h2>
+    <p>Continue recording your missions here, Padawan!</p>
+  </div>
+
+  <div class="journal-entry">
+    <h3>⚔️ MISSION 6 — TRACKING THE KYBER CRYSTAL</h3>
+    <p style="font-size:12px;color:#888;margin-bottom:6px">Where did you find the crystal? How did it feel?</p>
+    <div class="journal-lines">
+      <div class="journal-line"></div>
+      <div class="journal-line"></div>
+      <div class="journal-line"></div>
+    </div>
+  </div>
+
+  <div class="journal-entry">
+    <h3>⚔️ MISSION 7 — THE FINAL TRIALS</h3>
+    <p style="font-size:12px;color:#888;margin-bottom:6px">Which trial was the hardest? Did you say the Jedi Code perfectly?</p>
+    <div class="journal-lines">
+      <div class="journal-line"></div>
+      <div class="journal-line"></div>
+      <div class="journal-line"></div>
+    </div>
+  </div>
+
+  <div class="journal-entry">
+    <h3>🌟 MISSION 8 — THE KNIGHTING CEREMONY</h3>
+    <p style="font-size:12px;color:#888;margin-bottom:6px">How did it feel to become a Jedi Knight? Draw the ceremony!</p>
+    <div class="journal-draw" style="height:3in"></div>
+  </div>
+
+  <div style="text-align:center;margin-top:16px;padding:16px;border:2px solid #e8a028;border-radius:8px">
+    <p style="font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:3px;color:#333">CONGRATULATIONS, JEDI KNIGHT SYBA TAAN!</p>
+    <p style="font-size:13px;color:#666;margin-top:6px;font-style:italic">"The Force will be with you. Always."</p>
+  </div>
+
+  <div class="pg-footer">OUTPOSTX · YOUNGLING ACTIVITY BOOK · PAGE 10</div>
+</div>
+
+</div><!-- end page-list -->
+
+<button class="print-all" onclick="window.print()">🖨️ PRINT ACTIVITY BOOK</button>
+
+<script>
+/* ═══ MAZE GENERATOR ═══ */
+(function(){
+  // Simple hand-crafted maze for a 5-year-old (not too complex)
+  // 0=path, 1=wall, 2=start, 3=end
+  const m = [
+    [2,0,1,1,1,1,1,1,1,1,1,1,1,1,1],
+    [1,0,0,0,1,0,0,0,0,0,1,0,0,0,1],
+    [1,0,1,0,1,0,1,1,1,0,1,0,1,0,1],
+    [1,0,1,0,0,0,0,0,1,0,0,0,1,0,1],
+    [1,0,1,1,1,1,1,0,1,1,1,0,1,0,1],
+    [1,0,0,0,0,0,1,0,0,0,0,0,1,0,1],
+    [1,1,1,0,1,0,1,1,1,1,1,1,1,0,1],
+    [1,0,0,0,1,0,0,0,0,0,0,0,0,0,1],
+    [1,0,1,1,1,1,1,0,1,1,1,1,1,0,1],
+    [1,0,0,0,0,0,0,0,1,0,0,0,0,0,1],
+    [1,0,1,1,1,1,1,1,1,0,1,1,1,1,1],
+    [1,0,0,0,1,0,0,0,0,0,0,0,0,0,1],
+    [1,1,1,0,1,0,1,1,1,1,1,0,1,0,1],
+    [1,0,0,0,0,0,1,0,0,0,1,0,1,0,0],
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,0,3],
+  ];
+  const grid = document.getElementById('mazeGrid');
+  grid.className = 'maze';
+  grid.style.gridTemplateColumns = `repeat(${m[0].length}, 28px)`;
+  m.forEach(row => row.forEach(cell => {
+    const d = document.createElement('div');
+    d.className = 'maze-cell ' + (cell === 1 ? 'wall' : cell === 2 ? 'start' : cell === 3 ? 'end' : 'path');
+    if(cell === 3) d.textContent = '💎';
+    grid.appendChild(d);
+  }));
+})();
+
+/* ═══ WORD SEARCH ═══ */
+(function(){
+  const words = ['JEDI','FORCE','SABER','KYBER','PADAWAN','STAR','DUNE','ROCK','BRAVE','CALM'];
+  // Pre-built 10x10 grid with words placed
+  const grid = [
+    ['P','A','D','A','W','A','N','S','R','F'],
+    ['J','B','R','O','C','K','D','T','E','O'],
+    ['E','K','Y','B','E','R','U','A','B','R'],
+    ['D','C','A','L','M','F','N','R','A','C'],
+    ['I','S','A','B','E','R','E','G','S','E'],
+    ['R','Q','V','H','J','T','X','W','L','P'],
+    ['B','R','A','V','E','Z','D','K','M','N'],
+    ['F','G','H','I','S','U','N','O','P','Q'],
+    ['L','I','G','H','T','W','A','R','S','T'],
+    ['U','V','W','X','Y','Z','A','B','C','D'],
+  ];
+  const container = document.getElementById('wordSearchGrid');
+  const g = document.createElement('div');
+  g.className = 'ws-grid';
+  g.style.gridTemplateColumns = 'repeat(10, 32px)';
+  grid.forEach(row => row.forEach(letter => {
+    const c = document.createElement('div');
+    c.className = 'ws-cell';
+    c.textContent = letter;
+    g.appendChild(c);
+  }));
+  container.appendChild(g);
+  const wl = document.createElement('div');
+  wl.className = 'ws-words';
+  wl.innerHTML = words.map(w => `<span>${w}</span>`).join('');
+  container.appendChild(wl);
+  const hint = document.createElement('p');
+  hint.style.cssText = 'font-size:11px;color:#aaa;margin-top:10px;text-align:center';
+  hint.textContent = 'Words go → across, ↓ down, and ↘ diagonal';
+  container.appendChild(hint);
+})();
+</script>
+
+</body>
+</html>

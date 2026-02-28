@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jedi Knight Certificate</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a14;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+
+.cert-wrapper{
+  width:10in;height:7.5in;
+  background:linear-gradient(135deg,#0d0b08 0%,#1a1510 30%,#0d0b08 60%,#1a1510 100%);
+  border:4px solid #e8a028;
+  border-radius:0;
+  position:relative;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:60px 80px;
+  page-break-inside:avoid;
+}
+
+/* Double border effect */
+.cert-wrapper::before{
+  content:'';position:absolute;inset:10px;
+  border:2px solid rgba(232,160,40,0.4);
+  pointer-events:none;
+}
+.cert-wrapper::after{
+  content:'';position:absolute;inset:18px;
+  border:1px solid rgba(232,160,40,0.15);
+  pointer-events:none;
+}
+
+/* Corner stars */
+.star{position:absolute;font-size:28px;color:#e8a028;z-index:2}
+.star-tl{top:22px;left:22px}
+.star-tr{top:22px;right:22px}
+.star-bl{bottom:22px;left:22px}
+.star-br{bottom:22px;right:22px}
+
+.cert-emblem{font-size:48px;margin-bottom:10px}
+
+.cert-header{
+  font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:8px;
+  color:#e8a028;opacity:0.6;margin-bottom:6px;
+}
+
+.cert-title{
+  font-family:'Cinzel',serif;font-size:42px;font-weight:900;
+  color:#e8a028;letter-spacing:4px;margin-bottom:6px;
+  text-shadow:0 0 30px rgba(232,160,40,0.3);
+}
+
+.cert-sub{
+  font-family:'Cinzel',serif;font-size:16px;color:#ddc89b;
+  letter-spacing:3px;margin-bottom:30px;
+}
+
+.cert-body{text-align:center;color:#bba878;font-size:15px;line-height:2;max-width:7in}
+
+.cert-name{
+  font-family:'Cinzel',serif;font-size:36px;font-weight:900;
+  color:#fff;letter-spacing:3px;margin:10px 0;
+  text-shadow:0 0 20px rgba(232,160,40,0.3);
+}
+
+.cert-line{
+  width:4in;height:1px;
+  background:linear-gradient(90deg,transparent,#e8a028,transparent);
+  margin:8px auto;
+}
+
+.cert-badges{
+  display:flex;gap:18px;margin:20px 0 10px;flex-wrap:wrap;justify-content:center;
+}
+.badge{
+  background:rgba(232,160,40,0.1);border:1px solid rgba(232,160,40,0.3);
+  border-radius:6px;padding:4px 12px;
+  font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:#e8a028;
+}
+
+.cert-sign{
+  display:flex;gap:100px;margin-top:24px;align-items:flex-end;
+}
+.sign-block{text-align:center}
+.sign-line{
+  width:2.2in;height:1px;background:#e8a028;margin-bottom:6px;opacity:0.5;
+}
+.sign-label{
+  font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;color:#888;
+}
+
+.cert-date{
+  font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;
+  color:#888;margin-top:16px;
+}
+
+.print-btn{
+  font-family:'Orbitron',sans-serif;padding:12px 32px;
+  background:#e8a028;color:#000;border:none;border-radius:8px;
+  font-size:14px;cursor:pointer;letter-spacing:2px;font-weight:700;
+  margin-top:30px;
+}
+.print-btn:hover{background:#f0b848}
+
+@media print{
+  body{background:#fff;padding:0}
+  .cert-wrapper{
+    width:10in;height:7.5in;
+    background:#fff !important;border-color:#333;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .cert-wrapper::before{border-color:rgba(0,0,0,0.2)}
+  .cert-wrapper::after{border-color:rgba(0,0,0,0.1)}
+  .cert-title{color:#222;text-shadow:none}
+  .cert-name{color:#000;text-shadow:none}
+  .cert-body{color:#444}
+  .print-btn{display:none}
+  @page{size:landscape;margin:0.25in}
+}
+</style>
+</head>
+<body>
+
+<div class="cert-wrapper">
+  <span class="star star-tl">⚔️</span>
+  <span class="star star-tr">⚔️</span>
+  <span class="star star-bl">✦</span>
+  <span class="star star-br">✦</span>
+
+  <div class="cert-emblem">🌟</div>
+  <div class="cert-header">THE JEDI HIGH COUNCIL</div>
+  <div class="cert-title">JEDI KNIGHT</div>
+  <div class="cert-sub">Certificate of Knighthood</div>
+
+  <div class="cert-line"></div>
+
+  <div class="cert-body">
+    The Jedi Council hereby recognizes that the Youngling known as
+  </div>
+
+  <div class="cert-name">SYBA TAAN</div>
+  <div style="color:#bba878;font-size:13px;font-style:italic;margin-bottom:4px">(Sybastian)</div>
+
+  <div class="cert-line"></div>
+
+  <div class="cert-body">
+    has completed all required training at <strong style="color:#e8a028">OutpostX, Tatooine</strong><br>
+    under the guidance of <strong style="color:#e8a028">Master Jedi Matthew</strong><br>
+    and is hereby granted the rank of <strong style="color:#fff">Jedi Knight</strong>
+  </div>
+
+  <div class="cert-badges">
+    <span class="badge">FORCE AWARENESS</span>
+    <span class="badge">FORM I: SHII-CHO</span>
+    <span class="badge">OUTER RIM SCOUT</span>
+    <span class="badge">FORCE BALANCE</span>
+    <span class="badge">JEDI ARTISAN</span>
+    <span class="badge">CRYSTAL GUARDIAN</span>
+    <span class="badge">TRIALS COMPLETE</span>
+  </div>
+
+  <div class="cert-sign">
+    <div class="sign-block">
+      <div class="sign-line"></div>
+      <div class="sign-label">MASTER JEDI MATTHEW</div>
+    </div>
+    <div class="sign-block">
+      <div class="sign-line"></div>
+      <div class="sign-label">JEDI ARCHIVIST MEGAN</div>
+    </div>
+  </div>
+
+  <div class="cert-date">OUTPOSTX · TATOOINE · APRIL 2026</div>
+</div>
+
+<button class="print-btn" onclick="window.print()">🖨️ PRINT CERTIFICATE</button>
+
+</body>
+</html>

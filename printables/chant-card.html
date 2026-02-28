@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Youngling Jedi Code</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a14;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:20px;gap:30px}
+
+.card{
+  width:5in;height:3.5in;
+  background:linear-gradient(135deg,#0d0b08 0%,#1a1510 50%,#0d0b08 100%);
+  border:3px solid #3ba8e8;
+  border-radius:12px;
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:30px 40px;
+  page-break-inside:avoid;
+}
+.card::before{
+  content:'';position:absolute;inset:8px;
+  border:1px solid rgba(59,168,232,0.2);border-radius:8px;pointer-events:none;
+}
+.card::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at center,rgba(59,168,232,0.05) 0%,transparent 60%);
+  pointer-events:none;
+}
+
+.card-label{
+  font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:5px;
+  color:#3ba8e8;opacity:0.6;margin-bottom:6px;position:relative;z-index:1;
+}
+.card-title{
+  font-family:'Cinzel',serif;font-size:20px;font-weight:900;
+  color:#3ba8e8;letter-spacing:3px;margin-bottom:16px;
+  text-shadow:0 0 20px rgba(59,168,232,0.3);position:relative;z-index:1;
+}
+.card-emblem{font-size:30px;margin-bottom:12px;position:relative;z-index:1}
+.card-line{
+  width:3in;height:1px;
+  background:linear-gradient(90deg,transparent,#3ba8e8,transparent);
+  margin-bottom:18px;position:relative;z-index:1;
+}
+
+.chant{
+  font-family:'Cinzel',serif;font-size:20px;
+  color:#dde8f0;text-align:center;line-height:2;
+  position:relative;z-index:1;
+  text-shadow:0 0 15px rgba(59,168,232,0.15);
+}
+.chant em{font-style:normal;color:#3ba8e8;font-weight:700}
+
+.card-footer{
+  font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;
+  color:#3ba8e8;opacity:0.3;margin-top:16px;position:relative;z-index:1;
+}
+
+.instructions{
+  background:#111;border:1px solid #333;border-radius:10px;padding:16px 24px;
+  max-width:5in;color:#8899aa;font-size:13px;line-height:1.7;text-align:center;
+}
+.instructions strong{color:#3ba8e8}
+
+.print-btn{
+  font-family:'Orbitron',sans-serif;padding:12px 32px;
+  background:#3ba8e8;color:#000;border:none;border-radius:8px;
+  font-size:14px;cursor:pointer;letter-spacing:2px;font-weight:700;
+}
+.print-btn:hover{background:#5ec0f0}
+
+@media print{
+  body{background:#fff;padding:0}
+  .card{background:#fff !important;border-color:#333;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .card::after{display:none}
+  .card-title{color:#222;text-shadow:none}
+  .chant{color:#111;text-shadow:none}
+  .chant em{color:#1a6fa0}
+  .print-btn,.instructions{display:none}
+  @page{margin:0.5in}
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="card-label">PRACTICE AT HOME</div>
+  <div class="card-title">THE YOUNGLING CODE</div>
+  <div class="card-emblem">⚔️</div>
+  <div class="card-line"></div>
+  <div class="chant">
+    I am <em>calm</em>.<br>
+    I am <em>kind</em>.<br>
+    I am <em>brave</em>.<br>
+    I am one with the <em>Force</em>.
+  </div>
+  <div class="card-footer">SYBA TAAN · JEDI YOUNGLING</div>
+</div>
+
+<div class="instructions">
+  <strong>Teach Sybastian before the trip!</strong><br>
+  Practice this chant together each night before bed. He'll need to recite it from memory during <strong>Mission 7: The Final Trials</strong> to earn his knighthood.
+</div>
+
+<button class="print-btn" onclick="window.print()">🖨️ PRINT CHANT CARD</button>
+
+</body>
+</html>

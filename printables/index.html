@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Printables — OutpostX</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a14;--card:#111124;--orange:#e8a028;--gold:#ffd700;--cyan:#3ba8e8;--dim:#556;--r:12px}
+body{background:var(--bg);color:#ccc;font-family:'Inter',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 16px}
+a{color:var(--cyan);text-decoration:none}
+
+.header{text-align:center;margin-bottom:30px}
+.header h1{font-family:'Orbitron',sans-serif;color:var(--orange);font-size:20px;letter-spacing:3px;margin-bottom:6px}
+.header p{color:var(--dim);font-size:13px}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:600px;width:100%}
+@media(max-width:500px){.grid{grid-template-columns:1fr}}
+
+.card{
+  background:var(--card);border:1px solid #1e1e3a;border-radius:var(--r);
+  padding:28px 20px;text-align:center;text-decoration:none;
+  transition:all .3s;cursor:pointer;display:block;
+}
+.card:hover{border-color:var(--orange);transform:translateY(-2px)}
+.card-icon{font-size:40px;margin-bottom:12px}
+.card-title{font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:2px;color:var(--orange);margin-bottom:8px}
+.card-desc{font-size:12px;color:var(--dim);line-height:1.6}
+
+.back-link{
+  display:inline-block;margin-top:30px;padding:10px 24px;
+  background:var(--card);border:1px solid rgba(255,215,0,.2);border-radius:var(--r);
+  font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;color:var(--gold);
+  transition:border-color .3s;
+}
+.back-link:hover{border-color:var(--gold)}
+
+.footer{text-align:center;margin-top:40px;font-size:11px;color:var(--dim);font-family:'Orbitron',sans-serif;letter-spacing:2px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🖨️ PRINTABLES</h1>
+  <p>Print these artifacts for the mission — clue cards, certificate, chant & activity book</p>
+</div>
+
+<div class="grid">
+  <a href="clue-cards.html" class="card">
+    <div class="card-icon">📜</div>
+    <div class="card-title">CLUE CARDS</div>
+    <div class="card-desc">3 clue cards for the Kyber Crystal hunt at Snow Canyon</div>
+  </a>
+  <a href="certificate.html" class="card">
+    <div class="card-icon">🌟</div>
+    <div class="card-title">JEDI CERTIFICATE</div>
+    <div class="card-desc">Official Jedi Knight certificate for the Knighting Ceremony</div>
+  </a>
+  <a href="chant-card.html" class="card">
+    <div class="card-icon">⚔️</div>
+    <div class="card-title">JEDI CODE CHANT</div>
+    <div class="card-desc">Pocket card with the Youngling Code to practice before the trip</div>
+  </a>
+  <a href="activity-book.html" class="card">
+    <div class="card-icon">📖</div>
+    <div class="card-title">ACTIVITY BOOK</div>
+    <div class="card-desc">10 pages — maze, word search, coloring, journal & more</div>
+  </a>
+</div>
+
+<a href="../archives/index.html" class="back-link">← HOLOCRON ARCHIVES</a>
+
+<div class="footer">OUTPOSTX · TATOOINE · APRIL 2026</div>
+
+</body>
+</html>
