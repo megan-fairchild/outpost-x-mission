@@ -299,7 +299,7 @@ function renderMaster() {
         <div>${m.props.map((p, i) => `<label class="check-item"><input type="checkbox" ${state.props[m.id+'_'+i] ? 'checked' : ''} onchange="toggleProp(${m.id},${i},this.checked)">${p}</label>`).join('')}</div>
         <div class="section-label">REWARD</div>
         <p style="color:var(--gold);font-weight:700">⭐ ${m.reward}</p>
-        <button class="complete-btn ${done ? 'done' : ''}" onclick="completeMission(${m.id})">${done ? '↺ UNDO COMPLETE' : 'MISSION COMPLETE ✓'}</button>
+        <button class="complete-btn ${done ? 'done' : ''}" onclick="completeMission(${m.id})">${done ? 'MISSION COMPLETE ✓' : 'COMPLETE MISSION'}</button>
       </div></div>
     </div>`;
   }).join('');
@@ -338,7 +338,7 @@ function completeMission(id) {
   if (card) {
     const btn = card.querySelector(".complete-btn");
     btn.classList.add("glow", "done");
-    btn.textContent = "↺ UNDO COMPLETE";
+    btn.textContent = "MISSION COMPLETE ✓";
     setTimeout(() => { card.classList.add("done"); card.classList.remove("open"); }, 800);
     card.querySelector(".mc-num").textContent = "✓";
   }
