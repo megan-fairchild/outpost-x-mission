@@ -173,6 +173,80 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
   .pack-grid{columns:1}
   .photo-ops ul{columns:1}
 }
+
+/* ── COUNTDOWN ── */
+.countdown{background:var(--card);border:1px solid rgba(255,215,0,.2);border-radius:var(--r);padding:20px 16px;margin-bottom:20px;text-align:center}
+.countdown .cd-label{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--dim);letter-spacing:2px;margin-bottom:10px}
+.countdown .cd-grid{display:flex;justify-content:center;gap:12px}
+.countdown .cd-unit{display:flex;flex-direction:column;align-items:center;min-width:56px}
+.countdown .cd-num{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;color:var(--gold);line-height:1}
+.countdown .cd-lbl{font-family:'Orbitron',sans-serif;font-size:8px;color:var(--dim);letter-spacing:1px;margin-top:4px}
+.countdown .cd-status{font-family:'Orbitron',sans-serif;font-size:14px;color:var(--gold);letter-spacing:2px}
+
+/* ── HEADER ACTIONS ── */
+.header-actions{display:flex;gap:6px;position:absolute;right:12px;top:12px}
+.icon-btn{width:32px;height:32px;border-radius:50%;background:var(--card);border:1px solid #1e1e3a;font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--dim);transition:border-color .3s,color .3s}
+.icon-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ── LIGHT MODE ── */
+html.light{--bg:#F5F0E8;--card:#FFFFFF;--gold:#B8860B;--orange:#D4621B;--cyan:#0088AA;--green:#228B22;--dim:#888;--text:#2C2418}
+html.light .tab-bar{background:#F0EBE3;border-top-color:#D5CFC7}
+html.light .header{background:linear-gradient(180deg,#F0EBE3 80%,transparent)}
+html.light .day-badge{background:var(--orange);color:#fff}
+html.light .ms-num{background:var(--orange);color:#fff}
+html.light .ms-narrative{background:#F8F5F0;border-left-color:var(--gold)}
+html.light .icon-btn{background:var(--card);border-color:#D5CFC7}
+html.light .photo-ops{background:#F0EDE6}
+html.light .countdown{border-color:rgba(184,134,11,.3)}
+html.light .tl li{border-bottom-color:#E8E2DA}
+html.light .hub-card{border-color:#D5CFC7}
+html.light .ms-card,html.light .recipe-card,html.light .cloth-card,html.light .day-card{border-color:#D5CFC7}
+html.light .prep-box{border-color:#D5CFC7}
+html.light .grocery-section{background:#fff}
+html.light .add-item-input{border-color:#D5CFC7;color:var(--text)}
+html.light .add-item-input:focus{border-color:var(--gold)}
+html.light .gallery-thumb{border-color:#D5CFC7}
+
+/* ── EDITABLE LISTS ── */
+.add-item-row{display:flex;gap:8px;margin-top:10px}
+.add-item-input{flex:1;background:transparent;border:1px solid #1e1e3a;border-radius:8px;padding:8px 12px;font-size:13px;color:var(--text);font-family:inherit;outline:none;transition:border-color .3s}
+.add-item-input:focus{border-color:var(--gold)}
+.add-item-input::placeholder{color:var(--dim)}
+.add-btn{background:var(--gold);color:#000;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;padding:8px 14px;border-radius:8px;letter-spacing:1px;white-space:nowrap;transition:opacity .3s}
+.add-btn:hover{opacity:.85}
+.del-btn{background:none;color:#633;font-size:16px;padding:0 6px;margin-left:auto;flex-shrink:0;opacity:.5;transition:opacity .3s,color .3s}
+.del-btn:hover{opacity:1;color:#f44}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--gold);color:#000;font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:1px;padding:10px 20px;border-radius:10px;opacity:0;transition:opacity .3s,transform .3s;z-index:200;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── EXPORT BTNS ── */
+.export-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:var(--card);border:1px solid #1e1e3a;border-radius:8px;font-size:11px;font-family:'Orbitron',sans-serif;color:var(--cyan);letter-spacing:1px;cursor:pointer;transition:border-color .3s}
+.export-btn:hover{border-color:var(--cyan)}
+
+/* ── PHOTO GALLERY ── */
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.gallery-thumb{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;cursor:pointer;border:1px solid #1e1e3a}
+.gallery-thumb img{width:100%;height:100%;object-fit:cover}
+.gallery-thumb .gt-del{position:absolute;top:4px;right:4px;width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,.7);color:#f44;font-size:14px;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+.gallery-thumb:hover .gt-del,.gallery-thumb:active .gt-del{opacity:1}
+.gallery-thumb .gt-cap{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.8));padding:4px 6px;font-size:10px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.add-photo-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:var(--card);border:2px dashed #1e1e3a;border-radius:var(--r);font-family:'Orbitron',sans-serif;font-size:12px;color:var(--dim);letter-spacing:1px;cursor:pointer;transition:border-color .3s,color .3s}
+.add-photo-btn:hover{border-color:var(--gold);color:var(--gold)}
+.gallery-empty{text-align:center;padding:60px 20px;color:var(--dim)}
+.gallery-empty .ge-icon{font-size:48px;margin-bottom:12px}
+.gallery-empty p{font-size:13px;line-height:1.6}
+
+/* ── LIGHTBOX ── */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:300;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.lightbox.active{display:flex}
+.lightbox img{max-width:100%;max-height:70vh;border-radius:10px;object-fit:contain}
+.lightbox .lb-cap{margin-top:12px;font-family:'Orbitron',sans-serif;font-size:12px;color:var(--gold);letter-spacing:1px;text-align:center;cursor:pointer;min-height:20px;padding:4px 12px}
+.lightbox .lb-close{position:absolute;top:16px;right:16px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;font-size:24px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.lightbox .lb-nav{position:absolute;top:50%;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;transform:translateY(-50%)}
+.lightbox .lb-prev{left:12px}
+.lightbox .lb-next{right:12px}
 </style>
 </head>
 <body>
@@ -181,6 +255,10 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
 <div class="header">
   <h1>📜 HOLOCRON ARCHIVES</h1>
   <div class="sub">OPERATION OUTPOST X — FULL MISSION BRIEFING</div>
+  <div class="header-actions">
+    <button class="icon-btn" onclick="shareApp()" title="Share">📤</button>
+    <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">☀️</button>
+  </div>
 </div>
 
 <!-- SCREENS -->
@@ -189,6 +267,18 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
 <div id="missionsScreen" class="screen"></div>
 <div id="mealsScreen" class="screen"></div>
 <div id="wardrobeScreen" class="screen"></div>
+<div id="galleryScreen" class="screen"></div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <div class="lb-close" onclick="closeLightbox()">✕</div>
+  <button class="lb-nav lb-prev" onclick="event.stopPropagation();navLightbox(-1)">‹</button>
+  <button class="lb-nav lb-next" onclick="event.stopPropagation();navLightbox(1)">›</button>
+  <img id="lbImg" src="">
+  <div class="lb-cap" id="lbCap" onclick="event.stopPropagation();editCaption(lbIndex)"></div>
+</div>
+<div class="toast" id="toast"></div>
+<input type="file" id="photoInput" accept="image/*" multiple hidden onchange="handlePhotos(this.files)">
 
 <!-- TAB BAR -->
 <div class="tab-bar">
@@ -197,6 +287,7 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
   <button class="tab" onclick="showTab('missions')"><span class="ico">⚔️</span>MISSIONS</button>
   <button class="tab" onclick="showTab('meals')"><span class="ico">🍽️</span>PROVISIONS</button>
   <button class="tab" onclick="showTab('wardrobe')"><span class="ico">👕</span>WARDROBE</button>
+  <button class="tab" onclick="showTab('gallery')"><span class="ico">📸</span>MEMORIES</button>
 </div>
 
 <script>
@@ -475,6 +566,20 @@ function toggleGrocery(item, cb) {
   cb.parentElement.classList.toggle('checked', cb.checked);
 }
 
+/* Custom packing items */
+function loadCustomPack() { try { return JSON.parse(localStorage.getItem('holo_custom_pack')) || []; } catch { return []; } }
+function saveCustomPack(a) { localStorage.setItem('holo_custom_pack', JSON.stringify(a)); }
+let customPack = loadCustomPack();
+function addPackItem(input) { const v = input.value.trim(); if (!v) return; customPack.push(v); saveCustomPack(customPack); input.value = ''; renderWardrobe(); }
+function removePackItem(idx) { customPack.splice(idx, 1); saveCustomPack(customPack); renderWardrobe(); }
+
+/* Custom grocery items */
+function loadCustomGroc() { try { return JSON.parse(localStorage.getItem('holo_custom_groc')) || []; } catch { return []; } }
+function saveCustomGroc(a) { localStorage.setItem('holo_custom_groc', JSON.stringify(a)); }
+let customGroc = loadCustomGroc();
+function addGrocItem(cat, input) { const v = input.value.trim(); if (!v) return; customGroc.push({c:cat, i:v}); saveCustomGroc(customGroc); input.value = ''; rebuildGrocery(); }
+function removeGrocItem(idx) { customGroc.splice(idx, 1); saveCustomGroc(customGroc); rebuildGrocery(); }
+
 function buildGroceryList() {
   const all = [...BASE_GROCERY];
   MEAL_SLOTS.forEach(slot => {
@@ -495,11 +600,12 @@ function buildGroceryList() {
 /* ════════════════════════════════════════════
    NAVIGATION
    ════════════════════════════════════════════ */
+const TAB_ORDER = ['hub','itinerary','missions','meals','wardrobe','gallery'];
 function showTab(name) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.getElementById(name + 'Screen').classList.add('active');
-  document.querySelectorAll('.tab')[['hub','itinerary','missions','meals','wardrobe'].indexOf(name)].classList.add('active');
+  document.querySelectorAll('.tab')[TAB_ORDER.indexOf(name)].classList.add('active');
   window.scrollTo(0, 0);
 }
 
@@ -515,6 +621,7 @@ function toggle(el) { el.closest('.day-card,.ms-card,.recipe-card,.cloth-card').
    ════════════════════════════════════════════ */
 function renderHub() {
   document.getElementById('hubScreen').innerHTML = `
+    <div class="countdown" id="countdown"></div>
     <div class="hub-grid">
       <div class="hub-card" onclick="goTab('itinerary')">
         <div class="hc-icon">📋</div>
@@ -656,12 +763,41 @@ function renderMeals() {
 
 function buildGroceryHtml() {
   const groceryList = buildGroceryList();
-  return `<div class="section-title">MASTER GROCERY LIST</div>
-    <p style="font-size:12px;color:var(--dim);margin-bottom:12px">Auto-updated based on selected meals • Buy in Las Vegas or St. George</p>
-    ${groceryList.map(g => `<div class="grocery-section"><h4>${g.cat}</h4><ul>${g.items.map(i => {
+  const customByCat = {};
+  customGroc.forEach((g, idx) => { if (!customByCat[g.c]) customByCat[g.c] = []; customByCat[g.c].push({i:g.i, idx}); });
+
+  let html = `<div class="section-title">MASTER GROCERY LIST</div>
+    <p style="font-size:12px;color:var(--dim);margin-bottom:8px">Auto-updated based on selected meals • Buy in Las Vegas or St. George</p>
+    <div style="text-align:right;margin-bottom:12px"><button class="export-btn" onclick="exportGrocery()">📋 COPY LIST</button></div>`;
+
+  groceryList.forEach(g => {
+    const customs = customByCat[g.cat] || [];
+    delete customByCat[g.cat];
+    html += `<div class="grocery-section"><h4>${g.cat}</h4><ul>`;
+    html += g.items.map(i => {
       const ck = groceryChecks[i] ? 'checked' : '';
-      return `<li><label class="grocery-check ${ck ? 'checked' : ''}"><input type="checkbox" ${ck} onchange="toggleGrocery('${i.replace(/'/g,"\\'")}',this)">${i}</label></li>`;
-    }).join('')}</ul></div>`).join('')}`;
+      return `<li><label class="grocery-check ${ck?'checked':''}"><input type="checkbox" ${ck} onchange="toggleGrocery('${i.replace(/'/g,"\\'")}',this)">${i}</label></li>`;
+    }).join('');
+    html += customs.map(c => {
+      const ck = groceryChecks[c.i] ? 'checked' : '';
+      return `<li style="display:flex;align-items:center"><label class="grocery-check ${ck?'checked':''}" style="flex:1"><input type="checkbox" ${ck} onchange="toggleGrocery('${c.i.replace(/'/g,"\\'")}',this)">${c.i}</label><button class="del-btn" onclick="removeGrocItem(${c.idx})">✕</button></li>`;
+    }).join('');
+    const esc = g.cat.replace(/'/g,"\\'");
+    html += `</ul><div class="add-item-row"><input class="add-item-input" placeholder="Add item…" onkeydown="if(event.key==='Enter')addGrocItem('${esc}',this)"><button class="add-btn" onclick="addGrocItem('${esc}',this.previousElementSibling)">+ ADD</button></div></div>`;
+  });
+
+  Object.keys(customByCat).forEach(cat => {
+    const customs = customByCat[cat];
+    html += `<div class="grocery-section"><h4>${cat}</h4><ul>`;
+    html += customs.map(c => {
+      const ck = groceryChecks[c.i] ? 'checked' : '';
+      return `<li style="display:flex;align-items:center"><label class="grocery-check ${ck?'checked':''}" style="flex:1"><input type="checkbox" ${ck} onchange="toggleGrocery('${c.i.replace(/'/g,"\\'")}',this)">${c.i}</label><button class="del-btn" onclick="removeGrocItem(${c.idx})">✕</button></li>`;
+    }).join('');
+    const esc = cat.replace(/'/g,"\\'");
+    html += `</ul><div class="add-item-row"><input class="add-item-input" placeholder="Add item…" onkeydown="if(event.key==='Enter')addGrocItem('${esc}',this)"><button class="add-btn" onclick="addGrocItem('${esc}',this.previousElementSibling)">+ ADD</button></div></div>`;
+  });
+
+  return html;
 }
 
 function rebuildGrocery() {
@@ -689,21 +825,202 @@ function renderWardrobe() {
     </div>`).join('');
 
   const packing = `<div class="section-title">🧳 PACKING CHECKLIST</div>
+    <div style="text-align:right;margin-bottom:8px"><button class="export-btn" onclick="exportPacking()">📋 COPY LIST</button></div>
     <div style="background:var(--card);border-radius:var(--r);padding:14px 16px;margin-bottom:14px">
-      <div class="pack-grid">${PACKING.map(p => `<label><input type="checkbox" ${packState[p]?'checked':''} onchange="togglePack('${p.replace(/'/g,"\\'")}',this)">${p}</label>`).join('')}</div>
+      <div class="pack-grid">
+        ${PACKING.map(p => `<label><input type="checkbox" ${packState[p]?'checked':''} onchange="togglePack('${p.replace(/'/g,"\\'")}',this)">${p}</label>`).join('')}
+        ${customPack.map((p,i) => `<label style="display:flex;align-items:center"><input type="checkbox" ${packState[p]?'checked':''} onchange="togglePack('${p.replace(/'/g,"\\'")}',this)"><span style="flex:1">${p}</span><button class="del-btn" onclick="event.preventDefault();removePackItem(${i})">✕</button></label>`).join('')}
+      </div>
+      <div class="add-item-row" style="margin-top:12px"><input class="add-item-input" placeholder="Add packing item…" onkeydown="if(event.key==='Enter')addPackItem(this)"><button class="add-btn" onclick="addPackItem(this.previousElementSibling)">+ ADD</button></div>
     </div>`;
 
   el.innerHTML = cards + packing;
 }
 
 /* ════════════════════════════════════════════
+   COUNTDOWN TIMER
+   ════════════════════════════════════════════ */
+const EVENT_START = new Date('2026-04-08T14:30:00-06:00');
+const EVENT_END = new Date('2026-04-11T10:00:00-06:00');
+function updateCountdown() {
+  const el = document.getElementById('countdown');
+  if (!el) return;
+  const now = new Date();
+  if (now >= EVENT_END) {
+    el.innerHTML = '<div class="cd-label">OPERATION OUTPOST X</div><div class="cd-status">⭐ MISSION COMPLETE ⭐</div>';
+    return;
+  }
+  if (now >= EVENT_START) {
+    el.innerHTML = '<div class="cd-label">OPERATION OUTPOST X</div><div class="cd-status">🚀 THE MISSION HAS BEGUN 🚀</div>';
+    return;
+  }
+  const diff = EVENT_START - now;
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  el.innerHTML = `<div class="cd-label">MISSION LAUNCH IN</div>
+    <div class="cd-grid">
+      <div class="cd-unit"><div class="cd-num">${d}</div><div class="cd-lbl">DAYS</div></div>
+      <div class="cd-unit"><div class="cd-num">${String(h).padStart(2,'0')}</div><div class="cd-lbl">HRS</div></div>
+      <div class="cd-unit"><div class="cd-num">${String(m).padStart(2,'0')}</div><div class="cd-lbl">MIN</div></div>
+      <div class="cd-unit"><div class="cd-num">${String(s).padStart(2,'0')}</div><div class="cd-lbl">SEC</div></div>
+    </div>`;
+}
+
+/* ════════════════════════════════════════════
+   THEME TOGGLE
+   ════════════════════════════════════════════ */
+function loadTheme() { return localStorage.getItem('holo_theme') || 'dark'; }
+function applyTheme(t) {
+  document.documentElement.classList.toggle('light', t === 'light');
+  const btn = document.getElementById('themeBtn');
+  if (btn) btn.textContent = t === 'light' ? '🌙' : '☀️';
+  localStorage.setItem('holo_theme', t);
+}
+function toggleTheme() { applyTheme(loadTheme() === 'dark' ? 'light' : 'dark'); }
+
+/* ════════════════════════════════════════════
+   SHARE / EXPORT
+   ════════════════════════════════════════════ */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+function shareApp() {
+  const url = window.location.href;
+  if (navigator.share) {
+    navigator.share({title:'Holocron Archives',text:'📜 Operation OutpostX — Full Mission Briefing',url}).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(url).then(() => showToast('LINK COPIED'));
+  }
+}
+function exportGrocery() {
+  const list = buildGroceryList();
+  const customByCat = {};
+  customGroc.forEach(g => { if (!customByCat[g.c]) customByCat[g.c] = []; customByCat[g.c].push(g.i); });
+  let text = '🛒 OUTPOST X — GROCERY LIST\n\n';
+  list.forEach(g => {
+    text += g.cat + '\n';
+    g.items.forEach(i => text += '  □ ' + i + '\n');
+    (customByCat[g.cat] || []).forEach(i => text += '  □ ' + i + '\n');
+    text += '\n';
+  });
+  navigator.clipboard.writeText(text).then(() => showToast('GROCERY LIST COPIED'));
+}
+function exportPacking() {
+  let text = '🧳 OUTPOST X — PACKING LIST\n\n';
+  [...PACKING, ...customPack].forEach(p => text += '□ ' + p + '\n');
+  navigator.clipboard.writeText(text).then(() => showToast('PACKING LIST COPIED'));
+}
+
+/* ════════════════════════════════════════════
+   PHOTO GALLERY
+   ════════════════════════════════════════════ */
+function loadPhotos() { try { return JSON.parse(localStorage.getItem('holo_photos')) || []; } catch { return []; } }
+function savePhotos(p) { localStorage.setItem('holo_photos', JSON.stringify(p)); }
+let photos = loadPhotos();
+let lbIndex = 0;
+
+function compressImage(file) {
+  return new Promise(resolve => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX = 800;
+        let w = img.width, h = img.height;
+        if (w > MAX) { h = h * MAX / w; w = MAX; }
+        if (h > MAX) { w = w * MAX / h; h = MAX; }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', 0.7));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+async function handlePhotos(files) {
+  if (photos.length >= 50) { showToast('MAX 50 PHOTOS'); return; }
+  for (const file of files) {
+    if (photos.length >= 50) break;
+    const data = await compressImage(file);
+    photos.push({src:data, cap:'', ts:Date.now()});
+  }
+  savePhotos(photos);
+  renderGallery();
+  document.getElementById('photoInput').value = '';
+}
+
+function deletePhoto(idx) { photos.splice(idx, 1); savePhotos(photos); renderGallery(); }
+
+function editCaption(idx) {
+  const cap = prompt('Caption:', photos[idx].cap || '');
+  if (cap !== null) { photos[idx].cap = cap; savePhotos(photos); renderGallery(); }
+}
+
+function openLightbox(idx) {
+  lbIndex = idx;
+  document.getElementById('lbImg').src = photos[idx].src;
+  document.getElementById('lbCap').textContent = photos[idx].cap || 'Tap to add caption';
+  document.getElementById('lightbox').classList.add('active');
+}
+
+function closeLightbox(e) {
+  if (e && e.target !== e.currentTarget && !e.target.classList.contains('lb-close')) return;
+  document.getElementById('lightbox').classList.remove('active');
+}
+
+function navLightbox(dir) {
+  lbIndex = (lbIndex + dir + photos.length) % photos.length;
+  document.getElementById('lbImg').src = photos[lbIndex].src;
+  document.getElementById('lbCap').textContent = photos[lbIndex].cap || 'Tap to add caption';
+}
+
+function renderGallery() {
+  const el = document.getElementById('galleryScreen');
+  if (!photos.length) {
+    el.innerHTML = `<div class="section-title">📸 MISSION MEMORIES</div>
+      <div class="gallery-empty"><div class="ge-icon">📸</div><p>No memories yet.<br>Add photos from your mission!</p></div>
+      <button class="add-photo-btn" onclick="document.getElementById('photoInput').click()">📷 ADD MEMORIES</button>`;
+    return;
+  }
+  el.innerHTML = `<div class="section-title">📸 MISSION MEMORIES</div>
+    <button class="add-photo-btn" onclick="document.getElementById('photoInput').click()" style="margin-bottom:16px">📷 ADD MEMORIES</button>
+    <div class="gallery-grid">${photos.map((p,i) => `
+      <div class="gallery-thumb" onclick="openLightbox(${i})">
+        <img src="${p.src}" alt="Memory ${i+1}" loading="lazy">
+        <button class="gt-del" onclick="event.stopPropagation();deletePhoto(${i})">✕</button>
+        ${p.cap ? `<div class="gt-cap">${p.cap}</div>` : ''}
+      </div>`).join('')}
+    </div>
+    <p style="text-align:center;font-size:11px;color:var(--dim);margin-top:8px">${photos.length}/50 memories • Tap photo for fullscreen</p>`;
+}
+
+/* ════════════════════════════════════════════
    INIT
    ════════════════════════════════════════════ */
+applyTheme(loadTheme());
 renderHub();
 renderItinerary();
 renderMissions();
 renderMeals();
 renderWardrobe();
+renderGallery();
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lightbox').classList.contains('active')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') navLightbox(-1);
+  if (e.key === 'ArrowRight') navLightbox(1);
+});
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js').catch(() => {});
