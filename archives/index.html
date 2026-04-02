@@ -124,6 +124,12 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
 .cl-head{padding:14px 16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between}
 .cl-title{font-family:'Orbitron',sans-serif;font-size:12px;color:var(--gold)}
 .cl-weather{font-size:11px;color:var(--dim)}
+/* Wardrobe weather alerts */
+.wx-alerts{margin-bottom:14px}
+.wx-alert{font-size:12px;line-height:1.6;padding:8px 12px;margin-bottom:6px;border-radius:8px;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.15);color:var(--cyan)}
+.wx-alert.warn{background:rgba(255,107,53,.08);border-color:rgba(255,107,53,.2);color:var(--orange)}
+.wx-alert.cold{background:rgba(0,212,255,.08);border-color:rgba(0,212,255,.2);color:var(--cyan)}
+.wx-alert.hot{background:rgba(255,215,0,.08);border-color:rgba(255,215,0,.2);color:var(--gold)}
 .cl-chev{font-size:18px;color:var(--dim);transition:transform .3s}
 .cloth-card.open .cl-chev{transform:rotate(180deg)}
 .cl-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
@@ -173,6 +179,26 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
   .pack-grid{columns:1}
   .photo-ops ul{columns:1}
 }
+
+/* ── LIVE WEATHER ── */
+.weather-card{background:var(--card);border:1px solid rgba(0,212,255,.2);border-radius:var(--r);padding:16px;margin-bottom:20px;text-align:center}
+.weather-card .wx-label{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--dim);letter-spacing:2px;margin-bottom:10px}
+.weather-card .wx-now{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:10px}
+.weather-card .wx-icon{font-size:42px;line-height:1}
+.weather-card .wx-temp{font-family:'Orbitron',sans-serif;font-size:36px;font-weight:900;color:var(--cyan);line-height:1}
+.weather-card .wx-unit{font-size:14px;color:var(--dim)}
+.weather-card .wx-desc{font-size:12px;color:var(--text);margin-bottom:10px}
+.weather-card .wx-details{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
+.weather-card .wx-detail{font-size:11px;color:var(--dim)}
+.weather-card .wx-detail span{color:var(--text)}
+.weather-card .wx-forecast{display:flex;justify-content:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid #1e1e3a;overflow-x:auto}
+.weather-card .wx-fday{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:56px;padding:8px 6px;border-radius:8px;background:#111128}
+.weather-card .wx-fday .wx-fd{font-family:'Orbitron',sans-serif;font-size:9px;color:var(--dim);letter-spacing:1px}
+.weather-card .wx-fday .wx-fi{font-size:20px}
+.weather-card .wx-fday .wx-ft{font-family:'Orbitron',sans-serif;font-size:11px;color:var(--cyan)}
+.weather-card .wx-fday .wx-fl{font-size:10px;color:var(--dim)}
+.weather-card .wx-error{font-size:12px;color:var(--dim);padding:8px 0}
+html.light .weather-card{border-color:rgba(0,150,200,.25)}
 
 /* ── COUNTDOWN ── */
 .countdown{background:var(--card);border:1px solid rgba(255,215,0,.2);border-radius:var(--r);padding:20px 16px;margin-bottom:20px;text-align:center}
@@ -302,43 +328,43 @@ const DAYS = [
     {t:"2:30",e:"Arrive at OutpostX, check into Glass Cave Villa"},
     {t:"3:30",e:"Costume up! Everyone changes into Star Wars gear"},
     {t:"4:00",e:'Sand Cruiser orientation ride <span class="tag tag-p">PHOTO</span>'},
-    {t:"5:30",e:'Dinner: "Mos Eisley Cantina Wraps" <span class="tag tag-f">MEAL</span>'},
+    {t:"5:30",e:'Dinner: "Mos Eisley Cantina Wraps" <span class="tag tag-f">MEAL</span>', slot:"d1d"},
     {t:"6:30",e:'Mission 1: "Awakening the Force" at fire pit <span class="tag tag-m">MISSION</span>'},
     {t:"7:30",e:'Stargazing from the deck — "Blue Milk" drinks <span class="tag tag-p">PHOTO</span>'}
   ], photos:["Arrival silhouette","Glass Cave interior","Sand Cruiser shot","Fire pit portrait","Stargazing"]},
 
   { num:"Day 2", name:"THE TRAINING BEGINS", date:"Thursday, April 9", items:[
-    {t:"7:30",e:'Sunrise + coffee. Breakfast: "Jedi Fuel" <span class="tag tag-f">MEAL</span>'},
+    {t:"7:30",e:'Sunrise + coffee. Breakfast: "Jedi Fuel" <span class="tag tag-f">MEAL</span>', slot:"d2b"},
     {t:"9:00",e:'Mission 2: "The Way of the Lightsaber" <span class="tag tag-m">MISSION</span>'},
     {t:"10:00",e:'Mission 3: "The Sand Cruiser Patrol" <span class="tag tag-m">MISSION</span>'},
     {t:"11:00",e:'Mission 4: "The Force Balance" — trampoline <span class="tag tag-m">MISSION</span>'},
-    {t:"12:00",e:'Lunch: "Tatooine Trader\'s Pitas" <span class="tag tag-f">MEAL</span>'},
+    {t:"12:00",e:'Lunch: "Tatooine Trader\'s Pitas" <span class="tag tag-f">MEAL</span>', slot:"d2l"},
     {t:"1:00",e:"Rest, free play, explore"},
     {t:"2:00",e:'Mission 5: "Crafting a Jedi Artifact" — pottery <span class="tag tag-m">MISSION</span>'},
     {t:"3:30",e:'Cantina mocktails <span class="tag tag-p">PHOTO</span>'},
     {t:"4:00",e:'Spa: "Healing Springs" — hot tub, sauna, clay bath'},
-    {t:"5:30",e:'Dinner: "Campfire Feast" — kebabs + s\'mores <span class="tag tag-f">MEAL</span>'},
+    {t:"5:30",e:'Dinner: "Campfire Feast" — kebabs + s\'mores <span class="tag tag-f">MEAL</span>', slot:"d2d"},
     {t:"7:30",e:'Movie night at Kaan Lounge — Star Wars: A New Hope <span class="tag tag-p">PHOTO</span>'}
   ], photos:["Father-son lightsaber training","Sand Cruiser action","Pottery candid","Cantina toast","Campfire family","Movie night"]},
 
   { num:"Day 3", name:"THE QUEST BEYOND THE OUTPOST", date:"Friday, April 10", items:[
-    {t:"7:30",e:'Breakfast: "Rebel Morning Rations" (overnight oats) <span class="tag tag-f">MEAL</span>'},
+    {t:"7:30",e:'Breakfast: "Rebel Morning Rations" (overnight oats) <span class="tag tag-f">MEAL</span>', slot:"d3b"},
     {t:"8:30",e:"Pack picnic, drive to Snow Canyon State Park (~45 min)"},
     {t:"9:30",e:'Mission 6: "Tracking the Kyber Crystal" — Petrified Dunes + Lava Flow Trail <span class="tag tag-m">MISSION</span>'},
-    {t:"11:30",e:'Picnic: "Rebel Rations Pack" <span class="tag tag-f">MEAL</span>'},
+    {t:"11:30",e:'Picnic: "Rebel Rations Pack" <span class="tag tag-f">MEAL</span>', slot:"d3l"},
     {t:"12:30",e:"Drive back to OutpostX"},
     {t:"1:30",e:"Rest / nap for Syba Taan"},
     {t:"3:00",e:'Mission 7: "The Final Trials" <span class="tag tag-m">MISSION</span>'},
     {t:"4:30",e:"Spa / free time"},
     {t:"5:30",e:"Costume up for the ceremony"},
-    {t:"6:00",e:'Dinner: "Jedi Council Feast" — steak + sparkling cider <span class="tag tag-f">MEAL</span>'},
+    {t:"6:00",e:'Dinner: "Jedi Council Feast" — steak + sparkling cider <span class="tag tag-f">MEAL</span>', slot:"d3d"},
     {t:"7:30",e:'Mission 8: "The Knighting Ceremony" — under the stars <span class="tag tag-m">MISSION</span> <span class="tag tag-p">PHOTO</span>'},
     {t:"8:30",e:"Celebration toast, stargazing"}
   ], photos:["Canyon hike panorama","Kyber crystal discovery","Final Trials","Pre-ceremony portrait","THE KNIGHTING","Family under stars"]},
 
   { num:"Day 4", name:"RETURN TO THE CORE WORLDS", date:"Saturday, April 11", items:[
     {t:"7:00",e:"Sunrise meditation (optional)"},
-    {t:"7:30",e:'Brunch: "Galactic Send-off" — pancakes + bacon <span class="tag tag-f">MEAL</span>'},
+    {t:"7:30",e:'Brunch: "Galactic Send-off" — pancakes + bacon <span class="tag tag-f">MEAL</span>', slot:"d4b"},
     {t:"9:00",e:'Final Sand Cruiser ride, last costume photos <span class="tag tag-p">PHOTO</span>'},
     {t:"10:00",e:"Pack up, check out"},
     {t:"10:30",e:"Drive to Las Vegas (~2.5 hrs)"},
@@ -490,26 +516,67 @@ const BASE_GROCERY = [
   {c:"🥤 Beverages",i:"Water bottles — case"}
 ];
 
-const WARDROBE = [
-  { day:"Day 1 — Travel + Arrival", weather:"Arrive afternoon ~55–60°F · Evening drops to ~38°F", people:[
-    {name:"🗡 MASTER MATTHANE SOL",lines:["Travel: Jeans, casual tee, sneakers, hoodie for the plane","Evening: Jedi robes over thermal base layer + warm pants, boots. Add beanie after dark."]},
-    {name:"🌟 YOUNGLING SYBA TAAN",lines:["Travel: Comfy play clothes, sneakers, zip-up jacket","Evening: Padawan costume over long-sleeve thermal + warm pants. Warm hat + gloves for stargazing."]},
-    {name:"⚔️ COMMANDER MEG'ARA KYN",lines:["Travel: Desert-tone comfy outfit (cream or slate), comfy shoes","Evening: Warm layers — scarf, earth-tone wrap or jacket. Camera-ready but cozy."]}
+const WARDROBE_BASE = [
+  { day:"Day 1 — Travel + Arrival", date:"2026-04-08", fallbackWeather:"Arrive afternoon ~55–60°F · Evening drops to ~38°F", people:[
+    {name:"🗡 MASTER MATTHANE SOL",lines:[
+      "Travel: Jeans, casual tee, sneakers, hoodie for the plane",
+      "Evening: Jedi robes over thermal base layer + warm pants, boots. Add beanie after dark."
+    ]},
+    {name:"🌟 YOUNGLING SYBA TAAN",lines:[
+      "Travel: Comfy play clothes, sneakers, zip-up jacket",
+      "Evening: Padawan costume over long-sleeve thermal + warm pants. Warm hat + gloves for stargazing."
+    ]},
+    {name:"⚔️ COMMANDER MEG'ARA KYN",lines:[
+      "Travel: Desert-tone comfy outfit (cream or slate), comfy shoes",
+      "Evening: Warm layers — scarf, earth-tone wrap or jacket. Camera-ready but cozy."
+    ]}
   ]},
-  { day:"Day 2 — Full Training Day", weather:"Morning ~40°F · Afternoon ~58°F · Evening ~40°F", people:[
-    {name:"🗡 MASTER MATTHANE SOL",lines:["Morning: Full Jedi robes over thermal base + fleece mid-layer, boots","Afternoon: Shed outer robe — earth-tone henley, cargo pants, boots","Evening: Layer back up for campfire + movie night"]},
-    {name:"🌟 YOUNGLING SYBA TAAN",lines:["Morning: Padawan costume over thermals, warm closed-toe shoes","Afternoon: Comfy play clothes for pottery + trampoline (can get messy!)","Evening: Warm PJs + blanket for movie night"]},
-    {name:"⚔️ COMMANDER MEG'ARA KYN",lines:["Morning: Warrior costume with warm layers underneath, boots — training photo ops!","Afternoon: Desert casual (earth-tone top + leggings, comfortable shoes)","Evening: Cozy layers, scarf, warm drink by the fire"]}
+  { day:"Day 2 — Full Training Day", date:"2026-04-09", fallbackWeather:"Morning ~40°F · Afternoon ~58°F · Evening ~40°F", people:[
+    {name:"🗡 MASTER MATTHANE SOL",lines:[
+      "Morning: Full Jedi robes over thermal base + fleece mid-layer, boots",
+      "Afternoon: Shed outer robe — earth-tone henley, cargo pants, boots",
+      "Evening: Layer back up for campfire + movie night"
+    ]},
+    {name:"🌟 YOUNGLING SYBA TAAN",lines:[
+      "Morning: Padawan costume over thermals, warm closed-toe shoes",
+      "Afternoon: Comfy play clothes for pottery + trampoline (can get messy!)",
+      "Evening: Warm PJs + blanket for movie night"
+    ]},
+    {name:"⚔️ COMMANDER MEG'ARA KYN",lines:[
+      "Morning: Warrior costume with warm layers underneath, boots — training photo ops!",
+      "Afternoon: Desert casual (earth-tone top + leggings, comfortable shoes)",
+      "Evening: Cozy layers, scarf, warm drink by the fire"
+    ]}
   ]},
-  { day:"Day 3 — Hike + Knighting Ceremony", weather:"Morning ~42°F · Afternoon ~60°F · Evening ~38°F", people:[
-    {name:"🗡 MASTER MATTHANE SOL",lines:["Morning hike: Moisture-wicking base, fleece, hiking pants, hiking shoes, hat, sunglasses","Afternoon: Casual rest clothes","Evening ceremony: Full Jedi robes over warm base layers — THIS is THE moment"]},
-    {name:"🌟 YOUNGLING SYBA TAAN",lines:["Morning hike: Warm layers, sturdy shoes, hat, sunscreen","Afternoon: Rest clothes / PJs for nap","Evening ceremony: Full Padawan robes over warm thermals — HIS big moment"]},
-    {name:"⚔️ COMMANDER MEG'ARA KYN",lines:["Morning hike: Earth-tone hiking layers, sturdy shoes, hat, sunscreen","Afternoon: Comfortable rest wear","Evening ceremony: Warrior costume or desert elegant — the ceremony photos!"]}
+  { day:"Day 3 — Hike + Knighting Ceremony", date:"2026-04-10", fallbackWeather:"Morning ~42°F · Afternoon ~60°F · Evening ~38°F", people:[
+    {name:"🗡 MASTER MATTHANE SOL",lines:[
+      "Morning hike: Moisture-wicking base, fleece, hiking pants, hiking shoes, hat, sunglasses",
+      "Afternoon: Casual rest clothes",
+      "Evening ceremony: Full Jedi robes over warm base layers — THIS is THE moment"
+    ]},
+    {name:"🌟 YOUNGLING SYBA TAAN",lines:[
+      "Morning hike: Warm layers, sturdy shoes, hat, sunscreen",
+      "Afternoon: Rest clothes / PJs for nap",
+      "Evening ceremony: Full Padawan robes over warm thermals — HIS big moment"
+    ]},
+    {name:"⚔️ COMMANDER MEG'ARA KYN",lines:[
+      "Morning hike: Earth-tone hiking layers, sturdy shoes, hat, sunscreen",
+      "Afternoon: Comfortable rest wear",
+      "Evening ceremony: Warrior costume or desert elegant — the ceremony photos!"
+    ]}
   ]},
-  { day:"Day 4 — Departure", weather:"Morning ~40°F", people:[
-    {name:"ALL",lines:["Comfortable travel clothes for the drive + flight home","📸 One last costume photo before packing up — do this first thing!"]}
+  { day:"Day 4 — Departure", date:"2026-04-11", fallbackWeather:"Morning ~40°F", people:[
+    {name:"ALL",lines:[
+      "Comfortable travel clothes for the drive + flight home",
+      "📸 One last costume photo before packing up — do this first thing!"
+    ]}
   ]}
 ];
+
+/* Build WARDROBE dynamically — starts as fallback, updated by live forecast */
+let WARDROBE = WARDROBE_BASE.map(w => ({...w, weather: w.fallbackWeather, alerts: []}));
+let tripForecastLoaded = false;
+let weatherPacking = []; // populated by fetchTripForecast
 
 const PACKING = [
   "Star Wars costume","Thermal base layers (3–4)","Warm fleece/jacket","Hiking shoes + casual shoes","Hat + sunglasses","Sunscreen","Beanie + gloves (evenings)","Warm scarf","Pajamas (2 sets)","Swimsuit (hot tub!)","Portable phone charger","Camera + extra battery","Reusable water bottles","Small first aid kit","Lightsabers (both!)","Small backpack (for hike)"
@@ -555,6 +622,7 @@ function setSlotChoice(slotId, idx) {
   `).join('');
   if (wasOpen) card.classList.add('open');
   rebuildGrocery();
+  renderItinerary();
 }
 
 function loadGroceryChecks() { try { return JSON.parse(localStorage.getItem('holo_groc')) || {}; } catch { return {}; } }
@@ -587,12 +655,27 @@ function buildGroceryList() {
     const recipe = slot.options[choice];
     if (recipe && recipe.grocery) all.push(...recipe.grocery);
   });
+  // Normalize key: strip leading qty, trailing desc, plurals
+  function grocKey(s) {
+    return s.replace(/^\d+\s*/, '').replace(/\s*[—–-]\s*.+$/, '').replace(/e?s\s*$/i, '').toLowerCase().trim();
+  }
+  // Extract leading quantity (returns 0 if none)
+  function grocQty(s) { const m = s.match(/^(\d+)/); return m ? parseInt(m[1]) : 0; }
   const cats = {};
   const catOrder = ["🍗 Protein","🥦 Produce","🧀 Dairy","🍞 Bread","🍯 Pantry","🧂 Spices","🥤 Beverages"];
   catOrder.forEach(c => cats[c] = []);
   all.forEach(g => {
     if (!cats[g.c]) cats[g.c] = [];
-    if (!cats[g.c].includes(g.i)) cats[g.c].push(g.i);
+    const key = grocKey(g.i);
+    const existIdx = cats[g.c].findIndex(e => grocKey(e) === key);
+    if (existIdx === -1) {
+      cats[g.c].push(g.i);
+    } else {
+      // Keep the one with higher quantity, or combine
+      const existQty = grocQty(cats[g.c][existIdx]);
+      const newQty = grocQty(g.i);
+      if (newQty > existQty) cats[g.c][existIdx] = g.i;
+    }
   });
   return catOrder.filter(c => cats[c].length > 0).map(c => ({cat:c, items:cats[c]}));
 }
@@ -622,6 +705,10 @@ function toggle(el) { el.closest('.day-card,.ms-card,.recipe-card,.cloth-card').
 function renderHub() {
   document.getElementById('hubScreen').innerHTML = `
     <div class="countdown" id="countdown"></div>
+    <div class="weather-card" id="weatherCard">
+      <div class="wx-label">🌡️ OUTPOST CONDITIONS — BERYL, UTAH</div>
+      <div class="wx-error">Scanning atmosphere…</div>
+    </div>
     <div class="hub-grid">
       <div class="hub-card" onclick="goTab('itinerary')">
         <div class="hc-icon">📋</div>
@@ -665,6 +752,25 @@ function renderHub() {
 /* ════════════════════════════════════════════
    RENDER ITINERARY
    ════════════════════════════════════════════ */
+/* Resolve an itinerary item's display text — swaps in current meal choice */
+function resolveItem(item) {
+  if (!item.slot) return item.e;
+  const slot = MEAL_SLOTS.find(s => s.id === item.slot);
+  if (!slot) return item.e;
+  const choice = getSlotChoice(slot.id);
+  const meal = slot.options[choice];
+  if (!meal) return item.e;
+  // Extract the prefix (e.g. "Dinner: ", "Breakfast: ", "Brunch: ", "Picnic: ", "Lunch: ")
+  // and the MEAL tag, then rebuild with current meal title
+  const mealTag = ' <span class="tag tag-f">MEAL</span>';
+  // Strip the emoji prefix from meal title for cleaner itinerary display
+  const mealName = meal.title.replace(/^[^\s]+\s/, '');
+  // Find the label prefix in the original text (everything before the first quote)
+  const prefixMatch = item.e.match(/^(.*?)[""]/);
+  const prefix = prefixMatch ? prefixMatch[1] : '';
+  return `${prefix}"${mealName}"${mealTag}`;
+}
+
 function renderItinerary() {
   document.getElementById('itineraryScreen').innerHTML = DAYS.map(d => `
     <div class="day-card">
@@ -677,7 +783,7 @@ function renderItinerary() {
         <span class="day-chev">▾</span>
       </div>
       <div class="day-body"><div class="day-content">
-        <ul class="tl">${d.items.map(i => `<li><span class="time">${i.t}</span><span>${i.e}</span></li>`).join('')}</ul>
+        <ul class="tl">${d.items.map(i => `<li><span class="time">${i.t}</span><span>${resolveItem(i)}</span></li>`).join('')}</ul>
         <div class="photo-ops"><b>📸 PHOTO OPS</b><ul>${d.photos.map(p => `<li>${p}</li>`).join('')}</ul></div>
       </div></div>
     </div>`).join('');
@@ -810,19 +916,24 @@ function rebuildGrocery() {
    ════════════════════════════════════════════ */
 function renderWardrobe() {
   const el = document.getElementById('wardrobeScreen');
-  const cards = WARDROBE.map(w => `
+  const cards = WARDROBE.map(w => {
+    const liveTag = tripForecastLoaded ? '<span style="font-size:9px;color:var(--green);margin-left:6px;font-family:Orbitron,sans-serif;letter-spacing:1px">● LIVE</span>' : '';
+    const alertsHtml = (w.alerts && w.alerts.length) ? `<div class="wx-alerts">${w.alerts.join('')}</div>` : '';
+    return `
     <div class="cloth-card">
       <div class="cl-head" onclick="toggle(this)">
         <div>
-          <div class="cl-title">${w.day}</div>
+          <div class="cl-title">${w.day}${liveTag}</div>
           <div class="cl-weather">${w.weather}</div>
         </div>
         <span class="cl-chev">▾</span>
       </div>
       <div class="cl-body"><div class="cl-content">
+        ${alertsHtml}
         ${w.people.map(p => `<div class="person-block"><div class="person-name">${p.name}</div>${p.lines.map(l => `<p>${l}</p>`).join('')}</div>`).join('')}
       </div></div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 
   const packing = `<div class="section-title">🧳 PACKING CHECKLIST</div>
     <div style="text-align:right;margin-bottom:8px"><button class="export-btn" onclick="exportPacking()">📋 COPY LIST</button></div>
@@ -834,7 +945,16 @@ function renderWardrobe() {
       <div class="add-item-row" style="margin-top:12px"><input class="add-item-input" placeholder="Add packing item…" onkeydown="if(event.key==='Enter')addPackItem(this)"><button class="add-btn" onclick="addPackItem(this.previousElementSibling)">+ ADD</button></div>
     </div>`;
 
-  el.innerHTML = cards + packing;
+  const wxPackHtml = weatherPacking.length ? `
+    <div class="section-title" style="color:var(--cyan)">🌡️ WEATHER-BASED ADDITIONS</div>
+    <div style="background:var(--card);border:1px solid rgba(0,212,255,.15);border-radius:var(--r);padding:14px 16px;margin-bottom:14px">
+      <div style="font-size:11px;color:var(--dim);margin-bottom:10px;font-family:'Orbitron',sans-serif;letter-spacing:1px">● LIVE FORECAST — auto-suggested items</div>
+      <div class="pack-grid">
+        ${weatherPacking.map(p => `<label><input type="checkbox" ${packState[p]?'checked':''} onchange="togglePack('${p.replace(/'/g,"\\'")}',this)">${p}</label>`).join('')}
+      </div>
+    </div>` : '';
+
+  el.innerHTML = cards + packing + wxPackHtml;
 }
 
 /* ════════════════════════════════════════════
@@ -1003,6 +1123,290 @@ function renderGallery() {
 }
 
 /* ════════════════════════════════════════════
+   LIVE WEATHER (Open-Meteo · Beryl UT)
+   ════════════════════════════════════════════ */
+const WX_LAT = 37.20, WX_LON = -113.66;
+const WX_CODES = {
+  0:'☀️ Clear sky',1:'🌤️ Mostly clear',2:'⛅ Partly cloudy',3:'☁️ Overcast',
+  45:'🌫️ Fog',48:'🌫️ Rime fog',51:'🌦️ Light drizzle',53:'🌧️ Drizzle',55:'🌧️ Heavy drizzle',
+  61:'🌧️ Light rain',63:'🌧️ Rain',65:'🌧️ Heavy rain',66:'🌨️ Freezing rain',67:'🌨️ Heavy freezing rain',
+  71:'🌨️ Light snow',73:'🌨️ Snow',75:'🌨️ Heavy snow',77:'🌨️ Snow grains',
+  80:'🌦️ Light showers',81:'🌦️ Showers',82:'🌧️ Heavy showers',
+  85:'🌨️ Light snow showers',86:'🌨️ Snow showers',
+  95:'⛈️ Thunderstorm',96:'⛈️ Hail thunderstorm',99:'⛈️ Severe thunderstorm'
+};
+function wxIcon(code) { return (WX_CODES[code] || '🌡️ Unknown').split(' ')[0]; }
+function wxDesc(code) { return (WX_CODES[code] || 'Unknown').replace(/^[^\s]+\s/, ''); }
+function wxDayName(iso) { return ['SUN','MON','TUE','WED','THU','FRI','SAT'][new Date(iso + 'T12:00:00').getDay()]; }
+function cToF(c) { return Math.round(c * 9 / 5 + 32); }
+
+async function fetchWeather() {
+  const el = document.getElementById('weatherCard');
+  if (!el) return;
+  try {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${WX_LAT}&longitude=${WX_LON}`
+      + `&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,wind_gusts_10m`
+      + `&daily=weather_code,temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit`
+      + `&wind_speed_unit=mph&forecast_days=5&timezone=America%2FDenver`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('API error');
+    const data = await res.json();
+    const c = data.current;
+    const d = data.daily;
+    const icon = wxIcon(c.weather_code);
+    const desc = wxDesc(c.weather_code);
+    const temp = Math.round(c.temperature_2m);
+    const feels = Math.round(c.apparent_temperature);
+    const humid = c.relative_humidity_2m;
+    const wind = Math.round(c.wind_speed_10m);
+    const gust = Math.round(c.wind_gusts_10m);
+
+    let forecast = '';
+    if (d && d.time) {
+      forecast = `<div class="wx-forecast">${d.time.slice(0, 5).map((t, i) => `
+        <div class="wx-fday">
+          <div class="wx-fd">${wxDayName(t)}</div>
+          <div class="wx-fi">${wxIcon(d.weather_code[i])}</div>
+          <div class="wx-ft">${Math.round(d.temperature_2m_max[i])}°</div>
+          <div class="wx-fl">${Math.round(d.temperature_2m_min[i])}°</div>
+        </div>`).join('')}</div>`;
+    }
+
+    el.innerHTML = `
+      <div class="wx-label">🌡️ OUTPOST CONDITIONS — BERYL, UTAH</div>
+      <div class="wx-now">
+        <div class="wx-icon">${icon}</div>
+        <div><div class="wx-temp">${temp}<span class="wx-unit">°F</span></div></div>
+      </div>
+      <div class="wx-desc">${desc} · Feels like ${feels}°F</div>
+      <div class="wx-details">
+        <div class="wx-detail">💧 <span>${humid}%</span></div>
+        <div class="wx-detail">💨 <span>${wind} mph</span></div>
+        <div class="wx-detail">🌬️ Gusts <span>${gust} mph</span></div>
+      </div>
+      ${forecast}`;
+  } catch (e) {
+    el.innerHTML = `<div class="wx-label">🌡️ OUTPOST CONDITIONS — BERYL, UTAH</div>
+      <div class="wx-error">⚠️ Atmospheric sensors offline — check back later</div>`;
+  }
+}
+
+/* ════════════════════════════════════════════
+   TRIP FORECAST → WARDROBE SYNC
+   ════════════════════════════════════════════ */
+const TRIP_DATES = ['2026-04-08','2026-04-09','2026-04-10','2026-04-11'];
+
+function layerAdvice(low, high) {
+  if (low <= 25) return '🧊 EXTREME COLD — heavy insulated layers, hand warmers essential';
+  if (low <= 32) return '🥶 Freezing overnight — heavy thermal base + insulated jacket + beanie + gloves mandatory';
+  if (low <= 40) return '❄️ Cold mornings/evenings — thermal base layer + fleece + warm outer layer';
+  if (low <= 50) return '🌤️ Cool — light layers, bring a jacket for shade or wind';
+  return '☀️ Mild — light clothing, but pack a layer for evening';
+}
+
+function precipAdvice(code) {
+  if ([61,63,65,80,81,82,95,96,99].includes(code)) return '🌧️ RAIN EXPECTED — pack waterproof jacket & shoe covers. Keep costumes protected!';
+  if ([51,53,55].includes(code)) return '🌦️ Drizzle possible — bring a light rain shell';
+  if ([66,67,71,73,75,77,85,86].includes(code)) return '🌨️ SNOW/ICE — waterproof boots, insulated layers, watch footing on trails';
+  if ([45,48].includes(code)) return '🌫️ Foggy — wear bright/visible layers for the hike';
+  return null;
+}
+
+function windAdvice(gust) {
+  if (gust >= 40) return '🌬️ HIGH WINDS (' + gust + ' mph gusts) — secure hats, skip loose robes outdoors, brace lightsabers';
+  if (gust >= 25) return '💨 Windy (' + gust + ' mph gusts) — windbreaker recommended, secure costume pieces';
+  return null;
+}
+
+function uvAdvice(uvMax) {
+  if (uvMax >= 8) return '☀️ VERY HIGH UV (' + uvMax + ') — sunscreen SPF 50+, hats, sunglasses mandatory for everyone';
+  if (uvMax >= 5) return '🧴 Moderate UV (' + uvMax + ') — sunscreen + hat recommended, especially for Syba';
+  return null;
+}
+
+async function fetchTripForecast() {
+  try {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${WX_LAT}&longitude=${WX_LON}`
+      + `&daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,`
+      + `wind_speed_10m_max,wind_gusts_10m_max,precipitation_probability_max,uv_index_max`
+      + `&hourly=temperature_2m,weather_code,wind_speed_10m`
+      + `&temperature_unit=fahrenheit&wind_speed_unit=mph`
+      + `&start_date=${TRIP_DATES[0]}&end_date=${TRIP_DATES[TRIP_DATES.length-1]}`
+      + `&timezone=America%2FDenver`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('API error');
+    const data = await res.json();
+    const daily = data.daily;
+    const hourly = data.hourly;
+    if (!daily || !daily.time) return;
+
+    TRIP_DATES.forEach((date, i) => {
+      const dIdx = daily.time.indexOf(date);
+      if (dIdx === -1) return;
+
+      const hi = Math.round(daily.temperature_2m_max[dIdx]);
+      const lo = Math.round(daily.temperature_2m_min[dIdx]);
+      const feelsHi = Math.round(daily.apparent_temperature_max[dIdx]);
+      const feelsLo = Math.round(daily.apparent_temperature_min[dIdx]);
+      const wCode = daily.weather_code[dIdx];
+      const gustMax = Math.round(daily.wind_gusts_10m_max[dIdx]);
+      const windMax = Math.round(daily.wind_speed_10m_max[dIdx]);
+      const precipChance = daily.precipitation_probability_max[dIdx];
+      const uvMax = daily.uv_index_max[dIdx];
+      const icon = wxIcon(wCode);
+      const desc = wxDesc(wCode);
+
+      // Extract hourly temps for morning (7-9), afternoon (12-15), evening (18-21)
+      const dayHours = hourly.time.map((t, hi) => ({t, idx: hi})).filter(h => h.t.startsWith(date));
+      const getAvg = (startH, endH) => {
+        const hrs = dayHours.filter(h => { const hr = parseInt(h.t.split('T')[1]); return hr >= startH && hr <= endH; });
+        if (!hrs.length) return null;
+        return Math.round(hrs.reduce((s, h) => s + hourly.temperature_2m[h.idx], 0) / hrs.length);
+      };
+      const mornT = getAvg(6, 9);
+      const afterT = getAvg(12, 15);
+      const eveT = getAvg(18, 21);
+
+      // Build weather summary
+      let parts = [`${icon} ${desc}`];
+      if (mornT !== null) parts.push(`Morning ~${mornT}°F`);
+      if (afterT !== null) parts.push(`Afternoon ~${afterT}°F`);
+      if (eveT !== null && i < 3) parts.push(`Evening ~${eveT}°F`);
+      parts.push(`High ${hi}° / Low ${lo}°`);
+      if (feelsLo < lo - 5) parts.push(`Feels like ${feelsLo}°`);
+      if (precipChance > 20) parts.push(`${precipChance}% precip`);
+
+      // Build alerts
+      const alerts = [];
+      alerts.push(layerAdvice(lo, hi));
+      const pAdv = precipAdvice(wCode);
+      if (pAdv) alerts.push(pAdv);
+      if (precipChance >= 50 && !pAdv) alerts.push(`🌧️ ${precipChance}% chance of precipitation — pack rain gear just in case`);
+      const wAdv = windAdvice(gustMax);
+      if (wAdv) alerts.push(wAdv);
+      const uAdv = uvAdvice(uvMax);
+      if (uAdv) alerts.push(uAdv);
+
+      // Apply adaptive clothing tweaks
+      const wb = WARDROBE_BASE[i];
+      const updatedPeople = wb.people.map(p => {
+        let lines = [...p.lines];
+        // Add cold-specific advice
+        if (lo <= 32 && !lines.some(l => l.includes('hand warmer'))) {
+          lines = lines.map(l => {
+            if (l.toLowerCase().includes('evening') || l.toLowerCase().includes('ceremony') || l.toLowerCase().includes('stargazing'))
+              return l + ' · ⚠️ Below freezing — double up thermals, hand warmers in gloves';
+            return l;
+          });
+        }
+        // Add rain advice
+        if ([61,63,65,80,81,82,95,96,99].includes(wCode)) {
+          lines = lines.map(l => {
+            if (l.toLowerCase().includes('hike') || l.toLowerCase().includes('morning'))
+              return l + ' · 🌧️ Pack rain shell & waterproof layer over costume';
+            return l;
+          });
+        }
+        // Add wind advice
+        if (gustMax >= 30) {
+          lines = lines.map(l => {
+            if (l.toLowerCase().includes('robe') || l.toLowerCase().includes('costume'))
+              return l + ' · 💨 Secure loose pieces — windy!';
+            return l;
+          });
+        }
+        // Warmer than expected? Lighten up
+        if (lo >= 50 && hi >= 70) {
+          lines = lines.map(l => l.replace(/thermal base layer/gi, 'light base layer').replace(/heavy /gi, ''));
+        }
+        return {...p, lines};
+      });
+
+      // Mark alerts with CSS classes
+      const styledAlerts = alerts.map(a => {
+        if (a.includes('🥶') || a.includes('🧊') || a.includes('❄️')) return `<div class="wx-alert cold">${a}</div>`;
+        if (a.includes('🌧️') || a.includes('🌨️') || a.includes('🌬️') || a.includes('💨')) return `<div class="wx-alert warn">${a}</div>`;
+        if (a.includes('☀️') && a.includes('UV')) return `<div class="wx-alert hot">${a}</div>`;
+        return `<div class="wx-alert">${a}</div>`;
+      });
+
+      WARDROBE[i] = {
+        ...wb,
+        weather: parts.join(' · '),
+        alerts: styledAlerts,
+        people: updatedPeople
+      };
+    });
+
+    // Build weather-derived packing suggestions
+    const wpSet = new Set();
+    const allLows = TRIP_DATES.map((_, i) => {
+      const dIdx = daily.time.indexOf(TRIP_DATES[i]);
+      return dIdx !== -1 ? daily.temperature_2m_min[dIdx] : null;
+    }).filter(v => v !== null);
+    const allHighs = TRIP_DATES.map((_, i) => {
+      const dIdx = daily.time.indexOf(TRIP_DATES[i]);
+      return dIdx !== -1 ? daily.temperature_2m_max[dIdx] : null;
+    }).filter(v => v !== null);
+    const allGusts = TRIP_DATES.map((_, i) => {
+      const dIdx = daily.time.indexOf(TRIP_DATES[i]);
+      return dIdx !== -1 ? daily.wind_gusts_10m_max[dIdx] : null;
+    }).filter(v => v !== null);
+    const allUV = TRIP_DATES.map((_, i) => {
+      const dIdx = daily.time.indexOf(TRIP_DATES[i]);
+      return dIdx !== -1 ? daily.uv_index_max[dIdx] : null;
+    }).filter(v => v !== null);
+    const allCodes = TRIP_DATES.map((_, i) => {
+      const dIdx = daily.time.indexOf(TRIP_DATES[i]);
+      return dIdx !== -1 ? daily.weather_code[dIdx] : null;
+    }).filter(v => v !== null);
+    const minLow = Math.min(...allLows);
+    const maxHigh = Math.max(...allHighs);
+    const maxGust = Math.max(...allGusts);
+    const maxUV = Math.max(...allUV);
+    const hasRain = allCodes.some(c => [51,53,55,61,63,65,80,81,82,95,96,99].includes(c));
+    const hasSnow = allCodes.some(c => [66,67,71,73,75,77,85,86].includes(c));
+
+    // Cold-weather items
+    if (minLow <= 25) { wpSet.add('Hand warmers (multi-pack)'); wpSet.add('Insulated winter jacket'); wpSet.add('Thick wool socks (3+ pairs)'); wpSet.add('Neck gaiter / balaclava'); }
+    else if (minLow <= 32) { wpSet.add('Hand warmers (2–3 pairs)'); wpSet.add('Thick wool socks (2+ pairs)'); wpSet.add('Heavy insulated jacket'); }
+    else if (minLow <= 40) { wpSet.add('Warm socks (extra pairs)'); }
+    if (minLow <= 35) { wpSet.add('Hot cocoa packets — for warming up'); }
+
+    // Rain/snow items
+    if (hasRain) { wpSet.add('Rain jackets (all 3)'); wpSet.add('Waterproof shoe covers or rain boots'); wpSet.add('Gallon zip bags — protect phones & clue cards'); wpSet.add('Compact umbrella'); }
+    if (hasSnow) { wpSet.add('Waterproof insulated boots'); wpSet.add('Waterproof gloves'); wpSet.add('Extra thermal base layers'); }
+
+    // Wind items
+    if (maxGust >= 30) { wpSet.add('Windbreaker shell jacket'); wpSet.add('Hair ties / clips — keep hair managed'); wpSet.add('Costume clips or safety pins — secure loose pieces'); }
+
+    // UV items
+    if (maxUV >= 8) { wpSet.add('SPF 50+ sunscreen (full size)'); wpSet.add('Lip balm with SPF'); wpSet.add('UV-blocking sunglasses for Syba'); }
+    else if (maxUV >= 5) { wpSet.add('SPF 30+ sunscreen'); wpSet.add('Lip balm with SPF'); }
+
+    // Warm-weather items
+    if (maxHigh >= 75) { wpSet.add('Cooling towels'); wpSet.add('Extra water bottles — stay hydrated!'); wpSet.add('Light breathable layers instead of thermals'); }
+
+    // Remove items that overlap with the base packing list (bidirectional keyword match)
+    const baseLower = PACKING.map(p => p.toLowerCase());
+    weatherPacking = [...wpSet].filter(item => {
+      const lower = item.toLowerCase();
+      return !baseLower.some(b =>
+        lower.includes(b) || b.includes(lower) ||
+        b.split(/[\s/+()]+/).some(w => w.length > 3 && lower.includes(w)) ||
+        lower.split(/[\s/+()]+/).some(w => w.length > 3 && b.includes(w))
+      );
+    });
+
+    tripForecastLoaded = true;
+    renderWardrobe();
+  } catch (e) {
+    // Silently fall back to static data
+    console.warn('Trip forecast unavailable:', e);
+  }
+}
+
+/* ════════════════════════════════════════════
    INIT
    ════════════════════════════════════════════ */
 applyTheme(loadTheme());
@@ -1014,6 +1418,10 @@ renderWardrobe();
 renderGallery();
 updateCountdown();
 setInterval(updateCountdown, 1000);
+fetchWeather();
+fetchTripForecast();
+setInterval(fetchWeather, 600000); // refresh every 10 min
+setInterval(fetchTripForecast, 1800000); // refresh forecast every 30 min
 
 document.addEventListener('keydown', e => {
   if (!document.getElementById('lightbox').classList.contains('active')) return;
