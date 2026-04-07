@@ -70,8 +70,14 @@ p.subtitle{color:#8899aa;font-size:13px;text-align:center;margin-bottom:20px;fon
 .instructions strong{color:#e8a028}
 
 @media print{
-  body{background:#fff;padding:0;gap:0.3in}
-  .card{border-color:#333;background:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{background:#fff;padding:0;gap:0}
+  .card{
+    border-color:#333;background:#fff !important;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+    page-break-after:always;
+    margin:0 auto;
+  }
+  .card:last-of-type{page-break-after:auto}
   .card::before{border-color:rgba(0,0,0,0.15)}
   .card::after{display:none}
   .card-clue{color:#222;text-shadow:none}
@@ -79,6 +85,7 @@ p.subtitle{color:#8899aa;font-size:13px;text-align:center;margin-bottom:20px;fon
   .card-icon{filter:grayscale(1)}
   .corner svg line{stroke:#999 !important}
   .print-btn,.instructions,h1,p.subtitle{display:none}
+  @page{size:portrait;margin:0.5in}
 }
 </style>
 </head>

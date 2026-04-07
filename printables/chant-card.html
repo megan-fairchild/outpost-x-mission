@@ -73,13 +73,17 @@ body{background:#0a0a14;display:flex;flex-direction:column;align-items:center;ju
 
 @media print{
   body{background:#fff;padding:0}
-  .card{background:#fff !important;border-color:#333;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .card{
+    background:#fff !important;border-color:#333;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+    margin:0 auto;
+  }
   .card::after{display:none}
   .card-title{color:#222;text-shadow:none}
   .chant{color:#111;text-shadow:none}
   .chant em{color:#1a6fa0}
   .print-btn,.instructions{display:none}
-  @page{margin:0.5in}
+  @page{size:portrait;margin:0.5in}
 }
 </style>
 </head>
