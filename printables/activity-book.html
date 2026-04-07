@@ -123,6 +123,11 @@ body{background:#0a0a14;color:#ccc;font-family:'Inter',sans-serif}
 .decode-blank .symbol{font-size:18px}
 .decode-space{width:20px}
 
+/* Cover & back cover shared */
+#cover, #back-cover{
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;
+}
+
 @media print{
   body{background:#fff}
   .screen-header,.print-all{display:none}
@@ -134,6 +139,10 @@ body{background:#0a0a14;color:#ccc;font-family:'Inter',sans-serif}
     overflow:visible;
   }
   .activity-page:last-child{page-break-after:auto}
+  #cover, #back-cover{
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+    padding:0.25in;
+  }
   @page{size:letter portrait;margin:0.25in}
 }
 </style>
@@ -148,6 +157,87 @@ body{background:#0a0a14;color:#ccc;font-family:'Inter',sans-serif}
 <button class="print-all" onclick="window.print()">🖨️ PRINT ACTIVITY BOOK</button>
 
 <div class="page-list">
+
+<!-- ════════════════════════ COVER PAGE ════════════════════════ -->
+<div class="activity-page" id="cover" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:linear-gradient(180deg,#0d0d1a 0%,#1a1a2e 100%);padding:0.5in">
+
+  <!-- Outer border frame -->
+  <div style="border:2px solid #e8a028;border-radius:12px;padding:32px 28px;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative">
+
+    <!-- Corner accents -->
+    <div style="position:absolute;top:8px;left:8px;width:28px;height:28px;border-top:3px solid #e8a028;border-left:3px solid #e8a028;border-radius:4px 0 0 0"></div>
+    <div style="position:absolute;top:8px;right:8px;width:28px;height:28px;border-top:3px solid #e8a028;border-right:3px solid #e8a028;border-radius:0 4px 0 0"></div>
+    <div style="position:absolute;bottom:8px;left:8px;width:28px;height:28px;border-bottom:3px solid #e8a028;border-left:3px solid #e8a028;border-radius:0 0 0 4px"></div>
+    <div style="position:absolute;bottom:8px;right:8px;width:28px;height:28px;border-bottom:3px solid #e8a028;border-right:3px solid #e8a028;border-radius:0 0 4px 0"></div>
+
+    <!-- Classification banner -->
+    <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:5px;color:#e8a028;opacity:0.6;margin-bottom:18px">⬦ JEDI ORDER — CLASSIFIED ⬦</div>
+
+    <!-- Jedi Order Emblem -->
+    <svg viewBox="0 0 200 200" width="180" height="180" xmlns="http://www.w3.org/2000/svg" style="margin:10px 0">
+      <!-- Outer glow ring -->
+      <circle cx="100" cy="100" r="95" fill="none" stroke="#e8a028" stroke-width="1" opacity="0.3"/>
+      <circle cx="100" cy="100" r="88" fill="none" stroke="#e8a028" stroke-width="2" opacity="0.6"/>
+      <!-- Jedi star/wings emblem -->
+      <g fill="#e8a028" opacity="0.9">
+        <!-- Central blade / tower -->
+        <path d="M100,18 L104,80 108,95 100,100 92,95 96,80 Z"/>
+        <!-- Left wing -->
+        <path d="M92,95 L40,68 35,72 60,98 75,105 88,100 Z"/>
+        <path d="M60,98 L22,95 20,100 55,108 75,105 Z"/>
+        <path d="M55,108 L18,118 18,124 50,118 70,112 Z"/>
+        <!-- Right wing -->
+        <path d="M108,95 L160,68 165,72 140,98 125,105 112,100 Z"/>
+        <path d="M140,98 L178,95 180,100 145,108 125,105 Z"/>
+        <path d="M145,108 L182,118 182,124 150,118 130,112 Z"/>
+        <!-- Lower center section -->
+        <path d="M88,100 L75,105 70,112 80,130 95,145 100,150 105,145 120,130 130,112 125,105 112,100 100,100 Z" opacity="0.7"/>
+        <!-- Bottom point -->
+        <path d="M95,145 L100,182 105,145 100,150 Z"/>
+      </g>
+      <!-- Inner star accent -->
+      <circle cx="100" cy="105" r="8" fill="none" stroke="#e8a028" stroke-width="1.5" opacity="0.5"/>
+      <!-- Tiny stars scattered -->
+      <circle cx="30" cy="40" r="1.2" fill="#e8a028" opacity="0.4"/>
+      <circle cx="170" cy="35" r="1" fill="#e8a028" opacity="0.3"/>
+      <circle cx="25" cy="160" r="1" fill="#e8a028" opacity="0.35"/>
+      <circle cx="175" cy="155" r="1.2" fill="#e8a028" opacity="0.4"/>
+      <circle cx="50" cy="180" r="0.8" fill="#e8a028" opacity="0.3"/>
+      <circle cx="150" cy="178" r="0.8" fill="#e8a028" opacity="0.3"/>
+    </svg>
+
+    <!-- Title block -->
+    <div style="margin:18px 0 6px">
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:6px;color:#e8a028;opacity:0.7;margin-bottom:10px">OFFICIAL</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:22px;letter-spacing:4px;color:#e8a028;font-weight:900;line-height:1.4">PADAWAN<br>TRAINING MANUAL</div>
+    </div>
+
+    <!-- Divider -->
+    <div style="width:60%;height:1px;background:linear-gradient(90deg,transparent,#e8a028,transparent);margin:16px 0"></div>
+
+    <!-- Issued to -->
+    <div style="margin:8px 0">
+      <div style="font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:4px;color:#888;margin-bottom:8px">ISSUED TO</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:18px;letter-spacing:3px;color:#fff;font-weight:700">SYBA TAAN</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:#e8a028;margin-top:6px;opacity:0.8">RANK: YOUNGLING · CLASS: APRIL 2026</div>
+    </div>
+
+    <!-- Divider -->
+    <div style="width:40%;height:1px;background:linear-gradient(90deg,transparent,#e8a028,transparent);margin:14px 0"></div>
+
+    <!-- Training master -->
+    <div style="font-family:'Inter',sans-serif;font-size:11px;color:#889;line-height:1.6">
+      Under the guidance of<br>
+      <span style="font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;color:#ccc">MASTER MATTHANE SOL</span>
+    </div>
+
+    <!-- Bottom designation -->
+    <div style="margin-top:20px;font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:4px;color:#e8a028;opacity:0.5">
+      OUTPOSTX · TATOOINE SECTOR · OUTER RIM TERRITORIES
+    </div>
+
+  </div>
+</div>
 
 <!-- ════════════════════════ PAGE 1: MAZE ════════════════════════ -->
 <div class="activity-page" id="p1">
@@ -609,6 +699,93 @@ body{background:#0a0a14;color:#ccc;font-family:'Inter',sans-serif}
   </div>
 
   <div class="pg-footer">OUTPOSTX · YOUNGLING ACTIVITY BOOK · PAGE 10</div>
+</div>
+
+<!-- ════════════════════════ BACK COVER ════════════════════════ -->
+<div class="activity-page" id="back-cover" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:linear-gradient(180deg,#0d0d1a 0%,#1a1a2e 100%);padding:0.5in">
+
+  <div style="border:2px solid #e8a028;border-radius:12px;padding:32px 28px;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative">
+
+    <!-- Corner accents -->
+    <div style="position:absolute;top:8px;left:8px;width:28px;height:28px;border-top:3px solid #e8a028;border-left:3px solid #e8a028;border-radius:4px 0 0 0"></div>
+    <div style="position:absolute;top:8px;right:8px;width:28px;height:28px;border-top:3px solid #e8a028;border-right:3px solid #e8a028;border-radius:0 4px 0 0"></div>
+    <div style="position:absolute;bottom:8px;left:8px;width:28px;height:28px;border-bottom:3px solid #e8a028;border-left:3px solid #e8a028;border-radius:0 0 0 4px"></div>
+    <div style="position:absolute;bottom:8px;right:8px;width:28px;height:28px;border-bottom:3px solid #e8a028;border-right:3px solid #e8a028;border-radius:0 0 4px 0"></div>
+
+    <!-- The Jedi Code header -->
+    <div style="font-family:'Orbitron',sans-serif;font-size:14px;letter-spacing:5px;color:#e8a028;font-weight:700;margin-bottom:20px">THE JEDI CODE</div>
+
+    <!-- Divider -->
+    <div style="width:50%;height:1px;background:linear-gradient(90deg,transparent,#e8a028,transparent);margin-bottom:22px"></div>
+
+    <!-- The Jedi Code verses -->
+    <div style="font-family:'Inter',sans-serif;font-size:14px;color:#ccc;line-height:2.2;font-style:italic;max-width:80%">
+      There is no emotion, there is <span style="color:#e8a028;font-weight:600">peace</span>.<br>
+      There is no ignorance, there is <span style="color:#e8a028;font-weight:600">knowledge</span>.<br>
+      There is no passion, there is <span style="color:#e8a028;font-weight:600">serenity</span>.<br>
+      There is no chaos, there is <span style="color:#e8a028;font-weight:600">harmony</span>.<br>
+      There is no death, there is the <span style="color:#e8a028;font-weight:600">Force</span>.
+    </div>
+
+    <!-- Divider -->
+    <div style="width:50%;height:1px;background:linear-gradient(90deg,transparent,#e8a028,transparent);margin:22px 0"></div>
+
+    <!-- Rebel Alliance emblem -->
+    <svg viewBox="0 0 160 160" width="120" height="120" xmlns="http://www.w3.org/2000/svg" style="margin:6px 0">
+      <circle cx="80" cy="80" r="75" fill="none" stroke="#e8a028" stroke-width="1.5" opacity="0.4"/>
+      <!-- Starbird / Rebel Alliance symbol -->
+      <g fill="#e8a028" opacity="0.85" transform="translate(80,80) scale(0.7)">
+        <!-- Central flame/body -->
+        <path d="M0,-85 C5,-60 8,-35 6,-10 C4,10 2,30 0,55 C-2,30 -4,10 -6,-10 C-8,-35 -5,-60 0,-85 Z"/>
+        <!-- Left wing -->
+        <path d="M-6,-10 C-15,-20 -40,-45 -70,-50 C-60,-35 -45,-20 -30,-5 C-20,5 -10,15 -4,20 C-2,10 -4,0 -6,-10 Z"/>
+        <!-- Right wing -->
+        <path d="M6,-10 C15,-20 40,-45 70,-50 C60,-35 45,-20 30,-5 C20,5 10,15 4,20 C2,10 4,0 6,-10 Z"/>
+        <!-- Left lower feather -->
+        <path d="M-4,20 C-12,30 -35,50 -55,60 C-40,50 -25,40 -12,30 C-6,35 -2,40 0,45 C-1,35 -2,28 -4,20 Z"/>
+        <!-- Right lower feather -->
+        <path d="M4,20 C12,30 35,50 55,60 C40,50 25,40 12,30 C6,35 2,40 0,45 C1,35 2,28 4,20 Z"/>
+        <!-- Central circle (cockpit) -->
+        <circle cx="0" cy="-5" r="6" fill="#0d0d1a" stroke="#e8a028" stroke-width="1.5"/>
+      </g>
+    </svg>
+
+    <!-- Padawan ownership section -->
+    <div style="margin:16px 0 10px">
+      <div style="font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:4px;color:#888;margin-bottom:6px">THIS TRAINING MANUAL BELONGS TO</div>
+      <div style="width:250px;border-bottom:1.5px solid #e8a028;margin:0 auto;height:28px;display:flex;align-items:flex-end;justify-content:center">
+        <span style="font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:3px;color:#fff;padding-bottom:4px">SYBA TAAN</span>
+      </div>
+    </div>
+
+    <!-- Completion status -->
+    <div style="margin:14px 0 4px;padding:12px 24px;border:1px solid rgba(232,160,40,0.3);border-radius:8px">
+      <div style="font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;color:#e8a028;margin-bottom:6px">TRAINING STATUS</div>
+      <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">
+        <span style="font-size:16px">⭐</span>
+        <span style="font-size:16px">⭐</span>
+        <span style="font-size:16px">⭐</span>
+        <span style="font-size:16px">⭐</span>
+        <span style="font-size:16px">⭐</span>
+        <span style="font-size:16px">⭐</span>
+        <span style="font-size:16px">⭐</span>
+        <span style="font-size:16px">⭐</span>
+      </div>
+      <div style="font-family:'Inter',sans-serif;font-size:9px;color:#889;margin-top:6px">8 PADAWAN BEADS · 8 MISSIONS COMPLETED</div>
+    </div>
+
+    <!-- Final message -->
+    <div style="margin-top:16px">
+      <div style="font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:3px;color:#e8a028;font-weight:700">MAY THE FORCE</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:3px;color:#e8a028;font-weight:700">BE WITH YOU. ALWAYS.</div>
+    </div>
+
+    <!-- Bottom classification -->
+    <div style="margin-top:16px;font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:4px;color:#e8a028;opacity:0.4">
+      OUTPOSTX · JEDI COUNCIL ARCHIVES · REF: ST-0426
+    </div>
+
+  </div>
 </div>
 
 </div><!-- end page-list -->
